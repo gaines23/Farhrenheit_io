@@ -1,15 +1,12 @@
-#!/usr/bin/env python
-"""
-Command-line utility for administrative tasks.
-
-# For more information about this file, visit
-# https://docs.djangoproject.com/en/2.1/ref/django-admin/
-"""
-
 import os
 import sys
 
+import dotenv
+from dotenv import load_dotenv
+
 if __name__ == '__main__':
+    
+    load_dotenv()
     os.environ.setdefault(
         'DJANGO_SETTINGS_MODULE',
         'Fahrenheit_io.settings')

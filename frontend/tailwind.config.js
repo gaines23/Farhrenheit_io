@@ -11,6 +11,9 @@ module.exports = {
           'ec-orange': '#fd7020',
           'input-fill': '#F4F1F1',
           'bg-fill': '#827d7db3',
+          'far-yellow': '#FFD700',
+          'far-teal': '#00c2cb',
+          'far-navy': '#020e1e'
         },
         height: {
           '38': '10rem',

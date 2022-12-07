@@ -8,8 +8,8 @@ import { MdOutlineNotifications } from 'react-icons/md'
 const Navbar = () => {
 
     const listClassName = "h-10 w-full my-2 px-2";
-    const linkClassName = "flex group px-1 h-10 w-full items-center rounded-full outline-none hover:bg-bg-fill/10 hover:border-y hover:border-bg-fill/30";
-    const iconClassName = "w-auto h-6 left-3 relative text-far-teal/60 group-hover:text-far-yellow/80 group-active:text-far-teal";
+    const linkClassName = "flex group px-1 h-10 w-full items-center rounded-lg outline-none hover:bg-bg-fill/10 hover:border-y hover:border-bg-fill/30";
+    const iconClassName = "w-auto h-6 left-3 relative text-far-teal/60 group-hover:text-far-teal/80 group-active:text-far-teal";
     const itemClassName = "text-far-teal/40 w-2/3 mx-auto h-auto my-auto group-hover:text-far-teal/80";
     const liDivClassName = "w-full h-10 flex";
 
@@ -21,7 +21,7 @@ const Navbar = () => {
                 <ul className="w-full mx-auto h-full text-sm font-thin">
                     <li className={listClassName}>
                         <NavLink 
-                            to={'/farhrenheit'} 
+                            to={'/fahrenheit'} 
                             className={linkClassName}
                         >
                             <HiOutlineHome className={iconClassName} />                    

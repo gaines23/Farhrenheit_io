@@ -7,7 +7,7 @@ import LoadingSpinner from './Components/UI/LoadingSpinner';
 import './App.css';
 
 const Home = React.lazy(() => import ('./Pages/Home'));
-const NotFound = React.lazy(() => ('./Pages/NotFound'));
+const NotFound = React.lazy(() => import ('./Pages/NotFound'));
 
 function App() {
   return (

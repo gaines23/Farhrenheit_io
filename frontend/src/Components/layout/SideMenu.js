@@ -5,7 +5,7 @@ import { FaRegUserCircle } from 'react-icons/fa';
 import { HiOutlineSearch } from 'react-icons/hi';
 
 import Navbar from './Sidebar/Navbar';
-import FahrenheitLogo1 from '../../assets/Fahrenheit-long-logo.png';
+import FahrenheitLogo1 from '../../assets/Fahrenheit100.png';
 import AppList from './Sidebar/AppList';
 
 const SideMenu = () => {
@@ -22,19 +22,19 @@ const SideMenu = () => {
                     </Link>
                 </div>
 
-                <div className="w-full h-full block ml-auto pb-2 border border-bg-fill/20 bg-bg-fill/10 backdrop-contrast-80 rounded-lg">
+                <div className="w-full h-full block ml-auto pb-2 border border-bg-fill/20  rounded-lg">
                     <div className="w-11/12 mb-3 py-1 mx-auto">
                         <div className="group h-full w-full px-2 py-2 font-light">
-                            <div className="w-fit h-full mx-auto text-center text-sm text-far-teal/60">
+                            <div className="w-8 h-full mx-auto text-center text-sm text-far-teal/60">
                                 <Link to="/farhrenheit/login" className="h-full w-full">
                                     <FaRegUserCircle className="w-8 h-auto group-hover:text-far-teal/80" />
                                 </Link>
                             </div>
                             
-                            <div className="w-full h-full mt-1 px-2 py-2 text-center text-sm text-far-teal/50 group-hover:text-far-teal/80">
+                            <div className="w-full h-full mt-1 px-2 py-2 text-center text-sm text-far-teal/50">
                                 <Link to="/farhrenheit/login" className="h-full w-full">
                                     <div className="w-full h-full m-auto inline-flex pl-2">
-                                        <p className="h-min w-full my-auto">Login/Signup</p>
+                                        <p className="h-min w-full my-auto group-hover:text-far-teal/80">Login/Signup</p>
                                     </div>
                                 </Link>
                             </div>

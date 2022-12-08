@@ -11,18 +11,18 @@ import AppList from './Sidebar/AppList';
 const SideMenu = () => {
     return (
         <Fragment>
-            <div className="fixed">
+            <div>
                 <div className="w-full h-full mx-auto">
                     <Link to="/farhrenheit" className="h-full w-full outline-none">
                         <img 
                             src={FahrenheitLogo1}
                             alt="fahrenheit-io-logo"
-                            className="w-5/6 h-auto mx-auto"
+                            className="w-full h-auto mx-auto"
                         />
                     </Link>
                 </div>
 
-                <div className="w-full h-full block ml-auto pb-2 border border-bg-fill/20  rounded-lg">
+                <div className="w-full h-full block ml-auto pb-2 border border-bg-fill/20 bg-bg-fill/10 rounded-md">
                     <div className="w-11/12 mb-3 py-1 mx-auto">
                         <div className="group h-full w-full px-2 py-2 font-light">
                             <div className="w-8 h-full mx-auto text-center text-sm text-far-teal/60">

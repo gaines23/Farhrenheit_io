@@ -1,19 +1,28 @@
 import { Fragment } from "react";
 import SideMenu from "./SideMenu";
 
+/*
+    sm - 640
+    md - 768
+    lg - 1024
+    xl - 1280
+    2xl - 1536
+
+*/
+
 const Layout = (props) => {
     return (
-        <Fragment>                
-            <div className="h-full w-full bg-bg-fill/10 m-auto grid grid-cols-2 md:grid-cols-6 lg:grid-cols-12">
-                <div className="w-11/12 h-full mx-auto col-span-2">
-                    <SideMenu />
-                </div>
-                <div className="w-full h-full col-span-10 px-2">
-                    <main className="h-full w-full m-auto overflow-y-scroll space-y-3 scroll-smooth scrollbar scrollbar-height:sm scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
-                        <div className="inline w-full h-full">
-                            {props.children}
-                        </div>
-                    </main>
+        <Fragment>
+            <div className="fixed h-full w-full bg-bg-fill/10">
+                <div className="h-full w-full bg-far-navy/20 p-1 m-auto grid md:grid-cols-10 lg:grid-cols-10 xl:grid-cols-10 2xl:grid-cols-10">
+                    <div className="w-full h-full mx-auto md:grid-cols-2 lg:col-span-1 xl:col-span-1 2xl:col-span-1">
+                        <SideMenu />
+                    </div>
+                    <div className="w-full h-full sticky p-2 md:grid-cols-8 lg:col-span-9 xl:col-span-9 2xl:col-span-9">
+                        <main className="h-full w-full rounded-xl p-1 bg-far-navy">
+                            {props.children} 
+                        </main>
+                    </div>
                 </div>
             </div>
         </Fragment>

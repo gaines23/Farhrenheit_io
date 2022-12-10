@@ -5,20 +5,20 @@ import { HiOutlineHome } from 'react-icons/hi';
 import { BiMessage } from 'react-icons/bi';
 import { MdOutlineNotifications } from 'react-icons/md'
 
-const Navbar = () => {
+const NavbarOpen = () => {
 
-    const listClassName = "h-10 w-full my-2 px-1";
+    const listClassName = "h-10 w-full my-2 px-1 flex";
     const linkClassName = "flex group px-1 h-10 w-full items-center rounded-lg outline-none hover:bg-bg-fill/10 hover:border-y hover:border-bg-fill/30";
-    const iconClassName = "w-auto h-6 px-1 relative text-far-teal/60 group-hover:text-far-teal/80 group-active:text-far-teal";
-    const itemClassName = "text-far-teal/40 w-2/3 mx-auto h-auto my-auto group-hover:text-far-teal/80";
+    const iconClassName = "w-7 h-auto px-1 relative text-far-teal/60 group-hover:text-far-teal/80 group-active:text-far-teal";
     const liDivClassName = "w-full h-10 flex";
+    const pClassName = "text-far-teal/40 w-5/6 text-left mx-auto h-auto my-auto group-hover:text-far-teal/80";
 
     return (
         <Fragment>
-           <div className="w-full h-full mx-auto py-1">
-                <p className="w-full h-8 text-xs text-input-fill/30 px-2">Main</p>
+           <div className="w-full h-auto mx-auto my-2 flex flex-col">
+                <p className="w-full h-auto text-xs text-input-fill/30 px-2">Main</p>
                 
-                <ul className="w-full mx-auto h-full text-sm font-thin">
+                <ul className="w-full mx-auto h-auto text-xs font-thin">
                     <li className={listClassName}>
                         <NavLink 
                             to={'/fahrenheit'} 
@@ -26,7 +26,7 @@ const Navbar = () => {
                         >
                             <HiOutlineHome className={iconClassName} />                    
                             <div className={liDivClassName}>
-                                <p className={itemClassName}>
+                                <p className={pClassName}>
                                     Home
                                 </p>
                              </div>
@@ -40,7 +40,7 @@ const Navbar = () => {
                         >
                             <MdOutlineNotifications className={iconClassName} />                    
                             <div className={liDivClassName}>
-                                <p className={itemClassName}>
+                                <p className={pClassName}>
                                     Notifications
                                 </p>
                              </div>
@@ -53,7 +53,7 @@ const Navbar = () => {
                         >
                             <BiMessage className={iconClassName} />                    
                             <div className={liDivClassName}>
-                                <p className={itemClassName}>
+                                <p className={pClassName}>
                                     DMs
                                 </p>
                              </div>
@@ -65,4 +65,4 @@ const Navbar = () => {
     );
 }
 
-export default Navbar;
+export default NavbarOpen;

@@ -24,7 +24,7 @@ function App() {
           <Route path='/fahrenheit' exact>
             <Home /> 
           </Route>
-          <Route path='/ecstastream'>
+          <Route path='/fahrenheit/ecstastream'>
 
           </Route>
           <Route path='*'>

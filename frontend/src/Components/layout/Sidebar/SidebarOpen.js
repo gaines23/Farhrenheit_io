@@ -12,7 +12,7 @@ import FahrenheitLogo1 from '../../../assets/Fahrenheit100.png';
 const SideBarOpen = () => {
     return (
         <Fragment>
-            <div className="h-20 w-auto flex">
+            <div className="h-20 w-full flex">
                 <div className="w-auto h-auto mx-auto flex">
                     <Link to="/farhrenheit" className="h-full w-full outline-none">
                         <img
@@ -39,7 +39,7 @@ const SideBarOpen = () => {
                 </div>
             </div>
 
-            <form className="w-auto h-auto justify-center items-center mx-auto my-3 text-xs flex">
+            <form className="w-full h-auto justify-center items-center mx-auto my-3 text-xs flex">
                 <div className="w-auto h-8 m-auto border-far-teal/20 hover:border-far-teal/50 border-2 rounded-lg">
                     <input className="w-5/6 float-left text-input-fill/50 font-thin h-full bg-transparent pl-5 focus:outline-none focus:bg-bg-fill/10" 
                         type="search"

@@ -11,32 +11,32 @@ import FarheneitLogo2 from '../../../assets/Fahrenheit.logo-clear.png';
 const SideBarClosed = () => {
     return (
         <Fragment>
-            <div className="h-20 w-1/2 flex">
-                <div className="w-auto h-12 m-auto flex">
+            <div className="h-auto w-auto px-2 py-2">
+                <div className="w-full h-12 m-auto flex">
                     <Link to="/farhrenheit" className="h-full w-full outline-none">
                         <img
                             src={FarheneitLogo2}
                             alt="fahrenheit-io-logo"
-                            className="w-auto h-auto my-auto"
+                            className="w-full h-auto mx-auto"
                         />
                     </Link>
                 </div>
             </div>
-            <div className="group h-auto w-1/2 px-2 py-2 font-light flex flex-col">
-                <div className="w-8 h-8 flex mx-auto text-center text-sm text-far-teal/60">
+            <div className="group h-auto w-auto px-1 py-1">
+                <div className="w-6 h-8 flex mx-auto text-center text-sm text-far-teal/60">
                     <Link to="/farhrenheit/login" className="h-full w-full">
-                        <FaRegUserCircle className="w-8 h-8 group-hover:text-far-teal/80" />
+                        <FaRegUserCircle className="w-6 h-8 group-hover:text-far-teal/80" />
                     </Link>
                 </div>
             </div>
 
-            <form className="w-1/2 h-auto justify-center items-center mx-auto my-3 text-xs flex">
-                    <button
-                        className="w-8 float-right h-full text-input-fill/50 items-center rounded-r-md hover:bg-far-yellow/80 hover:drop-shadow-md"
-                        type="submit"
-                        >
-                        <HiOutlineSearch className="stroke-1 stroke-white m-auto w-2/3"/>
-                    </button>
+            <form className="h-auto w-auto justify-center items-center mx-auto my-3 text-xs">
+                <button
+                    className="w-8 h-full text-input-fill/50 items-center rounded-r-md hover:bg-far-yellow/80 hover:drop-shadow-md"
+                    type="submit"
+                    >
+                    <HiOutlineSearch className="stroke-1 stroke-white m-auto w-2/3"/>
+                </button>
             </form>
                     
             <NavbarClosed />

@@ -1,32 +1,29 @@
 import { Fragment } from "react";
 
-import SideBar from './Sidebar';
+import SideMenu from './SideMenu';
 import Header from './Header';
-import Footer from "./Footer";
 
 const Layout = (props) => {
     return (
         <Fragment>
-            <div className="h-full w-full m-auto overflow-y-scroll space-y-3 scroll-smooth scrollbar scrollbar-height:sm scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
-                <div className="h-20">
-                    <Header />
-                </div>
-                
-                <div className="h-full w-full m-auto grid grid-cols-3 md:grid-cols-6 lg:grid-cols-8">
-                    
-                    <div className="h-full w-full col-span-1">
-                        <SideBar />
+            <div className="h-full w-full mx-auto flex bg-ec-black">
+                <div className="w-fit h-full flex flex-col ease-in">
+                    <div className="w-11/12 h-full mx-auto flex flex-col">
+                        <SideMenu />
                     </div>
+                </div>
 
-                    <div className="w-full h-full container m-auto mr-10 col-start-2 col-span-2 md:col-span-5 lg:col-span-7">
-                            <main className="w-full h-full py-5 px-5">
-                                <div className="inline w-full h-full">
-                                    {props.children}
-                                </div>
-                            </main>
-                        <Footer />
+                <div className="w-full h-full flex flex-col">
+                    <div className="h-16 w-11/12 flex mx-auto relative">
+                        <Header />
+                    </div>
+                    <main className="w-full h-full py-1 flex flex-col rounded-lg px-2 relative bg-ec-purple/10 overflow-y-scroll overflow-hidden space-y-3 scroll-smooth scrollbar scrollbar-height:6 scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
+                    <div className="w-full h-full py-2 absolute flex flex-col">
+                        <div className="inline w-11/12 h-full mx-auto">
+                            {props.children}
+                        </div>
                     </div> 
-
+                    </main>               
                 </div>
 
             </div>

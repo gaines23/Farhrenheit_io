@@ -23,9 +23,9 @@ const Layout = (props) => {
 
     return (
         <Fragment>
-            <div className="h-full w-full bg-bg-fill/40">
-                <div className="h-full w-full p-2 mx-auto bg-far-navy/60 flex">
-                    <div className="w-fit h-full mx-auto flex flex-col">
+            <div className="h-full w-full static bg-gradient-to-tl from-far-teal/10 to-far-teal/10">
+                <div className="h-full w-full p-2 mx-auto flex overflow-hidden">
+                    <div className="w-fit h-full flex flex-col ease-in">
                         <div className="w-11/12 h-full mx-auto flex flex-col">
                             {isOpen ? <SideBarOpen /> : <SideBarClosed />}
                             
@@ -42,8 +42,8 @@ const Layout = (props) => {
                         </div>
                     </div>
                 
-                    <div className="w-11/12 h-full sticky flex flex-col rounded-lg shadow p-1 shadow-2xl shadow-far-teal/10 bg-far-navy">
-                        <main className="h-full w-full grid columns-12">
+                    <div className="w-full h-full sticky flex bg-bg-fill/10 rounded-lg bg-clip-padding backdrop-filter shadow shadow-lg shadow-far-navy border-2 border-bg-fill/30">
+                        <main className="h-full w-full grid grid-flow-col grid-cols-1 flex overflow-hidden rounded-lg">
                             {props.children} 
                         </main>
                     </div>

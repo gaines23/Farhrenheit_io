@@ -4,7 +4,6 @@ import { SEARCH_RESULTS_TMDB } from '../../lib/constants';
 
 //import PosterCard from '../UI/Card/PosterCard';
 //import SearchResults from '../../Pages/SearchResults';
-import LogoPic from '../../assets/Logo-Final.png';
 
 import { HiOutlineSearch } from 'react-icons/hi';
 
@@ -43,16 +42,8 @@ const Header = () => {
 
     return (
         <Fragment>
-            <header className="w-auto h-full">
-                <div className="flex items-center w-64 h-16 float-left">
-                    {(home !== '/ecstastream') &&
-                        <Link to={"/ecstastream"}>
-                            <img src={LogoPic} className="w-3/5 h-15 ml-6 items-center" alt="mainLogo" />  
-                        </Link>
-                    }                
-                
-                </div>  
-                <form className="flex w-auto h-16 w-3/5 justify-center items-center m-auto pt-4" onSubmit={submitForm}>
+            <header className="w-full h-full flex">
+                <form className="flex w-full h-12 w-4/5 justify-center items-center m-auto px-auto" onSubmit={submitForm}>
                     <div className="
                             relative w-3/5 h-10 m-auto border-ec-purple/50 border-2 rounded-lg 
                             hover:border-t-ec-purple/60 hover:border-r-ec-orange/40 
@@ -71,7 +62,7 @@ const Header = () => {
                             className="w-1/6 float-right bg-ec-purple-text/20 h-full items-center rounded-md hover:bg-gradient-to-br from-ec-purple/50 to-ec-orange/60"
                             type="submit"
                             onClick={() => history.push({
-                                pathname: `/ecstastream/search/${search}`,
+                                pathname: `/fahrenheit/ecstastream/search/${search}`,
                                 search: `?query=${search}`,
                             })}
                         >

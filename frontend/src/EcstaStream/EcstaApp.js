@@ -1,22 +1,20 @@
 import React, { Suspense } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import Layout from './Components/Layout/Layout';
-import LoadingSpinner from './components/UI/LoadingSpinner';
-
-import './App.css';
+import LoadingSpinner from '../Components/UI/LoadingSpinner';
 
 const Home = React.lazy(() => import ('./Pages/Home'));
-// const SearchResults = React.lazy(() => import ('./Pages/SearchResults'));
+const SearchResults = React.lazy(() => import ('./Pages/SearchResults'));
 // const Profile = React.lazy(() => import ('./Pages/Profile'));
-// const MovieDetails = React.lazy(() => import ('./Pages/MovieDetails'));
+//const MovieDetails = React.lazy(() => import ('./Pages/MovieDetails'));
 // const TvDetails = React.lazy(() => import ('./Pages/TvDetails'));
 // const CreditDetails = React.lazy(() => import ('./Pages/CreditDetails'));
 // const Playlist = React.lazy(() => ('./Pages/Playlists'));
 // const News = React.lazy(() => ('./Pages/News'));
 // const NotFound = React.lazy(() => ('./Pages/NotFound'));
 
-function App() {
+function EcstaApp() {
   return (
     <Layout>
       <Suspense 
@@ -28,10 +26,10 @@ function App() {
           <Route path='/fahrenheit/ecstastream' exact>
             <Home />
           </Route>
-          {/* <Route path='/ecstastream/search/:query'>
+          <Route path='/fahrenheit/ecstastream/search/:query'>
             <SearchResults />
           </Route>
-          <Route path='/details/:id/:media_type(movie)'>
+          {/* <Route path='/details/:id/:media_type(movie)'>
             <MovieDetails />
           </Route>
           <Route path='/details/:id/:media_type(tv)'>
@@ -55,4 +53,4 @@ function App() {
   );
 }
 
-export default App;
+export default EcstaApp;

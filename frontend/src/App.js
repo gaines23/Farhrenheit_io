@@ -8,6 +8,7 @@ import './App.css';
 
 const Home = React.lazy(() => import ('./Pages/Home'));
 const NotFound = React.lazy(() => import ('./Pages/NotFound'));
+const EcstaApp = React.lazy(() => import ('./EcstaStream/EcstaApp.js'));
 
 function App() {
   return (
@@ -24,8 +25,8 @@ function App() {
           <Route path='/fahrenheit' exact>
             <Home /> 
           </Route>
-          <Route path='/fahrenheit/ecstastream'>
-
+          <Route path='/fahrenheit/ecstastream' exact>
+            <EcstaApp />
           </Route>
           <Route path='*'>
             <NotFound />

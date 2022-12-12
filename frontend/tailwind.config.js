@@ -9,6 +9,7 @@ module.exports = {
           'ec-purple-text': '#9726F0',
           'ec-purple': '#530881',
           'ec-orange': '#fd7020',
+          'ec-black': '#121111',
           'input-fill': '#F4F1F1',
           'bg-fill': '#827d7db3',
           'far-yellow': '#FFD700',

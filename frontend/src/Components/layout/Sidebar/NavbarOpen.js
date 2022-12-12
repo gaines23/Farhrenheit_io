@@ -7,11 +7,11 @@ import { MdOutlineNotifications } from 'react-icons/md'
 
 const NavbarOpen = () => {
 
-    const listClassName = "h-10 w-full my-2 px-1 flex";
-    const linkClassName = "flex group px-1 h-10 w-full items-center rounded-lg outline-none hover:bg-bg-fill/10 hover:border-y hover:border-bg-fill/30";
-    const iconClassName = "w-7 h-auto px-1 relative text-far-teal/60 group-hover:text-far-teal/80 group-active:text-far-teal";
+    const listClassName = "h-10 w-full my-2 flex justify-center items-center";
+    const linkClassName = "flex group px-1 h-8 w-full items-center rounded-lg outline-none hover:bg-bg-fill/10 hover:border-y hover:border-bg-fill/30";
+    const iconClassName = "w-8 h-auto px-1 relative text-far-teal/30 group-hover:text-far-teal group-active:text-far-teal";
     const liDivClassName = "w-full h-10 flex";
-    const pClassName = "text-far-teal/40 w-5/6 text-left mx-auto h-auto my-auto group-hover:text-far-teal/80";
+    const pClassName = "text-far-teal/30 w-5/6 text-left mx-auto h-auto my-auto group-hover:text-far-teal";
 
     return (
         <Fragment>

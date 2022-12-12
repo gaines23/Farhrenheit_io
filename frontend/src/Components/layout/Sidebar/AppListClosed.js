@@ -7,13 +7,13 @@ import AnimeWire from '../../../assets/Anime-wire.png';
 
 const AppListClosed = () => {
 
-    const listClassName = "h-10 w-full my-2 px-1 flex justify-center items-center";
+    const listClassName = "h-10 w-full my-2 flex justify-center items-center";
     const linkClassName = "flex group px-1 h-8 w-fit items-center rounded-lg hover:bg-bg-fill/10 outline-none hover:border-y hover:border-bg-fill/30";
     const iconClassName = "w-7 h-auto px-1 relative";
 
     return (
         <Fragment>
-            <div className="w-5/6 my-3 mx-auto border-t border-bg-fill/20 flex">
+            <div className="w-5/6 my-3 mx-auto justify0center border-t border-bg-fill/20 flex">
                    
             </div>
             <div className="w-full h-auto mx-auto my-2 flex flex-col">

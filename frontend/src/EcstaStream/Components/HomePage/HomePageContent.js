@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from "react";
 
-import useHttp from '../../hooks/use-http';
+import useHttp from '../../../hooks/use-http';
 import { getServicesDetails } from "../../lib/ec-api";
 
 import LoadingSpinner from "../UI/LoadingSpinner";
@@ -43,12 +43,12 @@ const HomePageContent = () => {
 
     return (
         <Fragment>
-            <div className="flex w-full justify-center">
+            <div className="flex w-full h-8 justify-center">
                 <img src={EcstaStream} alt="ec-main-logo" />
             </div>
 
-            <div id="filterSection" className="w-full h-auto mt-5">
-                <div id="filterTabs" className="flex h-10 justify-center">
+            <div id="filterSection" className="flex flex-col w-full h-auto mt-5">
+                <div id="filterTabs" className="flex h-10 w-full justify-center">
                     <ul className="flex w-2/3 text-center h-full rounded-lg">
                         <li className={mainListClassName}>
                         <p className={mainListParagraph}>Top 20 Services in US</p>
@@ -63,21 +63,21 @@ const HomePageContent = () => {
                 </div>
         
                 <div id="streamingServicesList" className="flex justify-center items-center">
-                    <div id="services" className="w-full p-2 rounded-lg border-input-fill/30 ">
-                        <div className="bg-bg-fill/10 backdrop-blur-lg bg-opacity-10 rounded-md overflow-x-auto space-x-3 h-28 p-1 scroll-smooth scrollbar scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
-                            <StreamingListButton />
-                            <ul id="test" className="p-3 h-14 mt-2 flex w-auto gap-3">
+                    <div id="services" className="w-full p-2 h-full rounded-lg border border-input-fill/10 bg-bg-fill/10 backdrop-brightness-125 backdrop-opacity-10 rounded-md">
+                        <StreamingListButton />
+                        <div className="w-full h-16 overflow-x-auto space-x-3 scroll-smooth scrollbar scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
+                            <ul className="px-3 h-12 inline-block w-auto gap-3">
                                 {loadedServices.map((service) => {
                                     return (
                                         <StreamingListUsers key={service.provider_id} service={service} />
                                     );
-                                }).slice(0,20)}
+                                }).slice(0,25)}
                             </ul>
                         
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> 
             
             <SecondaryFilter />
 

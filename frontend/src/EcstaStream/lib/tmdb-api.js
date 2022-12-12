@@ -20,7 +20,7 @@ let imdb_credit_awards = process.env.REACT_APP_IMDB_CREDIT_AWARDS;
 let imdb_credit_awards_summary = process.env.REACT_APP_IMDB_CREDIT_AWARD_SUMMARY;
 let imdb_actor_credits = process.env.REACT_APP_ACTOR_FULL_CREDITS;
 
-let ec_genres = process.env.REACT_APP_EC_GENRES;
+//let ec_genres = process.env.REACT_APP_EC_GENRES;
 
 const options = { 
     method: 'GET',

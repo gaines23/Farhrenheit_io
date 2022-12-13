@@ -99,31 +99,29 @@ class UpdateUserForm(forms.ModelForm):
         fields = ['username', 'email', 'first_name', 'last_name', 'id']
 
 
-class UpdateProfileForm(forms.ModelForm):
-    profpic = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}))
-    bio = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}))
-    streaming_services = forms.ModelMultipleChoiceField(queryset=StreamingServices.objects.all(), required=False, widget=forms.CheckboxSelectMultiple)
-    fav_genres = forms.ModelMultipleChoiceField(queryset=Genre.objects.all(), required=False, widget=forms.CheckboxSelectMultiple)
+# class UpdateProfileForm(forms.ModelForm):
+#     profpic = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}))
+#     bio = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}))
+#     streaming_services = forms.ModelMultipleChoiceField(queryset=StreamingServices.objects.all(), required=False, widget=forms.CheckboxSelectMultiple)
+#     fav_genres = forms.ModelMultipleChoiceField(queryset=Genre.objects.all(), required=False, widget=forms.CheckboxSelectMultiple)
     
-    class Meta:
-        model = Profile
-        fields = ['profpic', 'bio', 'id', 'streaming_services', 'fav_genres', ]
+#     class Meta:
+#         model = Profile
+#         fields = ['profpic', 'bio', 'id', 'streaming_services', 'fav_genres', ]
 
 
 
 
 
-class FavoritePlaylistForm(forms.ModelForm):
-    class Meta:
-        model = FavoriteListData
-        fields = ['user', 'fav_mov_show_id',]
+# class FavoritePlaylistForm(forms.ModelForm):
+#     class Meta:
+#         model = FavoriteListData
+#         fields = ['user', 'fav_mov_show_id',]
 
-class WatchlistForm(forms.ModelForm):
-    class Meta:
-        model = WatchListData
-        fields = ['user', 'watch_mov_show_id',]
-
-
+# class WatchlistForm(forms.ModelForm):
+#     class Meta:
+#         model = WatchListData
+#         fields = ['user', 'watch_mov_show_id',]
 
 
 
@@ -133,31 +131,33 @@ class WatchlistForm(forms.ModelForm):
 
 
 
-class CreatePlaylistForm(forms.ModelForm):
-    title = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'Title',
-                                                             }))
-    private = forms.BooleanField(required=False)
-    comments_on = forms.BooleanField(required=False)
-    description = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder': 'Decription (optional) ',
-                                                             'rows':5,
-                                                             'cols':5,
-                                                             }))
-
-    class Meta:
-        model = UserPlaylist
-        fields = ['title', 'private', 'description', 'comments_on',]
 
 
-class EditPlaylistForm(forms.ModelForm):
-    title = forms.CharField(required=False)
-    private = forms.BooleanField(required=False)
-    comments_on = forms.BooleanField(required=False)
-    description = forms.CharField(required=False)
-    #cover_img = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}))
+# class CreatePlaylistForm(forms.ModelForm):
+#     title = forms.CharField(required=True, widget=forms.TextInput(attrs={'placeholder': 'Title',
+#                                                              }))
+#     private = forms.BooleanField(required=False)
+#     comments_on = forms.BooleanField(required=False)
+#     description = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder': 'Decription (optional) ',
+#                                                              'rows':5,
+#                                                              'cols':5,
+#                                                              }))
 
-    class Meta:
-        model = UserPlaylist
-        fields = ['title', 'private', 'description', 'comments_on', ]
+#     class Meta:
+#         model = UserPlaylist
+#         fields = ['title', 'private', 'description', 'comments_on',]
+
+
+# class EditPlaylistForm(forms.ModelForm):
+#     title = forms.CharField(required=False)
+#     private = forms.BooleanField(required=False)
+#     comments_on = forms.BooleanField(required=False)
+#     description = forms.CharField(required=False)
+#     #cover_img = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}))
+
+#     class Meta:
+#         model = UserPlaylist
+#         fields = ['title', 'private', 'description', 'comments_on', ]
         
 
 
@@ -165,28 +165,28 @@ class EditPlaylistForm(forms.ModelForm):
 
 
 
-class UserReviewForm(forms.ModelForm):
-    RATINGS = [
-        (1,1),
-        (2,2),
-        (3,3),
-        (4,4),
-        (5,5),
-    ]
+# class UserReviewForm(forms.ModelForm):
+#     RATINGS = [
+#         (1,1),
+#         (2,2),
+#         (3,3),
+#         (4,4),
+#         (5,5),
+#     ]
 
-    body = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder': 'Review here',}))
-    rating = forms.IntegerField(required=False, widget=forms.RadioSelect(choices=RATINGS))
+#     body = forms.CharField(required=False, widget=forms.Textarea(attrs={'placeholder': 'Review here',}))
+#     rating = forms.IntegerField(required=False, widget=forms.RadioSelect(choices=RATINGS))
 
-    class Meta:
-        model = UserReviewPost
-        fields = ['body', 'rating',]
+#     class Meta:
+#         model = UserReviewPost
+#         fields = ['body', 'rating',]
 
 
-class NewCommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ('body', 'user')
-        widget = {
-            'body': forms.Textarea(attrs={'class':'form-control', 'placeholder':'Comment here', 'rows':3, 'cols':3,}),
-            'user': forms.TextInput(attrs={'class':'form-control'}),
-            }
+# class NewCommentForm(forms.ModelForm):
+#     class Meta:
+#         model = Comment
+#         fields = ('body', 'user')
+#         widget = {
+#             'body': forms.Textarea(attrs={'class':'form-control', 'placeholder':'Comment here', 'rows':3, 'cols':3,}),
+#             'user': forms.TextInput(attrs={'class':'form-control'}),
+#             }

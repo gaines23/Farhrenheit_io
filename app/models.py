@@ -15,11 +15,25 @@ except ImportError:
 
 ## Fahrenheit endpoints
 # Profile, Friends, Settings
-class FahrenheitUser(AbstractUser):
+class FahrenheitUser(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     bio = models.CharField(max_length=250, blank=True, null=True)
     prof_pic = models.ImageField(default='default.png', upload_to='profile_images', null=True)
+    apps_following = ArrayField(models.IntegerField()) ## user.objects.contains=[123]
 
+    def __str__(self):
+        return self.user.username
 
+    def save(self, *args, **kwargs):
+        super().save()
+
+        img = Image.open(self.profpic.path)
+    
+        if img.height > 100 or img.width > 100:
+            new_img = (100, 100)
+            img.thumbnail(new_img)
+            img.save(self.profpic.path)
 
 
 ### EcstaStream DB endpoints

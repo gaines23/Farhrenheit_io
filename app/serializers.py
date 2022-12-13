@@ -1,7 +1,11 @@
 
 from statistics import mode
 from rest_framework import serializers
-from .models import StreamingServices, Genre
+from .models import StreamingServices, Genre, FahrenheitUser
+
+class FahrenheitUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FahrenheitUser
 
 class StreamingServicesSerializer(serializers.ModelSerializer):
     class Meta:

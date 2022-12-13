@@ -1,7 +1,7 @@
 import { Fragment, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import useHttp from "../../hooks/use-http";
+import useHttp from "../../../hooks/use-http";
 import { getStreamingDetails } from "../../lib/tmdb-api";
 
 import LoadingSpinner from "../UI/LoadingSpinner";

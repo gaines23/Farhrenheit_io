@@ -8,3 +8,4 @@ from app.forms import *
 urlpatterns = [
     path('', views.home, name='home'),
 
+]

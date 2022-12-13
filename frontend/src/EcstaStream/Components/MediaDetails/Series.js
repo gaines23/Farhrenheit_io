@@ -1,5 +1,5 @@
 import { Fragment, useEffect } from "react";
-import useHttp from "../../hooks/use-http";
+import useHttp from "../../../hooks/use-http";
 import { getSeriesDetails } from "../../lib/tmdb-api";
 import PosterCard from "../UI/Card/PosterCard";
 import LoadingSpinner from "../UI/LoadingSpinner";

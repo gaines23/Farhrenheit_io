@@ -7,6 +7,7 @@ import LoadingSpinner from './Components/UI/LoadingSpinner';
 import './App.css';
 
 const Home = React.lazy(() => import ('./Pages/Home'));
+const Login = React.lazy(() => import ('./Pages/Login'));
 const NotFound = React.lazy(() => import ('./Pages/NotFound'));
 const EcstaApp = React.lazy(() => import ('./EcstaStream/EcstaApp.js'));
 
@@ -25,7 +26,10 @@ function App() {
           <Route path='/fahrenheit' exact>
             <Home /> 
           </Route>
-          <Route path='/fahrenheit/ecstastream' exact>
+          <Route path='/fahrenheit/login'>
+            <Login />
+          </Route>
+          <Route path='/fahrenheit/ecstastream'>
             <EcstaApp />
           </Route>
           <Route path='*'>

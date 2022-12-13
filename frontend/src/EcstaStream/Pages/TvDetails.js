@@ -1,18 +1,18 @@
 import { Fragment, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import useHttp from "../hooks/use-http";
+import useHttp from "../../hooks/use-http";
 
 import { getTvDetails } from "../lib/tmdb-api";
-import LoadingSpinner from "../components/UI/LoadingSpinner";
+import LoadingSpinner from "../Components/UI/LoadingSpinner";
 import NotFound from "./NotFound";
-import StreamingInfo from "../components/MediaDetails/StreamingInfo";
-import FriendsActivity from "../components/MediaDetails/FriendsActivity";
-import CastCrew from "../components/MediaDetails/CastCrew";
-import Awards from "../components/MediaDetails/Awards";
-import Similar from '../components/MediaDetails/Similar';
-import TvInfo from "../components/MediaDetails/TvInfo";
-import PosterCard from "../components/UI/Card/PosterCard";
-import Ratings from "../components/UI/Card/Ratings";
+import StreamingInfo from "../Components/MediaDetails/StreamingInfo";
+import FriendsActivity from "../Components/MediaDetails/FriendsActivity";
+import CastCrew from "../Components/MediaDetails/CastCrew";
+import Awards from "../Components/MediaDetails/Awards";
+import Similar from '../Components/MediaDetails/Similar';
+import TvInfo from "../Components/MediaDetails/TvInfo";
+import PosterCard from "../Components/UI/Card/PosterCard";
+import Ratings from "../Components/UI/Card/Ratings";
 
 import { TMBD_POSTER_w780, TMBD_POSTER_w500 } from "../lib/constants";
 

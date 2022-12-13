@@ -1,14 +1,14 @@
 import { Fragment, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import useHttp from "../hooks/use-http";
+import useHttp from "../../hooks/use-http";
 import { getCreditDetails } from "../lib/tmdb-api";
 
-import LoadingSpinner from "../components/UI/LoadingSpinner";
+import LoadingSpinner from "../Components/UI/LoadingSpinner";
 import NotFound from "./NotFound";
-import TopCredits from "../components/ActorDetails/TopCredits";
-import FullCredits from "../components/ActorDetails/FullCreditsList";
-import CreditAwards from "../components/ActorDetails/CreditAwards";
+import TopCredits from "../Components/ActorDetails/TopCredits";
+import FullCredits from "../Components/ActorDetails/FullCreditsList";
+import CreditAwards from "../Components/ActorDetails/CreditAwards";
 
 const CreditDetails = () => {
     const params = useParams();

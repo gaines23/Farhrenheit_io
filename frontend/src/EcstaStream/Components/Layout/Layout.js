@@ -17,7 +17,7 @@ const Layout = (props) => {
                     <div className="h-16 w-11/12 flex mx-auto relative">
                         <Header />
                     </div>
-                    <main className="w-full h-full py-1 flex flex-col rounded-lg px-2 relative bg-ec-purple/10 overflow-y-scroll overflow-hidden space-y-3 scroll-smooth scrollbar scrollbar-height:6 scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
+                    <main className="w-full h-full py-1 flex flex-col rounded-lg px-2 relative bg-ec-purple/40 overflow-y-scroll overflow-hidden space-y-3 scroll-smooth scrollbar scrollbar-height:6 scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
                     <div className="w-full h-full py-2 absolute flex flex-col">
                         <div className="inline w-11/12 h-full mx-auto">
                             {props.children}

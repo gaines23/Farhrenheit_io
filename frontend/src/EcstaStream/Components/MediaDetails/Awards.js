@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from "react";
 
-import useHttp from "../../hooks/use-http";
+import useHttp from "../../../hooks/use-http";
 import { getMediaAwards } from "../../lib/tmdb-api";
 import NotFound from "../../Pages/NotFound";
 import LoadingSpinner from "../UI/LoadingSpinner";

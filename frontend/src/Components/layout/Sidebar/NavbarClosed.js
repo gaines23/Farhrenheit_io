@@ -1,15 +1,17 @@
 import { Fragment } from "react";
 import { NavLink } from 'react-router-dom';
 
+import {
+    ClosedListClassName,
+    ClosedIconClassName,
+    ClosedLinkClassName,
+} from  '../../UI/NavStyles';
+
 import { HiOutlineHome } from 'react-icons/hi';
 import { BiMessage } from 'react-icons/bi';
 import { MdOutlineNotifications } from 'react-icons/md'
 
 const NavbarClosed = () => {
-
-    const listClassName = "h-10 w-full my-2 flex justify-center items-center";
-    const linkClassName = "flex group px-1 h-8 w-fit items-center rounded-lg hover:bg-bg-fill/10 outline-none hover:border-y hover:border-bg-fill/30";
-    const iconClassName = "w-7 h-auto px-1 relative text-far-teal/30 group-hover:text-far-teal group-active:text-far-teal";
 
     return (
         <Fragment>
@@ -17,29 +19,32 @@ const NavbarClosed = () => {
                 <p className="w-full h-auto text-center text-xs text-input-fill/30 px-2">Main</p>
                 
                 <ul className="w-full h-auto text-xs font-thin">
-                    <li className={listClassName}>
+                    <li className={ClosedListClassName}>
                         <NavLink 
                             to={'/fahrenheit'} 
-                            className={linkClassName}
+                            className={ClosedLinkClassName}
+                            title="Home"
                         >
-                            <HiOutlineHome className={iconClassName} />
+                            <HiOutlineHome className={ClosedIconClassName} />
                         </NavLink>
                     </li>
         
-                    <li className={listClassName}>
+                    <li className={ClosedListClassName}>
                         <NavLink 
                             to={'/farhrenheit/notifications'} 
-                            className={linkClassName}
+                            className={ClosedLinkClassName}
+                            title="Notifications"
                         >
-                            <MdOutlineNotifications className={iconClassName} />
+                            <MdOutlineNotifications className={ClosedIconClassName} />
                         </NavLink>
                     </li>
-                    <li className={listClassName}>
+                    <li className={ClosedListClassName}>
                         <NavLink 
                             to={'/farhrenheit/direct-messages'} 
-                            className={linkClassName}
+                            className={ClosedLinkClassName}
+                            title="DMs"
                         >
-                            <BiMessage className={iconClassName} />
+                            <BiMessage className={ClosedIconClassName} />
                         </NavLink>
                     </li>
                 </ul>

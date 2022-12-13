@@ -16,7 +16,7 @@ const SearchResultsCard = ({item}) => {
         <Fragment>    
             <Link
                 to={{
-                    pathname: `/details/${id}/${media_type}`,
+                    pathname: `/fahrenheit/ecstastream/details/${id}/${media_type}`,
                     state:{
                         id: id, 
                         media_type: media_type,

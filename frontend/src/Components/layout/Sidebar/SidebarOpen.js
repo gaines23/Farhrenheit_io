@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { FaRegUserCircle } from 'react-icons/fa';
 import { HiOutlineSearch } from 'react-icons/hi';
@@ -14,28 +14,28 @@ const SideBarOpen = () => {
         <Fragment>
             <div className="h-24 w-full flex">
                 <div className="w-auto h-auto mx-auto flex">
-                    <Link to="/fahrenheit" className="h-full w-full outline-none">
+                    <NavLink to="/fahrenheit" className="h-full w-full outline-none">
                         <img
                             src={FahrenheitLogo1}
                             alt="fahrenheit-io-logo"
                              className="w-auto h-auto my-auto"
                         />
-                    </Link>
+                    </NavLink>
                 </div>
             </div>
             <div className="group h-24 w-auto px-1 py-2 font-light flex flex-col">
                 <div className="w-8 h-8 flex mx-auto text-center text-sm text-far-teal/30">
-                    <Link to="/farhrenheit/login" className="h-full w-full">
+                    <NavLink to="/fahrenheit/login" className="h-full w-full">
                         <FaRegUserCircle className="w-8 h-8 group-hover:text-far-teal"/>
-                    </Link>
+                    </NavLink>
                 </div>
 
                 <div className="w-auto h-auto flex mt-1 px-2 py-2 text-center text-sm text-far-teal/30">
-                    <Link to="/farhrenheit/login" className="h-full w-full">
+                    <NavLink to="/fahrenheit/login" className="h-full w-full">
                         <div className="w-full h-full m-auto pl-2">
                             <p className="h-min w-full my-auto group-hover:text-far-teal">Login/Signup</p>
                         </div>
-                    </Link>
+                    </NavLink>
                 </div>
             </div>
 

@@ -39,12 +39,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
 
-
 env = environ.Env()
 environ.Env.read_env()
 tmdb_key = env('TMDB_API_KEY')
 tmdb = TMDb()
 tmdb.tmdb_key = tmdb_key
+
+
 
 movie = Movie()
 tv = TV()
@@ -56,15 +57,12 @@ Imdb_URL = env('IMDB_URL')
 URL_API = env('RAPID_API_KEY')
 
 
-### 55721
-### tt1478338
+
+
+
 
 ## env\Scripts\activate
 
-
-# class StreamingServicesView(viewsets.ModelViewSet):
-#     serializer_class = StreamingServicesSerializer
-#     queryset = StreamingServices.objects.all()
 
 class StreamingList(APIView):
     #permission_classes = [permissions.IsAdminUser]
@@ -92,9 +90,9 @@ class AllGenreList(APIView):
 def home(request):
     assert isinstance(request, HttpRequest)
 
-    movie_test = movie.details('tt1478338')
+    # movie_test = movie.details('tt1478338')
 
-    context = {'movie': movie_test}
+    # context = {'movie': movie_test}
 
     return render(
         request,

@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 
-import CastCard from "../components/UI/Card/CastCard";
+import CastCard from "../Components/UI/Card/CastCard";
 import { MdOutlineCancel } from 'react-icons/md';
 
 const CastCrewModal = ({setShowModal, cast, crew}) => {

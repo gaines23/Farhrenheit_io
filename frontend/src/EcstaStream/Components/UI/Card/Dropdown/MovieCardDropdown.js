@@ -135,7 +135,7 @@ const MovieCardDropdown = ({setShowDetails, id}) => {
                             <div className="w-full h-10">
                                 <Link 
                                     to={{
-                                        pathname: `/details/${id}/movie`,
+                                        pathname: `/fahrenheit/ecstastream/details/${id}/movie`,
                                         state:{
                                             id: id, 
                                         }

@@ -1,19 +1,19 @@
 import { Fragment, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import useHttp from "../hooks/use-http";
+import useHttp from "../../hooks/use-http";
 
 import { getMovieDetails } from "../lib/tmdb-api";
-import LoadingSpinner from "../components/UI/LoadingSpinner";
+import LoadingSpinner from "../Components/UI/LoadingSpinner";
 import NotFound from "./NotFound";
-import StreamingInfo from "../components/MediaDetails/StreamingInfo";
+import StreamingInfo from "../Components/MediaDetails/StreamingInfo";
 
-import FriendsActivity from "../components/MediaDetails/FriendsActivity";
-import CastCrew from "../components/MediaDetails/CastCrew";
-import DirProducers from "../components/MediaDetails/DirProducers";
-import Awards from "../components/MediaDetails/Awards";
-import Series from "../components/MediaDetails/Series";
-import Similar from '../components/MediaDetails/Similar';
-import Ratings from "../components/UI/Card/Ratings";
+import FriendsActivity from "../Components/MediaDetails/FriendsActivity";
+import CastCrew from "../Components/MediaDetails/CastCrew";
+import DirProducers from "../Components/MediaDetails/DirProducers";
+import Awards from "../Components/MediaDetails/Awards";
+import Series from "../Components/MediaDetails/Series";
+import Similar from '../Components/MediaDetails/Similar';
+import Ratings from "../Components/UI/Card/Ratings";
 
 import { TMBD_POSTER_w780, TMBD_POSTER_w500 } from "../lib/constants";
 
@@ -130,15 +130,14 @@ const MovieDetails = () => {
 
                 </div>
                 
-                {(movieDetails.series !== '' || movieDetails.series !== undefined) ? (
+                {(movieDetails.series !== '' || movieDetails.series !== undefined) ?? (
                     <div className="mt-10">
                         <p className="w-5/6 text-lg">Series</p>
                         <div className="h-full flex items-center px-5 py-1 overflow-x-auto space-x-3 scroll-smooth scrollbar scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
                             <Series series={movieDetails.series.id} media={movieDetails.media} />
                         </div>
                     </div>
-                ) : ""}
-                        
+                )}
 
                 <Similar similar={movieDetails.similar} media={movieDetails.media} />
 

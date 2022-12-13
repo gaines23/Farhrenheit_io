@@ -20,7 +20,7 @@ const SearchResultPersonCard = ({item}) => {
             <Fragment>
                 <Link 
                         to={{
-                            pathname: `/credit-details/${tmdb_id}/${imdb_id}`,
+                            pathname: `/fahrenheit/ecstastream/credit-details/${tmdb_id}/${imdb_id}`,
                             state: {
                                 tmdbId: tmdb_id,
                                 imdbId: imdb_id,

@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
+
 from datetime import date, time, datetime
 from PIL import Image
 from multiselectfield import MultiSelectField
@@ -12,36 +13,16 @@ except ImportError:
     from django.contrib.postgres.fields import JSONField
 
 
-class Collection(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=200)
-    summary = models.CharField(max_length=500)
-
-    class Meta:
-        managed = False
-        db_table = 'app_collection'
+## Fahrenheit endpoints
+# Profile, Friends, Settings
+class FahrenheitUser(AbstractUser):
+    bio = models.CharField(max_length=250, blank=True, null=True)
+    prof_pic = models.ImageField(default='default.png', upload_to='profile_images', null=True)
 
 
-class Genre(models.Model):
-    id = models.IntegerField(primary_key=True)
-    genre = models.CharField(max_length=50, blank=True, null=True)
-
-    def __str__(self):
-        return self.genre
-
-    class Meta:
-        managed = False
-        db_table = 'app_genre'
-
-class StreamingRegion(models.Model):
-    iso_3166_1 = models.CharField(primary_key=True, max_length=5)
-    native_name = models.CharField(max_length=20, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'app_streamingregion'
 
 
+### EcstaStream DB endpoints
 class StreamingServices(models.Model):
     provider_id = models.IntegerField(primary_key=True)
     display_priority = models.IntegerField(blank=True, null=True)
@@ -54,16 +35,6 @@ class StreamingServices(models.Model):
     class Meta:
         managed = False
         db_table = 'app_streamingservices'
-
-## Age Ratings ##
-class UsCerts(models.Model):
-    us_certsid = models.AutoField(primary_key=True)
-    certification = models.CharField(max_length=10, blank=True, null=True)
-    meaning = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'app_uscerts'
 
 class Streamingurls(models.Model):
     provider_id = models.IntegerField(primary_key=True)
@@ -78,190 +49,245 @@ STATUS = (
     (1,"Restricted")
 )
 
-TEST_CHOICES = (
-    ('One', 'One'),
-    ('Two', 'Two'),
-    ('Three', 'Three'),
-)
-
-class Profile(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profpic = models.ImageField(default='default.png', upload_to='profile_images', null=True)
-    bio = models.TextField(null=True)
-    streaming_services = models.ForeignKey(StreamingServices, on_delete=models.CASCADE, null=True)
-    fav_genres = models.ForeignKey(Genre, on_delete=models.CASCADE, null=True)
-    date_created = models.DateTimeField(auto_now=True)
-    last_modified = models.DateTimeField(auto_now=True)
-    follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
-    status = models.IntegerField(choices=STATUS, default=0)
-    test = models.CharField(max_length=10, choices=TEST_CHOICES, default='One')
+class Genre(models.Model):
+    id = models.IntegerField(primary_key=True)
+    genre = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return self.user.username
+        return self.genre
 
-    def save(self, *args, **kwargs):
-        super().save()
+    class Meta:
+        managed = False
+        db_table = 'app_genre'
 
-        img = Image.open(self.profpic.path)
+
+
+
+
+
+
+
+# ## needs to be cleaned up!
+# class Collection(models.Model):
+#     id = models.IntegerField(primary_key=True)
+#     name = models.CharField(max_length=200)
+#     summary = models.CharField(max_length=500)
+
+#     class Meta:
+#         managed = False
+#         db_table = 'app_collection'
+
+# class StreamingRegion(models.Model):
+#     iso_3166_1 = models.CharField(primary_key=True, max_length=5)
+#     native_name = models.CharField(max_length=20, blank=True, null=True)
+
+#     class Meta:
+#         managed = False
+#         db_table = 'app_streamingregion'
+
+
+# ## Age Ratings ##
+# class UsCerts(models.Model):
+#     us_certsid = models.AutoField(primary_key=True)
+#     certification = models.CharField(max_length=10, blank=True, null=True)
+#     meaning = models.TextField(blank=True, null=True)
+
+#     class Meta:
+#         managed = False
+#         db_table = 'app_uscerts'
+
+# class Streamingurls(models.Model):
+#     provider_id = models.IntegerField(primary_key=True)
+#     url_path = models.CharField(max_length=300, blank=True, null=True)
+
+#     class Meta:
+#         managed = False
+#         db_table = 'app_streamingurls'
+
+# STATUS = (
+#     (0,"Open"),
+#     (1,"Restricted")
+# )
+
+
+# ## EC <-> Fahrenheit => all specific ec data shows in Fahrenheit profile
+# class Profile(models.Model):
+#     id = models.BigAutoField(primary_key=True)
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     profpic = models.ImageField(default='default.png', upload_to='profile_images', null=True)
+#     bio = models.TextField(null=True)
+#     streaming_services = models.ForeignKey(StreamingServices, on_delete=models.CASCADE, null=True)
+#     fav_genres = models.ForeignKey(Genre, on_delete=models.CASCADE, null=True)
+#     date_created = models.DateTimeField(auto_now=True)
+#     last_modified = models.DateTimeField(auto_now=True)
+#     follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
+#     status = models.IntegerField(choices=STATUS, default=0)
+
+#     def __str__(self):
+#         return self.user.username
+
+#     def save(self, *args, **kwargs):
+#         super().save()
+
+#         img = Image.open(self.profpic.path)
     
-        if img.height > 100 or img.width > 100:
-            new_img = (100, 100)
-            img.thumbnail(new_img)
-            img.save(self.profpic.path)
+#         if img.height > 100 or img.width > 100:
+#             new_img = (100, 100)
+#             img.thumbnail(new_img)
+#             img.save(self.profpic.path)
 
-class FollowRequest(models.Model):
-    from_user = models.ForeignKey(User, related_name='from_user', on_delete=models.CASCADE)
-    to_user = models.ForeignKey(User, related_name='to_user', on_delete=models.CASCADE)
-
-
-
-mediaChoices = (
-    (1,'Movie'),
-    (2, 'TV')
-)
+# class FollowRequest(models.Model):
+#     from_user = models.ForeignKey(User, related_name='from_user', on_delete=models.CASCADE)
+#     to_user = models.ForeignKey(User, related_name='to_user', on_delete=models.CASCADE)
 
 
 
-class UserPlaylist(models.Model):
-    user_pl_id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=50)
-    pl_list = models.JSONField(default=list, null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="playlists")
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
-    private = models.BooleanField(default=True) #on
-    description = models.TextField(null=True, max_length=150)
-    cover_img = models.ImageField(default='defaultplaylist.png', upload_to='cover_images', null=True)
-    comments = models.TextField(null=True)
-    comments_on = models.BooleanField(default=True) #on
-    playlist_follows = models.ManyToManyField(User, related_name="following", default=None)  
-    share_list = models.ManyToManyField(User, related_name="sharing", default=None)
-    status = models.BooleanField(choices=STATUS, default=0)
-    #pl_slug = models.SlugField(max_length=200, unique=True, null=True)
+# mediaChoices = (
+#     (1,'Movie'),
+#     (2, 'TV')
+# )
 
-    def __str__(self):
-        return '{} {} {}'.format(self.user, self.created_on, self.user_pl_id)
 
-    def playlist_id(self):
-        return self.user_pl_id
 
-    def save(self, *args, **kwargs):
-        #self.pl_slug = '-'.join((slugify(self.creator), slugify(self.title)))
+# class UserPlaylist(models.Model):
+#     user_pl_id = models.AutoField(primary_key=True)
+#     title = models.CharField(max_length=50)
+#     pl_list = models.JSONField(default=list, null=True, blank=True)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="playlists")
+#     created_on = models.DateTimeField(auto_now_add=True)
+#     updated_on = models.DateTimeField(auto_now=True)
+#     private = models.BooleanField(default=True) #on
+#     description = models.TextField(null=True, max_length=150)
+#     cover_img = models.ImageField(default='defaultplaylist.png', upload_to='cover_images', null=True)
+#     comments = models.TextField(null=True)
+#     comments_on = models.BooleanField(default=True) #on
+#     playlist_follows = models.ManyToManyField(User, related_name="following", default=None)  
+#     share_list = models.ManyToManyField(User, related_name="sharing", default=None)
+#     status = models.BooleanField(choices=STATUS, default=0)
+#     #pl_slug = models.SlugField(max_length=200, unique=True, null=True)
 
-        super().save()
-        img = Image.open(self.cover_img.path)
+#     def __str__(self):
+#         return '{} {} {}'.format(self.user, self.created_on, self.user_pl_id)
 
-    #def test(self):
-    #    return blahc
+#     def playlist_id(self):
+#         return self.user_pl_id
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=["user", "user_pl_id", "title"], name='user_playlist_constraint')    
-        ]
-        ordering = ['-created_on']
+#     def save(self, *args, **kwargs):
+#         #self.pl_slug = '-'.join((slugify(self.creator), slugify(self.title)))
 
-class UserPlaylistData(models.Model):
+#         super().save()
+#         img = Image.open(self.cover_img.path)
 
-    pl_data_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="pl_user")
-    user_playlist_id = models.ForeignKey(UserPlaylist, on_delete=models.CASCADE, related_name="pl_id")
-    pl_mov_show_id = models.IntegerField()
-    pl_date_added = models.DateTimeField(auto_now=True)
-    media_type = models.IntegerField(null=True, blank=True, choices=mediaChoices)
+#     #def test(self):
+#     #    return blahc
 
-    def __str__(self):
-        return self.user.username
+#     class Meta:
+#         constraints = [
+#             models.UniqueConstraint(fields=["user", "user_pl_id", "title"], name='user_playlist_constraint')    
+#         ]
+#         ordering = ['-created_on']
 
-    def playlist_id(self):
-        return self.user_playlist_id.user_pl_id
+# class UserPlaylistData(models.Model):
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=["user_playlist_id", "pl_mov_show_id", "media_type"], name='user_data_playlist_constraint')    
-        ]
+#     pl_data_id = models.AutoField(primary_key=True)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="pl_user")
+#     user_playlist_id = models.ForeignKey(UserPlaylist, on_delete=models.CASCADE, related_name="pl_id")
+#     pl_mov_show_id = models.IntegerField()
+#     pl_date_added = models.DateTimeField(auto_now=True)
+#     media_type = models.IntegerField(null=True, blank=True, choices=mediaChoices)
+
+#     def __str__(self):
+#         return self.user.username
+
+#     def playlist_id(self):
+#         return self.user_playlist_id.user_pl_id
+
+#     class Meta:
+#         constraints = [
+#             models.UniqueConstraint(fields=["user_playlist_id", "pl_mov_show_id", "media_type"], name='user_data_playlist_constraint')    
+#         ]
         
-        ordering = ['-pl_date_added']
+#         ordering = ['-pl_date_added']
 
 
 
-# Posts created by users on playlists ( UserPlaylist.comments_on == True)
+# # Posts created by users on playlists ( UserPlaylist.comments_on == True)
 
-class UserReviewPost(models.Model):
-    review_id = models.BigAutoField(primary_key=True)
-    user = models.ForeignKey(User, related_name="user_reviews", on_delete=models.DO_NOTHING)
-    body = models.TextField(max_length=250)
-    rating = models.IntegerField()
-    created_on = models.DateTimeField(auto_now_add=True)
-    movie_show_id = models.IntegerField()
-    media_type = models.IntegerField()
-    status = models.BooleanField(choices=STATUS, default=0) #disable inappropriate posts
-    likes = models.ManyToManyField(User, related_name='review_likes', default=None)
+# class UserReviewPost(models.Model):
+#     review_id = models.BigAutoField(primary_key=True)
+#     user = models.ForeignKey(User, related_name="user_reviews", on_delete=models.DO_NOTHING)
+#     body = models.TextField(max_length=250)
+#     rating = models.IntegerField()
+#     created_on = models.DateTimeField(auto_now_add=True)
+#     movie_show_id = models.IntegerField()
+#     media_type = models.IntegerField()
+#     status = models.BooleanField(choices=STATUS, default=0) #disable inappropriate posts
+#     likes = models.ManyToManyField(User, related_name='review_likes', default=None)
 
-    def __str__(self):
-        return '{} {} {}'.format(self.user, self.created_on, self.movie_show_id)
+#     def __str__(self):
+#         return '{} {} {}'.format(self.user, self.created_on, self.movie_show_id)
 
-    class Meta:
-        ordering = ['-created_on']
+#     class Meta:
+#         ordering = ['-created_on']
 
-    def save(self, *args, **kwargs):
-        super().save()
+#     def save(self, *args, **kwargs):
+#         super().save()
 
-# User comments on posts
-class Comment(models.Model):
-    post = models.ForeignKey(UserReviewPost, on_delete=models.CASCADE, related_name="comments")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_comments")
-    body = models.TextField(max_length=250)
-    status = models.BooleanField(choices=STATUS, default=0) #disable inappropriate posts
-    com_date = models.DateTimeField(auto_now=True)
-    likes = models.ManyToManyField(User, related_name='comment_likes', default=None)
+# # User comments on posts
+# class Comment(models.Model):
+#     post = models.ForeignKey(UserReviewPost, on_delete=models.CASCADE, related_name="comments")
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_comments")
+#     body = models.TextField(max_length=250)
+#     status = models.BooleanField(choices=STATUS, default=0) #disable inappropriate posts
+#     com_date = models.DateTimeField(auto_now=True)
+#     likes = models.ManyToManyField(User, related_name='comment_likes', default=None)
 
-    class Meta:
-        ordering = ('-com_date',)
+#     class Meta:
+#         ordering = ('-com_date',)
 
-    def __str__(self):
-        return f'Comment by {self.user.username} at {self.com_date:created_on:%Y-%m-%d %H:%M}'
-
-
-
-class FavoriteListData(models.Model):
-    favid = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, related_name='favs', on_delete=models.CASCADE)
-    fav_mov_show_id = models.IntegerField(null=True, blank=True,)
-    fav_date_added = models.DateTimeField(auto_now=True)
-    media_type = models.IntegerField(null=True, blank=True, choices=mediaChoices)
-
-    def __str__(self):
-        return '{} {} {}'.format(self.user, self.media_type, self.fav_mov_show_id)
-
-    def fav_id(self):
-        return fav_mov_show_id
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=["user", "fav_mov_show_id", "media_type"], name='fav_constraint')    
-        ]
-
-        ordering = ['-fav_date_added']
-
-class WatchListData(models.Model):
-
-    watchid = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    watch_mov_show_id = models.IntegerField()
-    watch_date_added = models.DateTimeField(auto_now=True)
-    media_type = models.IntegerField(null=True, blank=True, choices=mediaChoices)
-
-    def __str__(self):
-        return '{} {} {}'.format(self.user, self.media_type, self.watch_mov_show_id)
+#     def __str__(self):
+#         return f'Comment by {self.user.username} at {self.com_date:created_on:%Y-%m-%d %H:%M}'
 
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=["user", "watch_mov_show_id", "media_type"], name='watchlist_constraint')    
-        ]
+
+# class FavoriteListData(models.Model):
+#     favid = models.AutoField(primary_key=True)
+#     user = models.ForeignKey(User, related_name='favs', on_delete=models.CASCADE)
+#     fav_mov_show_id = models.IntegerField(null=True, blank=True,)
+#     fav_date_added = models.DateTimeField(auto_now=True)
+#     media_type = models.IntegerField(null=True, blank=True, choices=mediaChoices)
+
+#     def __str__(self):
+#         return '{} {} {}'.format(self.user, self.media_type, self.fav_mov_show_id)
+
+#     def fav_id(self):
+#         return fav_mov_show_id
+
+#     class Meta:
+#         constraints = [
+#             models.UniqueConstraint(fields=["user", "fav_mov_show_id", "media_type"], name='fav_constraint')    
+#         ]
+
+#         ordering = ['-fav_date_added']
+
+# class WatchListData(models.Model):
+
+#     watchid = models.AutoField(primary_key=True)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     watch_mov_show_id = models.IntegerField()
+#     watch_date_added = models.DateTimeField(auto_now=True)
+#     media_type = models.IntegerField(null=True, blank=True, choices=mediaChoices)
+
+#     def __str__(self):
+#         return '{} {} {}'.format(self.user, self.media_type, self.watch_mov_show_id)
+
+
+#     class Meta:
+#         constraints = [
+#             models.UniqueConstraint(fields=["user", "watch_mov_show_id", "media_type"], name='watchlist_constraint')    
+#         ]
         
-        ordering = ['-watch_date_added']
+#         ordering = ['-watch_date_added']
 
 
 
@@ -269,28 +295,28 @@ class WatchListData(models.Model):
 
 
 
-class UserFavoritesList(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    favs_list = JSONField(default=list, null=True, blank=True)
-### add user settings/preferences 
+# class UserFavoritesList(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     favs_list = JSONField(default=list, null=True, blank=True)
+# ### add user settings/preferences 
 
 
-class UserWatchList(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    watch_list = JSONField(default=list, null=True, blank=True)
-### add user settings/preferences 
+# class UserWatchList(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     watch_list = JSONField(default=list, null=True, blank=True)
+# ### add user settings/preferences 
 
 
-class MoviesList(models.Model):
-    movieid = models.BigIntegerField(primary_key=True)
-    title = models.CharField(max_length=30)
-    genre_list = JSONField(max_length=100)
-    release_date = models.DateTimeField()
-    poster_path = models.CharField(max_length=100)
-    tagline = models.TextField()
+# class MoviesList(models.Model):
+#     movieid = models.BigIntegerField(primary_key=True)
+#     title = models.CharField(max_length=30)
+#     genre_list = JSONField(max_length=100)
+#     release_date = models.DateTimeField()
+#     poster_path = models.CharField(max_length=100)
+#     tagline = models.TextField()
 
-    def __str__(self):
-        return self.movieid + self.title
+#     def __str__(self):
+#         return self.movieid + self.title
 
 
 

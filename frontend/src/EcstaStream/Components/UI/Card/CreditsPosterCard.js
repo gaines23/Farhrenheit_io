@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
-import useHttp from "../../../hooks/use-http";
+import useHttp from "../../../../hooks/use-http";
 import { getCreditsTmdbId } from "../../../lib/tmdb-api";
 import LoadingSpinner from "../LoadingSpinner";
 

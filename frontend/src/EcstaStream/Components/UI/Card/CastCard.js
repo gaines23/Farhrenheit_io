@@ -1,7 +1,7 @@
 import { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import useHttp from "../../../hooks/use-http";
+import useHttp from "../../../../hooks/use-http";
 import { getCastCrewImdbId } from "../../../lib/tmdb-api";
 import { TMBD_POSTER_w45 } from "../../../lib/constants";
 
@@ -21,7 +21,7 @@ const CastCard = ({item}) => {
             <Fragment>
                 <Link 
                     to={{
-                        pathname: `/credit-details/${tmdb_id}/${imdb_id}`,
+                        pathname: `/fahrenheit/ecstastream/credit-details/${tmdb_id}/${imdb_id}`,
                         state: {
                             tmdbId: tmdb_id,
                             imdbId: imdb_id,

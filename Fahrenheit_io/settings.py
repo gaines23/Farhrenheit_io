@@ -26,6 +26,8 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'localhost:3000',]
+# CORS_ALLOW_ALL_ORIGINS = True  
+# CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
      'https://localhost:3000',
@@ -44,14 +46,28 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'corsheaders',
+    'rest_framework.authtoken',
     'Fahrenheit_io',
     'multiselectfield',
-    'social_django',
-    'corsheaders',
-    'rest_framework',
+
+    #'social_django',    
     #'bootstrap_modal_forms',
     #'djcelery',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+        'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+}
+
 
 # Middleware framework
 # https://docs.djangoproject.com/en/2.1/topics/http/middleware/
@@ -119,7 +135,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = (
-    'social_core.backends.google.GoogleOAuth2',
+    #'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -145,7 +161,6 @@ LOGIN_URL = 'login'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

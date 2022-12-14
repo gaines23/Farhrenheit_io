@@ -1,26 +1,31 @@
 from django.db import models
-from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import User
 
 from datetime import date, time, datetime
 from PIL import Image
 from multiselectfield import MultiSelectField
 from django.contrib.postgres.fields import ArrayField
 from django.utils.text import slugify
+from django.contrib.auth import get_user_model
 
 try:
     from django.db.models import JSONField
 except ImportError:
     from django.contrib.postgres.fields import JSONField
 
-
 ## Fahrenheit endpoints
 # Profile, Friends, Settings
 class FahrenheitUser(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    email = models.EmailField()
+    name = models.CharField(max_length=100)
     bio = models.CharField(max_length=250, blank=True, null=True)
     prof_pic = models.ImageField(default='default.png', upload_to='profile_images', null=True)
-    apps_following = ArrayField(models.IntegerField()) ## user.objects.contains=[123]
+    apps_following = ArrayField(models.IntegerField()) ## user.objects.contains=[1, 2, 3]
+    date_created = models.DateTimeField(auto_now=True)
+    last_modified = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
+    #follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
 
     def __str__(self):
         return self.user.username
@@ -28,12 +33,12 @@ class FahrenheitUser(models.Model):
     def save(self, *args, **kwargs):
         super().save()
 
-        img = Image.open(self.profpic.path)
+        img = Image.open(self.prof_pic.path)
     
         if img.height > 100 or img.width > 100:
             new_img = (100, 100)
             img.thumbnail(new_img)
-            img.save(self.profpic.path)
+            img.save(self.prof_pic.path)
 
 
 ### EcstaStream DB endpoints

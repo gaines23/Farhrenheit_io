@@ -25,43 +25,53 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q, F
 #from .filters import *
 from django.contrib.admin.views.decorators import staff_member_required
-from tmdbv3api import *
 import os
 import environ
 from django.db.models.functions import ExtractYear
-from tmdbv3api.tmdb import TMDb
 
 from .models import *
-from .serializers import StreamingServicesSerializer, GenreSerlializer
+from .serializers import StreamingServicesSerializer, GenreSerlializer, FahrenheitUserSerializer
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
+from rest_framework.authtoken.models import Token
 
 env = environ.Env()
 environ.Env.read_env()
-tmdb_key = env('TMDB_API_KEY')
-tmdb = TMDb()
-tmdb.tmdb_key = tmdb_key
 
-
-
-movie = Movie()
-tv = TV()
-series = Collection()
-person = Person()
-search = Search()
-
-Imdb_URL = env('IMDB_URL')
-URL_API = env('RAPID_API_KEY')
-
-
-
-
-
+    # authentication_classes=[ SessionAuthentication ]
+    # permission_classes = [IsAuthenticated]
 
 ## env\Scripts\activate
+
+class UserCreate(APIView):
+    def post(self, request, format='json'):
+        serializer = FahrenheitUserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                token = Token.objects.create(user=user)
+                json = serializer.data
+                json['token'] = token.key
+                return Response(json, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
+
+
+# class UserCreate(APIView):
+#     def post(self, request, format='json'):
+#         serializer = UserSerializer(data=request.data)
+#         if serializer.is_valid():
+#             user = serializer.save()
+#             if user:
+#                 token = Token.objects.create(user=user)
+#                 json = serializer.data
+#                 json['token'] = token.key
+#                 return Response(json, status=status.HTTP_201_CREATED)
+
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class StreamingList(APIView):

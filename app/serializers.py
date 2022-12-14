@@ -1,11 +1,12 @@
-
-from statistics import mode
 from rest_framework import serializers
 from .models import StreamingServices, Genre, FahrenheitUser
 
 class FahrenheitUserSerializer(serializers.ModelSerializer):
+    date_created = serializers.DateTimeField(read_only=True)
+    
     class Meta:
         model = FahrenheitUser
+        fields = ('__all__')
 
 class StreamingServicesSerializer(serializers.ModelSerializer):
     class Meta:

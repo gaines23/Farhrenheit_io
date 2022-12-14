@@ -7,7 +7,6 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 #from app.views import StreamingServicesView
 from app.forms import *
-
 # from rest_framework import routers
 
 # router = routers.DefaultRouter()

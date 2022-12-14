@@ -9,7 +9,6 @@ import pprint
 #import djcelery
 from django.conf import settings
 
-
 env = environ.Env()
 environ.Env.read_env()
 
@@ -57,17 +56,18 @@ INSTALLED_APPS = [
     #'djcelery',
 ]
 
+
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ),
-        'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    )
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ]
 }
 
+# SIMPLE_JWT = {
+#     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=60),
+#     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
+#     'USER_ID_CLAIM': 'id',
+# }
 
 # Middleware framework
 # https://docs.djangoproject.com/en/2.1/topics/http/middleware/

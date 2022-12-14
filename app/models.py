@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.contrib.auth.models import AbstractUser
 from datetime import date, time, datetime
 from PIL import Image
 from multiselectfield import MultiSelectField
@@ -15,10 +15,10 @@ except ImportError:
 
 ## Fahrenheit endpoints
 # Profile, Friends, Settings
-class FahrenheitUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email = models.EmailField()
-    name = models.CharField(max_length=100)
+class FahrenheitUser(AbstractUser):
+    #user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # email = models.EmailField()
+    # name = models.CharField(max_length=100)
     bio = models.CharField(max_length=250, blank=True, null=True)
     prof_pic = models.ImageField(default='default.png', upload_to='profile_images', null=True)
     apps_following = ArrayField(models.IntegerField()) ## user.objects.contains=[1, 2, 3]

@@ -8,10 +8,7 @@ import json
 import pprint
 #import djcelery
 from django.conf import settings
-<<<<<<< HEAD
 import datetime
-=======
->>>>>>> 42ddf1e1d55b9578b94d7fa5238204f2de3657c1
 
 env = environ.Env()
 environ.Env.read_env()
@@ -62,16 +59,10 @@ INSTALLED_APPS = [
 
 
 REST_FRAMEWORK = {
-<<<<<<< HEAD
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     )
-=======
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ]
->>>>>>> 42ddf1e1d55b9578b94d7fa5238204f2de3657c1
 }
 
 # SIMPLE_JWT = {

@@ -25,13 +25,6 @@ environ.Env.read_env()
     # permission_classes = [IsAuthenticated]
 
 ## env\Scripts\activate
-
-class UsersList(APIView):
-    def get(self, request, *args, **kwargs):
-        users = FahrenheitUser.objects.all()
-        serializer = FahrenheitUserSerializer(users, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
 class UserCreate(APIView):
     def post(self, request, format='json'):
         serializer = UserCreateSerializer(data=request.data)
@@ -41,6 +34,13 @@ class UserCreate(APIView):
                 FahrenheitUser.objects.create(user=user)
                 return Response(json, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
+
+class UsersList(APIView):
+    def get(self, request, *args, **kwargs):
+        users = FahrenheitUser.objects.all()
+        serializer = FahrenheitUserSerializer(users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 
 

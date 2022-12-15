@@ -8,7 +8,7 @@ import json
 import pprint
 #import djcelery
 from django.conf import settings
-
+import datetime
 
 env = environ.Env()
 environ.Env.read_env()
@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     'Fahrenheit_io',
     'multiselectfield',
 
@@ -59,15 +59,16 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ),
-        'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
     )
 }
 
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
+}
 
 # Middleware framework
 # https://docs.djangoproject.com/en/2.1/topics/http/middleware/
@@ -142,10 +143,11 @@ AUTHENTICATION_BACKENDS = (
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+USER_TIME_ZONE = 'US/Pacific'  
+
 USE_I18N = True
 USE_L10N = True
-USE_TZ = True
+USE_TZ = False   # Make server timezone not aware.
 
 DATE_FORMAT = '%m-%d-%Y'
 

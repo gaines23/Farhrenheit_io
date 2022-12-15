@@ -7,14 +7,8 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 #from app.views import StreamingServicesView
 from app.forms import *
-# from rest_framework import routers
-
-# router = routers.DefaultRouter()
-# router.register('streamingservices', StreamingServicesView, 'service')
 
 urlpatterns = [
-     path('admin/', admin.site.urls),
-     path('api/', include('app.api-urls'), name="api"),
-     #path('', include('app.urls'), name="home"),
-    ##path('api/', include(router.urls)),
+    path('admin/', admin.site.urls),
+    path('api/', include('app.api-urls'), name="api"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -4,7 +4,9 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin import AdminSite
 from .models import FahrenheitUser, Genre, StreamingServices, Streamingurls
 
-admin.site.register(FahrenheitUser)
+class FahrenheitUserAdmin(admin.ModelAdmin):
+    list_display = ("user", "date_created", "is_active", "last_modified")
+admin.site.register(FahrenheitUser, FahrenheitUserAdmin)
 admin.site.register(Genre)
 admin.site.register(StreamingServices)
 admin.site.register(Streamingurls)

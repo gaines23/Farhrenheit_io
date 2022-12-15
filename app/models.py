@@ -17,11 +17,9 @@ except ImportError:
 # Profile, Friends, Settings
 class FahrenheitUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email = models.EmailField()
-    name = models.CharField(max_length=100)
     bio = models.CharField(max_length=250, blank=True, null=True)
     prof_pic = models.ImageField(default='default.png', upload_to='profile_images', null=True)
-    apps_following = ArrayField(models.IntegerField()) ## user.objects.contains=[1, 2, 3]
+    apps_following = ArrayField(models.IntegerField(), blank=True, null=True) ## user.objects.contains=[1, 2, 3]
     date_created = models.DateTimeField(auto_now=True)
     last_modified = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)

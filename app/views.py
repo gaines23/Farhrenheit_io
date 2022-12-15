@@ -5,14 +5,14 @@ import json
 from django.shortcuts import render
 from django.http import HttpRequest
 from .forms import *
-
-
-#from .filters import *
-from django.contrib.admin.views.decorators import staff_member_required
 import environ
-
 from .models import *
-from .serializers import UserCreateSerializer, StreamingServicesSerializer, GenreSerlializer, FahrenheitUserSerializer
+from .serializers import (
+    UserCreateSerializer,
+    StreamingServicesSerializer,
+    GenreSerlializer,
+    FahrenheitUserSerializer
+)
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -25,6 +25,12 @@ environ.Env.read_env()
     # permission_classes = [IsAuthenticated]
 
 ## env\Scripts\activate
+
+class UsersList(APIView):
+    def get(self, request, *args, **kwargs):
+        users = FahrenheitUser.objects.all()
+        serializer = FahrenheitUserSerializer(users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class UserCreate(APIView):
     def post(self, request, format='json'):

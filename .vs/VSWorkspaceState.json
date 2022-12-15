@@ -1,7 +1,15 @@
 {
   "ExpandedNodes": [
+<<<<<<< HEAD
     ""
   ],
   "SelectedNode": "\\Fahrenheit_io.sln",
+=======
+    "",
+    "\\app",
+    "\\env"
+  ],
+  "SelectedNode": "\\manage.py",
+>>>>>>> 42ddf1e1d55b9578b94d7fa5238204f2de3657c1
   "PreviewInSolutionExplorer": false
 }

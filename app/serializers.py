@@ -28,13 +28,12 @@ class UserCreateSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
 
-
 class FahrenheitUserSerializer(serializers.ModelSerializer):
     date_created = serializers.DateTimeField(read_only=True)
     
     class Meta:
         model = FahrenheitUser
-        fields = ('__all__')
+        fields = "__all__"
 
 class StreamingServicesSerializer(serializers.ModelSerializer):
     class Meta:

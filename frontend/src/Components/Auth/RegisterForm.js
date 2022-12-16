@@ -3,6 +3,9 @@ import { NavLink, Link } from "react-router-dom";
 
 import LoadingSpinner from "../UI/LoadingSpinner";
 
+
+let register_url = process.env.REACT_APP_FAHRENHEIT_REGISTER;
+
 const RegisterForm = (props) => {
     const usernameRef = useRef();
     const emailRef = useRef();
@@ -20,6 +23,7 @@ const RegisterForm = (props) => {
         props.onRegisterUser(
             { 
                 username: usernameInput,
+                email: emailInput,
                 password1: passwordOneInput,
                 password2: passwordTwoInput,
             }

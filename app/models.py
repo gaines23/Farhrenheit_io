@@ -1,12 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.auth.models import AbstractUser
 from datetime import date, time, datetime
 from PIL import Image
-from multiselectfield import MultiSelectField
 from django.contrib.postgres.fields import ArrayField
-from django.utils.text import slugify
-from django.contrib.auth import get_user_model
 
 try:
     from django.db.models import JSONField

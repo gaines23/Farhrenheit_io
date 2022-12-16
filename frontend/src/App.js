@@ -3,12 +3,12 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Layout from './Components/layout/Layout';
 import LoadingSpinner from './Components/UI/LoadingSpinner';
-
 import './App.css';
 
 const Home = React.lazy(() => import ('./Pages/Home'));
 const Login = React.lazy(() => import ('./Pages/Login'));
 const Register = React.lazy(() => import ('./Pages/Register'));
+const Profile = React.lazy(() => import ('./Pages/Profile'));
 const NotFound = React.lazy(() => import ('./Pages/NotFound'));
 const EcstaApp = React.lazy(() => import ('./EcstaStream/EcstaApp.js'));
 
@@ -29,9 +29,12 @@ function App() {
           </Route>
           <Route path='/fahrenheit/user/login/'>
             <Login />
-          </Route>
+          </Route>    
           <Route path='/fahrenheit/user/register/'>
             <Register />
+          </Route>
+          <Route path='/fahrenheit/user-profile/'>
+            <Profile />
           </Route>
           <Route path='/fahrenheit/ecstastream'>
             <EcstaApp />

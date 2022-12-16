@@ -3,10 +3,12 @@ let login_url = process.env.REACT_APP_FAHRENHEIT_LOGIN;
 let register_url = process.env.REACT_APP_FAHRENHEIT_REGISTER;
 
 export async function getUserLogin(credentials) {
-    const response = await fetch(`${login_url}`, {
+    const response = await fetch(`${login_url}`, 
+    {
         method: 'POST',
         body: JSON.stringify(credentials),
         headers: {
+            'Authorization': "JWT " + localStorage.getItem('access'),
             'Content-Type': 'application/json',
         }
     });

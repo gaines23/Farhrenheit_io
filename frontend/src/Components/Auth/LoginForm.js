@@ -1,5 +1,5 @@
 import { Link, useHistory } from "react-router-dom";
-import { Fragment, useRef, useState, useContext } from "react";
+import { Fragment, useRef, useState, useContext, useEffect } from "react";
 
 import AuthContext from "../../store/auth-context";
 import LoadingSpinner from "../UI/LoadingSpinner";
@@ -16,7 +16,7 @@ const LoginForm = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
 
         const usernameInput = usernameRef.current.value;
@@ -49,12 +49,9 @@ const LoginForm = () => {
                         throw new Error(errorMessage);
                     });
                 }
-            })
-            .then((data) => {
-                authCtx.login(data);
-                //localStorage.setItem('token', data.access);
-                //console.log(data)
-                //history.replace('/');
+            }).then((data) => {
+                authCtx.login(data.access);
+                history.replace('/fahrenheit/user-profile/');
             })
             .catch((err) => {
                 alert(err.message);

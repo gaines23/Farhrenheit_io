@@ -34,8 +34,7 @@ export const AuthContextProvider = (props) => {
 
     const loginHandler = (token) => {
         setToken(token);
-        localStorage.setItem('token', token);
-        
+        localStorage.setItem('token', token);  
     };
 
     const contextValue = {
@@ -44,6 +43,8 @@ export const AuthContextProvider = (props) => {
         login: loginHandler,
         logout: logoutHandler
     };
+
+    console.log(contextValue)
 
     return (
         <AuthContext.Provider value={contextValue}>

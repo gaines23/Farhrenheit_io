@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Layout from './Components/layout/Layout';
@@ -13,6 +13,15 @@ const NotFound = React.lazy(() => import ('./Pages/NotFound'));
 const EcstaApp = React.lazy(() => import ('./EcstaStream/EcstaApp.js'));
 
 function App() {
+
+  const [isAuth, setIsAuth] = useState(false);   
+    useEffect(() => {     
+      if (localStorage.getItem('token') !== null) {        
+        setIsAuth(true); 
+    }    
+  }, [isAuth]);
+  console.log(`Auth: ${isAuth}`)
+
   return (
     <Layout>
       <Suspense 

@@ -8,6 +8,7 @@ import './App.css';
 
 const Home = React.lazy(() => import ('./Pages/Home'));
 const Login = React.lazy(() => import ('./Pages/Login'));
+const Register = React.lazy(() => import ('./Pages/Register'));
 const NotFound = React.lazy(() => import ('./Pages/NotFound'));
 const EcstaApp = React.lazy(() => import ('./EcstaStream/EcstaApp.js'));
 
@@ -26,8 +27,11 @@ function App() {
           <Route path='/fahrenheit' exact>
             <Home /> 
           </Route>
-          <Route path='/fahrenheit/login'>
+          <Route path='/fahrenheit/user/login/'>
             <Login />
+          </Route>
+          <Route path='/fahrenheit/user/register/'>
+            <Register />
           </Route>
           <Route path='/fahrenheit/ecstastream'>
             <EcstaApp />

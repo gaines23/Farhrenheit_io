@@ -10,5 +10,5 @@ from app.forms import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('app.api-urls'), name="api"),
+    path('fahrenheit/', include('app.api-urls'), name="api"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

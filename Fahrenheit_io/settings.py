@@ -26,8 +26,10 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'localhost:3000',]
-# CORS_ALLOW_ALL_ORIGINS = True  
-# CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True  
+CORS_ALLOW_CREDENTIALS = True
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = True
 
 CORS_ALLOWED_ORIGINS = [
      'https://localhost:3000',
@@ -49,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'Fahrenheit_io',
     'multiselectfield',
 
@@ -57,7 +60,6 @@ INSTALLED_APPS = [
     #'djcelery',
 ]
 
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -65,16 +67,18 @@ REST_FRAMEWORK = {
     )
 }
 
-# SIMPLE_JWT = {
-#     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=60),
-#     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
-#     'USER_ID_CLAIM': 'id',
-# }
-
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
 }
+
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000',
+)
 
 # Middleware framework
 # https://docs.djangoproject.com/en/2.1/topics/http/middleware/

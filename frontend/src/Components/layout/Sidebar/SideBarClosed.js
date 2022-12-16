@@ -32,7 +32,7 @@ const SideBarClosed = () => {
             <div className="h-24 w-full py-2 flex justify-center items-center">
                 <div className={ClosedListClassName}>
                     <div className={ClosedLinkClassName}>
-                        <Link to="/fahrenheit/login" className="h-fit w-full">
+                        <Link to="/fahrenheit/user/login/" className="h-fit w-full">
                             <FaRegUserCircle 
                                 className={ClosedIconClassName}
                                 title="Login"

@@ -16,6 +16,7 @@ except ImportError:
 ## Fahrenheit endpoints
 # Profile, Friends, Settings
 class FahrenheitUser(models.Model):
+    #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.CharField(max_length=250, blank=True, null=True)
     prof_pic = models.ImageField(default='default.png', upload_to='profile_images', null=True)

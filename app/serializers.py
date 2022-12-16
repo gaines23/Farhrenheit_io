@@ -1,7 +1,14 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer 
 from .models import StreamingServices, Genre, FahrenheitUser 
+from django.contrib.auth.hashers import make_password
+
+class UserSerializer(serializers.ModelSerializer):
+    date_created = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = User
+        exclude = ('password', )
 
 class UserCreateSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
@@ -17,9 +24,11 @@ class UserCreateSerializer(serializers.ModelSerializer):
             key: value for key, value in validated_data.items()
             if key not in ('password1', 'password2')
         }
-        data['password'] = validated_data['password1']
+
+        data['password'] = make_password(validated_data['password1'])
 
         return User.objects.create(**data)
+    
     class Meta:
         model = User
         fields = (
@@ -27,13 +36,11 @@ class UserCreateSerializer(serializers.ModelSerializer):
         )
         read_only_fields = ('id',)
 
+class UserUpdatePassword(serializers.Serializer):
+    model = User
 
-class FahrenheitUserSerializer(serializers.ModelSerializer):
-    date_created = serializers.DateTimeField(read_only=True)
-    
-    class Meta:
-        model = FahrenheitUser
-        fields = "__all__"
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
 
 class StreamingServicesSerializer(serializers.ModelSerializer):
     class Meta:

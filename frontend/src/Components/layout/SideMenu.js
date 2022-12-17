@@ -19,8 +19,9 @@ const SideMenu = () => {
         <Fragment>
             <div className="w-min h-full mx-auto fixed flex flex-col">
                 {isOpen ? <SideBarOpen /> : <SideBarClosed />}
-               
-                <div className="flex group px-1 h-8 w-5/6 mx-auto rounded-lg hover:bg-bg-fill/10 outline-none hover:border-y hover:border-bg-fill/30">
+            
+
+                <div className="flex group px-1 h-1/10 w-5/6 mx-auto rounded-lg hover:bg-bg-fill/10 outline-none hover:border-y hover:border-bg-fill/30">
                     <button 
                         className="w-full h-8"
                         onClick={handleToggle}

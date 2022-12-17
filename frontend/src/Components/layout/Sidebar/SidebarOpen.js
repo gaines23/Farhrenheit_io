@@ -2,14 +2,23 @@ import { Fragment, useContext, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import AuthContext from "../../../store/auth-context";
 
+import NavbarOpen from './NavbarOpen';
+import AppListOpen from './AppListOpen';
+import FahrenheitLogo1 from '../../../assets/Fahrenheit100.png';
+
+import {
+    OpenNavListClass,
+    OpenLinkClassName,
+    OpenIconClassName,
+    OpenPDivClassName,
+    OpenParaClassName,
+    ActiveLinkClassName,
+} from '../../UI/NavStyles';
+
 import { FaRegUserCircle } from 'react-icons/fa';
 import { HiOutlineSearch } from 'react-icons/hi';
 import { BsCaretDown, BsCaretUp } from 'react-icons/bs';
-
-import NavbarOpen from './NavbarOpen';
-import AppListOpen from './AppListOpen';
-
-import FahrenheitLogo1 from '../../../assets/Fahrenheit100.png';
+import { HiOutlineHome } from 'react-icons/hi';
 
 const SideBarOpen = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -32,63 +41,20 @@ const SideBarOpen = () => {
 
     return (
         <Fragment>
-            <div className="h-24 w-full flex">
+            <div className="h-1/6 w-full flex">
                 <div className="w-auto h-auto mx-auto flex">
-                    <NavLink to="/fahrenheit" className="h-full w-full outline-none">
+                     <NavLink to="/fahrenheit" className="h-full w-full outline-none">
                         <img
                             src={FahrenheitLogo1}
                             alt="fahrenheit-io-logo"
-                             className="w-auto h-auto my-auto"
+                            className="w-auto h-auto my-auto"
                         />
                     </NavLink>
                 </div>
             </div>
 
             {!isLoggedIn && (
-                <div className="group h-24 w-auto px-1 py-2 font-light flex flex-col">
-                    <div className="w-8 h-8 flex mx-auto text-center text-sm text-far-teal/30">
-                        <NavLink to="/fahrenheit/user/login/" className="h-full w-full">
-                            <FaRegUserCircle className="w-8 h-8 group-hover:text-far-teal"/>
-                        </NavLink>
-                    </div>
-
-                    <div className="w-auto h-auto flex mt-1 px-2 py-2 text-center text-sm text-far-teal/30">
-                        <NavLink to="/fahrenheit/user/login/" className="h-full w-full">
-                            <div className="w-full h-full m-auto pl-2">
-                                <p className="h-min w-full my-auto group-hover:text-far-teal">Login/Signup</p>
-                            </div>
-                        </NavLink>
-                    </div>
-                </div>
-            )}
-
-            {isLoggedIn && (
-                <Fragment>
-                    <div className="h-24 w-auto px-1 py-2 font-light flex flex-col">
-                        <div className="w-8 h-8 flex mx-auto text-center text-sm text-far-teal/30">
-                            <FaRegUserCircle className="w-8 h-8"/>
-                        </div>
-
-                        <div className="w-auto h-8 inline-block relative mt-2 px-2 text-center text-xs text-far-teal/30">
-                            {/* <NavLink to="/fahrenheit/user/user-profile/" className="h-full w-full"> */}
-                                <div className="w-full h-full relative flex rounded-lg border border-far-teal/20  m-auto" onClick={handleDropdown}>
-                                    <button className="h-full w-3/4 my-auto float-left hover:border-far-teal hover:text-far-teal/80 hover:bg-bg-fill/10">
-                                        <Link to="/fahrenheit/user/user-profile/">
-                                            PROFILE
-                                        </Link>
-                                    </button> 
-                                    
-                                    <p className="h-full w-1/4 flex my-auto float-right hover:border-far-teal hover:text-far-teal/80 hover:bg-bg-fill/10">
-                                        {!isOpen ? 
-                                            <BsCaretDown className="w-fit h-fit m-auto" /> 
-                                            : <BsCaretUp className="w-fit h-fit m-auto" /> 
-                                        }
-                                    </p>
-                                </div>
-                            {/* </NavLink> */}
-                        </div>
-                    </div>
-
+                <Fragment>                 
                     <form className="w-full h-auto justify-center items-center mx-auto my-3 text-xs flex">
                         <div className="w-auto h-8 m-auto border-far-teal/20 hover:border-far-teal/50 border-2 rounded-lg">
                             <input className="w-5/6 float-left text-input-fill/50 font-thin h-full bg-transparent pl-5 focus:outline-none focus:bg-bg-fill/10" 
@@ -103,10 +69,79 @@ const SideBarOpen = () => {
                             </button>
                         </div>
                     </form>
-                            
-                    <NavbarOpen />
-                    <AppListOpen />
+
+                    <div className="w-full h-auto mx-auto my-2 flex flex-col">
+                        <p className="w-full h-auto text-xs text-input-fill/30 px-2">Main</p>
+                        
+                        <ul className="w-full mx-auto h-auto text-xs font-thin">
+                            <li className={OpenNavListClass}>
+                                <NavLink 
+                                    to={'/fahrenheit'} 
+                                    className={OpenLinkClassName}
+                                    activeClassName={ActiveLinkClassName}
+                                >
+                                    <HiOutlineHome className={OpenIconClassName} activestyle={{ActiveLinkClassName}}/>
+                                    <div className={OpenPDivClassName}>
+                                        <p className={OpenParaClassName}>
+                                            Home
+                                        </p>
+                                    </div>
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div className="h-24 w-auto px-1 py-2 font-light flex flex-col">
+                        <div className="w-8 h-8 flex mx-auto text-center text-sm text-far-teal/30">
+                            <FaRegUserCircle className="w-8 h-8"/>
+                        </div>
+
+                        <div className="w-auto h-8 flex my-auto px-2 text-center text-xs text-far-teal/30">
+                            <div className="w-full h-full relative flex rounded-lg border border-far-teal/20 m-auto">
+                                <button className="h-full w-full mx-auto hover:border-far-teal hover:text-far-teal/80 hover:bg-bg-fill/10">
+                                    <Link to="/fahrenheit/user/login/">
+                                        Login/Signup
+                                    </Link>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </Fragment>
+            )}
+
+            {isLoggedIn && (
+                <Fragment>
+                    <div className="h-2/3">
+                        <div className="h-1/3 w-full m-auto">
+                            <NavbarOpen />
+                        </div>
+                        <div className="h-2/3 w-full">
+                            <AppListOpen />
+                        </div>
+                    </div>
                     
+                        <div className="h-1/6 w-full px-1 py-2 font-light flex flex-col">
+                            <div className="w-8 h-8 flex mx-auto text-center text-sm text-far-teal/30">
+                                <FaRegUserCircle className="w-8 h-8"/>
+                            </div>
+
+                            <div className="w-auto h-8 inline-block relative my-auto px-2 text-center text-xs text-far-teal/30">
+                                <div className="w-full h-full relative flex bg-bg-fill/10 m-auto rounded-lg" onClick={handleDropdown}>
+                                    <button className="h-full w-3/4 my-auto float-left rounded-l-lg hover:border-far-teal hover:text-far-teal/80 hover:bg-bg-fill/20">
+                                        <Link to="/fahrenheit/user/user-profile/">
+                                            PROFILE
+                                        </Link>
+                                    </button> 
+                                        
+                                    <p className="h-full w-1/4 flex my-auto float-right rounded-r-lg hover:border-far-teal hover:text-far-teal/80 hover:bg-bg-fill/20">
+                                        {!isOpen ? 
+                                            <BsCaretDown className="w-fit h-fit m-auto" /> 
+                                            : <BsCaretUp className="w-fit h-fit m-auto" /> 
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                 </Fragment>
             )}
         </Fragment>

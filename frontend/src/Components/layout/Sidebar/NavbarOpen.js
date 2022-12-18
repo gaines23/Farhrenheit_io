@@ -18,8 +18,8 @@ import { HiOutlineSearch } from 'react-icons/hi';
 const NavbarOpen = () => {
     return (
         <Fragment>
-            <form className="w-full h-auto justify-center items-center mx-auto my-3 text-xs flex">
-                <div className="w-auto h-8 m-auto border-far-teal/20 hover:border-far-teal/50 border-2 rounded-lg">
+            <form className="w-full h-1/4 justify-center items-center mx-auto mb-1 text-xs flex">
+                <div className="w-auto h-8 m-auto border-far-teal/20 border rounded-lg shadow shadow-md shadow-bg-fill/10">
                     <input className="w-5/6 float-left text-input-fill/50 font-thin h-full bg-transparent pl-5 focus:outline-none focus:bg-bg-fill/10" 
                         type="search"
                         placeholder="Search..."
@@ -33,7 +33,7 @@ const NavbarOpen = () => {
                 </div>
             </form>
 
-           <div className="w-full h-auto mx-auto my-2 flex flex-col">
+           <div className="w-full h-3/4 mx-auto mt-2 flex flex-col">
                 <p className="w-full h-auto text-xs text-input-fill/30 px-2">Main</p>
                 
                 <ul className="w-full mx-auto h-auto text-xs font-thin">
@@ -43,7 +43,7 @@ const NavbarOpen = () => {
                             className={OpenLinkClassName}
                             activeClassName={ActiveLinkClassName}
                         >
-                            <HiOutlineHome className={OpenIconClassName} activestyle={{ActiveLinkClassName}}/>
+                            <HiOutlineHome className={OpenIconClassName} />
                             <div className={OpenPDivClassName}>
                                 <p className={OpenParaClassName}>
                                     Home

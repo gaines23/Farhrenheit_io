@@ -4,7 +4,8 @@ import { NavLink } from 'react-router-dom';
 import {
     OpenNavListClass,
     OpenPDivClassName,
-    AppIconClassName
+    AppIconClassName,
+    AppsActiveLinkClassName,
 } from '../../UI/NavStyles';
 
 import EcstaLogo from '../../../assets/EcstaLogo.png';
@@ -13,7 +14,7 @@ import AnimeWire from '../../../assets/Anime-wire.png';
 
 const AppListOpen = () => {
 
-    const linkClassName = "flex group px-1 h-10 w-full items-center rounded-lg hover:bg-bg-fill/10 outline-none hover:border-y hover:border-bg-fill/30";
+    const linkClassName = "flex group px-1 h-8 w-full items-center rounded-lg hover:bg-bg-fill/10 outline-none";
     const itemClassName = "text-input-fill/70 w-5/6 text-left mx-auto h-auto my-auto group-hover:text-input-fill/80";    
 
     return (
@@ -30,6 +31,7 @@ const AppListOpen = () => {
                         <NavLink 
                             to={'/fahrenheit/ecstastream'} 
                             className={linkClassName}
+                            activeClassName={AppsActiveLinkClassName}
                         >
                             < img
                                 src={EcstaLogo}

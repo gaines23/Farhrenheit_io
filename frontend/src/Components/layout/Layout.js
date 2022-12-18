@@ -1,5 +1,4 @@
 import { Fragment, useState } from 'react';
-
 import { HiChevronDoubleLeft, HiChevronDoubleRight } from 'react-icons/hi';
 import SideBarClosed from './Sidebar/SideBarClosed';
 import SideBarOpen from './Sidebar/SidebarOpen';
@@ -24,13 +23,12 @@ const Layout = (props) => {
     return (
         <Fragment>
             <div className="h-full w-full static bg-gradient-to-bl from-far-teal/10 to-far-teal/20">
-                <div className="h-full w-full mx-auto flex overflow-hidden">
-                    
+                <div className="h-full w-full mx-auto py-2 flex overflow-hidden">
                     <div className="w-fit h-full flex flex-col ease-in">
                         <div className="w-11/12 h-full mx-auto flex flex-col">
                             {isOpen ? <SideBarOpen /> : <SideBarClosed />}
                         </div>
-                        <div className="flex group px-1 h-8 w-5/6 mx-auto rounded-lg hover:bg-bg-fill/10 outline-none hover:border-y hover:border-bg-fill/30">
+                        <div className="flex group px-1 h-8 w-2/3 mx-auto rounded-lg hover:bg-bg-fill/10 outline-none hover:shadow hover:shadow-md hover:shadow-bg-fill/10">
                             <button 
                                 className="w-full h-8"
                                 onClick={handleToggle}
@@ -43,8 +41,8 @@ const Layout = (props) => {
                         </div>        
                     </div>
                 
-                    <div className="w-full h-full sticky flex bg-bg-fill/10 rounded-lg bg-clip-padding backdrop-filter shadow shadow-lg shadow-far-navy border-bg-fill/30">
-                        <main className="h-full w-full grid grid-flow-col grid-cols-1 flex overflow-hidden rounded-lg">
+                    <div className="w-full h-full sticky z-100 flex bg-bg-fill/10 rounded-l-xl bg-clip-padding backdrop-filter shadow shadow-lg shadow-far-navy border-bg-fill/30">
+                        <main className="h-full w-full grid grid-flow-col grid-cols-1 flex overflow-hidden rounded-l-xl">
                             {props.children} 
                         </main>
                     </div>

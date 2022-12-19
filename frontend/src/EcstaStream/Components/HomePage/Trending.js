@@ -35,7 +35,7 @@ const Trending = () => {
 
     return (
         <Fragment>
-            <div className="mt-10">
+            <div className="mt-10 mb-5">
                 <p className="w-full text-lg">Trending ({trending.length})</p>
                 <div
                     className="h-full flex items-center px-5 py-1 overflow-x-auto space-x-3 scroll-smooth scrollbar scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent"

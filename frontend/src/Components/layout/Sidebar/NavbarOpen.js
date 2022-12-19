@@ -39,7 +39,7 @@ const NavbarOpen = () => {
                 <ul className="w-full mx-auto h-auto text-xs font-thin">
                     <li className={OpenNavListClass}>
                         <NavLink 
-                            to={'/fahrenheit'} 
+                            to={'/fahrenheit/home'} 
                             className={OpenLinkClassName}
                             activeClassName={ActiveLinkClassName}
                         >

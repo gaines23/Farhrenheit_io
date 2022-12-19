@@ -9,8 +9,23 @@ try:
 except ImportError:
     from django.contrib.postgres.fields import JSONField
 
+
+### Global endpoints
+STATUS = (
+    (0,"Open"),
+    (1,"Restricted")
+)
+
+PROFILE_STATUS = (
+    (0, "Public"),
+    (1, "Private")
+)
+
+
 ## Fahrenheit endpoints
 # Profile, Friends, Settings
+
+### follows => all similiar apps too
 class FahrenheitUser(models.Model):
     #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -20,6 +35,8 @@ class FahrenheitUser(models.Model):
     date_created = models.DateTimeField(auto_now=True)
     last_modified = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
+    status = status = models.IntegerField(choices=STATUS, default=0)
+    profile_status = models.IntegerField(choices=PROFILE_STATUS, default=0)
     #follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
 
     def __str__(self):
@@ -58,11 +75,6 @@ class Streamingurls(models.Model):
         managed = False
         db_table = 'app_streamingurls'
 
-STATUS = (
-    (0,"Open"),
-    (1,"Restricted")
-)
-
 class Genre(models.Model):
     id = models.IntegerField(primary_key=True)
     genre = models.CharField(max_length=50, blank=True, null=True)
@@ -74,6 +86,44 @@ class Genre(models.Model):
         managed = False
         db_table = 'app_genre'
 
+class EcstaStreamProfile(models.Model):
+    ec_id = models.BigIntegerField(primary_key=True)
+    user_id = models.OneToOneField(User, on_delete=models.CASCADE)
+    status = models.IntegerField(choices=STATUS, default=0)
+    profile_status = models.IntegerField(choices=PROFILE_STATUS, default=0)
+    follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
+
+
+class EcstaStreamPlaylist(models.Model):
+    ec_playlist_id = models.BigAutoField(primary_key=True)
+    created_by = models.OneToOneField(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    private = models.BooleanField(default=True) #on
+    description = models.TextField(null=True, max_length=150)
+    cover_img = models.ImageField(default='defaultplaylist.png', upload_to='cover_images', null=True)
+    comments = models.TextField(null=True)
+    comments_on = models.BooleanField(default=True) #on
+    playlist_follows = models.ManyToManyField(User, related_name="following", default=None)  
+    share_list = models.ManyToManyField(User, related_name="sharing", default=None)
+    status = models.BooleanField(choices=STATUS, default=0)
+
+    def __str__(self):
+        return '{} {} {}'.format(self.created_by, self.created_on, self.ec_playlist_id)
+
+    def playlist_id(self):
+        return self.created_by
+
+    def save(self, *args, **kwargs):
+        super().save()
+        img = Image.open(self.cover_img.path)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["created_by", "ec_playlist_id", "title"], name='user_playlist_constraint')    
+        ]
+        ordering = ['-created_on']
 
 
 

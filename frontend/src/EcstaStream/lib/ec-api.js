@@ -1,9 +1,10 @@
 // API functions for anything related to streaming services
 
+let streaming_services = process.env.REACT_APP_EC_SERVICES;
 
 // EC-Service Details
 export async function getServicesDetails() {
-  const response = await fetch(process.env.REACT_APP_EC_SERVICES);
+  const response = await fetch(streaming_services);
   const data = await response.json();
 
   if (!response.ok) {
@@ -48,3 +49,5 @@ export async function getGenres() {
   return genreList;
 
 }
+
+

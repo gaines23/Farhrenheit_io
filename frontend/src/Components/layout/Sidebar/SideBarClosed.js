@@ -40,7 +40,7 @@ const SideBarClosed = () => {
         <Fragment>
             <div className="h-24 w-full mx-auto py-2 flex justify-center items-center">
                 <div className="w-auto h-auto my-auto ">
-                    <Link to="/farhrenheit" className="h-full w-full outline-none">
+                    <Link to="/farhrenheit/home" className="h-full w-full outline-none">
                         <img
                             src={FarheneitLogo2}
                             alt="fahrenheit-io-logo"
@@ -69,7 +69,7 @@ const SideBarClosed = () => {
                         <ul className="w-full h-auto text-xs font-thin">
                             <li className={ClosedListClassName}>
                                 <NavLink 
-                                    to={'/fahrenheit'} 
+                                    to={'/fahrenheit/home'} 
                                     className={ClosedLinkClassName}
                                     title="Home"
                                 >
@@ -99,10 +99,10 @@ const SideBarClosed = () => {
             {isLoggedIn && (
                 <Fragment>
                     <div className="h-3/4 w-11/12 mx-auto flex flex-col">
-                        <div className="h-1/3 w-full m-auto flex flex-col">
+                        <div className="h-2/5 w-full m-auto flex flex-col">
                             <NavbarClosed />
                         </div>
-                        <div className="h-2/3 w-full flex flex-col">
+                        <div className="h-3/5 w-full flex flex-col">
                             <AppListClosed />
                         </div>
                     </div>
@@ -117,9 +117,10 @@ const SideBarClosed = () => {
                                     </button >
                                 </div>
                             </div>
-                        {isOpen && <OptionsClosed />}
+
+                            {isOpen && <OptionsClosed />}
+                            
                         </div>
-                        
                     </div>
                 </Fragment>
             )}

@@ -31,13 +31,6 @@ const HomePageContent = () => {
         );
     }
 
-    if (status === 'completed' && (!loadedServices || loadedServices.length === 0)) {
-        return
-         
-    }
-
-    
-    
     const mainListClassName = "flex w-1/3 h-10 items-center justify-center rounded-lg hover:bg-bg-fill/20 hover:backdrop-blur-lg hover:bg-opacity-10";
     const mainListParagraph = "m-auto h-1/2 text-input-fill font-light ";
 
@@ -51,17 +44,17 @@ const HomePageContent = () => {
                 <div id="filterTabs" className="flex h-10 w-full justify-center">
                     <ul className="flex w-2/3 text-center h-full rounded-lg">
                         <li className={mainListClassName}>
-                        <p className={mainListParagraph}>Top 20 Services in US</p>
+                            <p className={mainListParagraph}>Top 20 Services in US</p>
                         </li>
                         <li className={mainListClassName}>
-                        <p className={mainListParagraph}>My Services</p>
+                            <p className={mainListParagraph}>My Services</p>
                         </li>
                         <li className={mainListClassName}>
-                        <p className={mainListParagraph}>Custom</p>
+                            <p className={mainListParagraph}>Custom</p>
                         </li>
                     </ul>
                 </div>
-        
+            
                 <div id="streamingServicesList" className="flex justify-center items-center">
                     <div id="services" className="w-full p-2 h-full rounded-lg border border-input-fill/10 bg-bg-fill/10 backdrop-brightness-125 backdrop-opacity-10 rounded-md">
                         <StreamingListButton />
@@ -72,17 +65,15 @@ const HomePageContent = () => {
                                         <StreamingListUsers key={service.provider_id} service={service} />
                                     );
                                 }).slice(0,25)}
-                            </ul>
-                        
+                            </ul>        
                         </div>
                     </div>
                 </div>
             </div> 
-            
+    
             <SecondaryFilter />
 
             <Trending />
-           
             
         </Fragment>
     );

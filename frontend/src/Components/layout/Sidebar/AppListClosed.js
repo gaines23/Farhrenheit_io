@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { NavLink } from 'react-router-dom';
 
-import { AppIconClassName } from '../../UI/NavStyles';
+import { AppIconClassName, AppsActiveLinkClassName, } from '../../UI/NavStyles';
 
 import EcstaLogo from '../../../assets/EcstaLogo.png';
 import AnimeWire from '../../../assets/Anime-wire.png';
@@ -27,6 +27,7 @@ const AppListClosed = () => {
                             to={'/fahrenheit/ecstastream'} 
                             className={linkClassName}
                             title="EcstaStream"
+                            activeClassName={AppsActiveLinkClassName}
                         >
                             < img
                                 src={EcstaLogo}
@@ -40,6 +41,7 @@ const AppListClosed = () => {
                             to={'/fahrenheit/the-anime-wire/'} 
                             className={linkClassName}
                             title="Anime Wire"
+                            activeClassName={AppsActiveLinkClassName}
                         >
                             < img
                                 src={AnimeWire}

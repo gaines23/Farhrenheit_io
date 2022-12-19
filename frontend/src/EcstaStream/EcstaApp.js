@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Layout from './Components/Layout/Layout';
 import LoadingSpinner from '../Components/UI/LoadingSpinner';
@@ -10,7 +10,7 @@ const SearchResults = React.lazy(() => import ('./Pages/SearchResults'));
 const MovieDetails = React.lazy(() => import ('./Pages/MovieDetails'));
 const TvDetails = React.lazy(() => import ('./Pages/TvDetails'));
 const CreditDetails = React.lazy(() => import ('./Pages/CreditDetails'));
-// const Playlist = React.lazy(() => ('./Pages/Playlists'));
+const Playlist = React.lazy(() => import ('./Pages/Playlists'));
 // const News = React.lazy(() => ('./Pages/News'));
 
 function EcstaApp() {
@@ -23,6 +23,9 @@ function EcstaApp() {
       >
         <Switch>
           <Route path='/fahrenheit/ecstastream' exact>
+            <Redirect to='/fahrenheit/ecstastream/home' />
+          </Route>
+          <Route path='/fahrenheit/ecstastream/home'>
             <Home />
           </Route>
           <Route path='/fahrenheit/ecstastream/search/:query'>
@@ -37,10 +40,10 @@ function EcstaApp() {
           <Route path='/fahrenheit/ecstastream/credit-details/:tmdbId/:imdbId'>
             <CreditDetails />
           </Route>
-       {/*   <Route path='/playlist/:userId/:title'>
+          <Route path='/fahrenheit/ecstastream/playlists'>
             <Playlist />
           </Route>
-          <Route path='/Profile/:userId/:username'>
+      {/*    <Route path='/Profile/:userId/:username'>
             <Profile />
           </Route>
           <Route path='/ecstastream/news'>

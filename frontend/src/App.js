@@ -31,9 +31,9 @@ function App() {
       >
         <Switch>
           <Route path='/' exact>
-            <Redirect to='/fahrenheit' />  
+            <Redirect to='/fahrenheit/home' />  
           </Route>
-          <Route path='/fahrenheit' exact>
+          <Route path='/fahrenheit/home' exact>
             <Home /> 
           </Route>
           <Route path='/fahrenheit/user/login/'>

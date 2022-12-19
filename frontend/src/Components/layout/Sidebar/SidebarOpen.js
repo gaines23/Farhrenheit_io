@@ -40,7 +40,7 @@ const SideBarOpen = () => {
         <Fragment>
             <div className="h-1/8 w-full flex">
                 <div className="w-auto h-auto mx-auto flex">
-                     <NavLink to="/fahrenheit" className="h-full w-full outline-none">
+                     <NavLink to="/fahrenheit/home" className="h-full w-full outline-none">
                         <img
                             src={FahrenheitLogo1}
                             alt="fahrenheit-io-logo"
@@ -72,7 +72,7 @@ const SideBarOpen = () => {
                             <ul className="w-full mx-auto h-auto text-xs font-thin">
                                 <li className={OpenNavListClass}>
                                     <NavLink 
-                                        to={'/fahrenheit'} 
+                                        to={'/fahrenheit/home'} 
                                         className={OpenLinkClassName}
                                         activeClassName={ActiveLinkClassName}
                                     >
@@ -95,11 +95,14 @@ const SideBarOpen = () => {
 
                         <div className="w-auto h-8 flex my-auto px-2 text-center text-xs text-far-teal/30">
                             <div className="w-full h-full relative flex rounded-lg border border-far-teal/20 m-auto">
-                                <button className="h-full w-full mx-auto hover:border-far-teal hover:text-far-teal/80 hover:bg-bg-fill/10">
-                                    <Link to="/fahrenheit/user/login/">
+                                <Link 
+                                    to="/fahrenheit/user/login/"
+                                    className="h-full w-full mx-auto hover:border-far-teal hover:text-far-teal/80 hover:bg-bg-fill/10"
+                                >
+                                    <button className="h-full w-full">
                                         Login/Signup
-                                    </Link>
-                                </button>
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -109,10 +112,10 @@ const SideBarOpen = () => {
             {isLoggedIn && (
                 <Fragment>
                     <div className="h-3/4 w-11/12 mx-auto flex flex-col">
-                        <div className="h-1/3 w-full m-auto flex flex-col">
+                        <div className="h-2/5 w-full m-auto flex flex-col">
                             <NavbarOpen />
                         </div>
-                        <div className="h-2/3 w-full flex flex-col">
+                        <div className="h-3/5 w-full flex flex-col">
                             <AppListOpen />
                         </div>
                     </div>

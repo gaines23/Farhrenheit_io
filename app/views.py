@@ -38,7 +38,7 @@ class UserCreate(APIView):
             if user:
                 FahrenheitUser.objects.create(user=user)
                 return Response(json, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserProfile(APIView):
     permission_classes = [IsAuthenticated]
@@ -63,9 +63,9 @@ class UserLogout(APIView):
             return Response(status=status.HTTP_200_OK)
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-    
-    
-    
+
+
+
     # def post(self, request):
     #     try:
     #         refresh_token = request.data["refresh_token"]
@@ -86,7 +86,7 @@ class UsersList(APIView):
 
 
 #     def post(self, request):
-#         serializer = 
+#         serializer =
 
 # class UserChangePassword(APIView):
 #     permission_classes = [IsAuthenticated]
@@ -98,17 +98,18 @@ class UsersList(APIView):
 #     def update(self, request, *args, **kwargs):
 #         serializer = UserUpdatePassword(data=request.data)
 #         if serializer.is_valid():
-#             if not 
+#             if not
 
 
 
 
-
+# class CreatePlaylist(APIView):
+#     def
 
 
 class StreamingList(APIView):
     #permission_classes = [permissions.IsAdminUser]
-    
+
     ### GET ###
     def get(self, request, *args, **kwargs):
         services = StreamingServices.objects.all()

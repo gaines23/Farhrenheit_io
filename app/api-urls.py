@@ -21,8 +21,6 @@ urlpatterns = [
     path('user/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('user-profile/', UserProfile.as_view(), name="user"),
     path('user/logout/', UserLogout.as_view(), name="logout"),
-    # path('user/logout'),
-    #path('user/edit'),
-    path('streamingservices/', StreamingList.as_view()),
-    path('genres/', AllGenreList.as_view()),
+    path('ecstastream/streamingservices/', StreamingList.as_view()),
+    path('ecstastream/genres/', AllGenreList.as_view()),
 ]

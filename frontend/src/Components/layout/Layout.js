@@ -41,7 +41,7 @@ const Layout = (props) => {
                         </div>        
                     </div>
                 
-                    <div className="w-full h-full sticky z-100 flex bg-bg-fill/10 rounded-l-xl bg-clip-padding backdrop-filter shadow shadow-lg shadow-far-navy border-bg-fill/30">
+                    <div className="w-full h-full sticky z-100 flex bg-bg-fill/10 rounded-xl bg-clip-padding backdrop-filter shadow shadow-lg shadow-far-navy/80 border-bg-fill/30">
                         <main className="h-full w-full grid grid-flow-col grid-cols-1 flex overflow-hidden rounded-l-xl">
                             {props.children} 
                         </main>

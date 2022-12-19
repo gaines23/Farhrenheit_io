@@ -35,7 +35,7 @@ const NavbarClosed = () => {
                 <ul className="w-full h-auto text-xs font-thin">
                     <li className={ClosedListClassName}>
                         <NavLink 
-                            to={'/fahrenheit'} 
+                            to={'/fahrenheit/home'} 
                             className={ClosedLinkClassName}
                             title="Home"
                             activeClassName={ActiveLinkClassName}

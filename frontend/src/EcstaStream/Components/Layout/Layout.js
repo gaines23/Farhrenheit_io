@@ -6,7 +6,7 @@ import Header from './Header';
 const Layout = (props) => {
     return (
         <Fragment>
-            <div className="h-full w-full mx-auto flex bg-ec-black rounded-xl">
+            <div className="h-full w-full mx-auto flex bg-ec-black/80 rounded-xl">
                 <div className="w-fit h-full flex flex-col ease-in">
                     <div className="w-11/12 h-full mx-auto flex flex-col">
                         <SideMenu />
@@ -17,7 +17,7 @@ const Layout = (props) => {
                     <div className="h-16 w-11/12 flex mx-auto relative">
                         <Header />
                     </div>
-                    <main className="w-full h-full flex flex-col rounded-xl px-2 relative bg-ec-purple/40 overflow-y-scroll overflow-hidden space-y-3 scroll-smooth scrollbar scrollbar-height:6 scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
+                    <main className="w-full h-full flex flex-col rounded-xl px-2 relative overflow-y-scroll overflow-hidden space-y-3 scroll-smooth scrollbar scrollbar-height:6 scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
                         <div className="w-full h-full absolute flex flex-col">
                             <div className="inline w-11/12 h-full mx-auto py-2">
                                 {props.children}

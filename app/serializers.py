@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import StreamingServices, Genre, FahrenheitUser 
+from .models import StreamingServices, Genre, FahrenheitUser, EcstaStreamPlaylist
 from django.contrib.auth.hashers import make_password
 
 class UserSerializer(serializers.ModelSerializer):
@@ -41,6 +41,15 @@ class UserUpdatePassword(serializers.Serializer):
 
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
+
+
+
+
+class EcCreatePlaylist(serializers.ModelSerializer):
+    class Meta:
+        EcstaStreamPlaylist
+        fields = ('title', 'private', 'description', 'playlist_follows')
+    
 
 class StreamingServicesSerializer(serializers.ModelSerializer):
     class Meta:

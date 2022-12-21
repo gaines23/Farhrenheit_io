@@ -1,7 +1,34 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
+import { useHistory } from "react-router-dom";
+import useHttp from "../../hooks/use-http";
+import { addPlaylist } from "../lib/ec-api";
 
 const CreatePlaylistModal = ({setIsOpen}) => {
     const [toggle, setToggle] = useState(true);
+
+    const history = useHistory();
+
+    const titleRef = useRef();
+    const descRef = useRef();
+    const privateRef = useRef();
+
+    const { sendRequest, status, error } = useHttp(addPlaylist);
+
+    useEffect(() => {
+        if (status === 'completed' && !error) {
+            sendRequest();
+        }
+    }, [status, error, sendRequest]);
+
+    const submitPlaylistForm = (e) => {
+        e.preventDefault();
+
+        const enteredTitle = titleRef.current.value;
+        const enteredDesc = descRef.current.value;
+        const enteredPrivate = privateRef.current.value;
+
+        sendRequest( { title: enteredTitle, description: enteredDesc, private: enteredPrivate } );
+    }
 
     const inputClassName = "w-full h-10 mt-1 pl-5 shadow-md shadow-black/20 border-solid border border-input-fill/30 rounded-lg bg-input-fill/30 focus:border-input-fill hover:bg-input-fill/10 focus:text-sm focus:outline-none focus:bg-input-fill/10";
 
@@ -15,25 +42,26 @@ const CreatePlaylistModal = ({setIsOpen}) => {
                                 Create New Playlist
                             </h3>
                             <div className="h-12 w-20 my-auto float-right">
-                               <div
+                               <input
                                     className="w-12 h-6 mx-auto flex items-center rounded-full p-1 cursor-pointer bg-input-fill/30"
                                     onClick = {() => {
                                         setToggle(!toggle);
                                     }}
-                                >
+                                    ref={privateRef}
+                                />
                                     {toggle ? 
                                         (<div className="h-5 w-5 rounded-full transform bg-input-fill/80 shadow-md shadow-black/20 border-solid border border-bg-fill/30"></div>)
                                     : 
                                         (<div className="h-5 w-5 rounded-full transform translate-x-5 bg-input-fill/80 shadow-md shadow-black/20 border-solid border border-bg-fill/30"></div>)
                                     }
-                                </div>
+                                
                                 <div className="w-14 h-6 m-auto text-xs text-center flex">
                                     <p className="h-4 w-12 m-auto">{toggle ? "Private" : "Public"}</p>
                                 </div> 
                             </div>
                         </div>
 
-                        <form className="h-full w-5/6 mx-auto relative py-3 flex-auto">
+                        <form className="h-full w-5/6 mx-auto relative py-3 flex-auto" onSubmit={submitPlaylistForm}>
                             <div className="my-4 h-auto leading-relaxed">
                                 <div className="h-20 w-4/5 m-auto text-sm my-1">
                                     <label htmlFor="title">Title</label>
@@ -42,6 +70,7 @@ const CreatePlaylistModal = ({setIsOpen}) => {
                                         type="text"
                                         className={inputClassName}
                                         placeholder="title"
+                                        ref={titleRef}
                                     />
                                 </div>
 
@@ -52,6 +81,7 @@ const CreatePlaylistModal = ({setIsOpen}) => {
                                         type="text"
                                         className="w-full h-20 mt-1 p-3 shadow-md shadow-black/20 border-solid border border-input-fill/30 rounded-lg bg-input-fill/30 focus:border-input-fill hover:bg-input-fill/10 focus:text-sm focus:outline-none focus:bg-input-fill/10"
                                         placeholder="description"
+                                        ref={descRef}
                                     />
                                 </div>
 
@@ -83,7 +113,7 @@ const CreatePlaylistModal = ({setIsOpen}) => {
                             </button>
                             <button
                                 className='w-28 text-xs h-7 shadow-sm shadow-black/20 font-bold border-solid uppercase border border-input-fill/30 rounded-lg bg-input-fill/30 hover:bg-input-fill/10'
-                                type="button"
+                                type="submit"
                             >
                                 Save
                             </button>

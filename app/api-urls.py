@@ -6,6 +6,7 @@ from app.views import (
     UsersList,
     UserProfile,
     UserLogout,
+    CreatePlaylist,
 )
 
 from rest_framework_simplejwt.views import (
@@ -23,4 +24,5 @@ urlpatterns = [
     path('user/logout/', UserLogout.as_view(), name="logout"),
     path('ecstastream/streamingservices/', StreamingList.as_view()),
     path('ecstastream/genres/', AllGenreList.as_view()),
+    path('ecstastream/new-playlist/', CreatePlaylist.as_view()),
 ]

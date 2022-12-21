@@ -1,5 +1,5 @@
 import { Link, useHistory } from "react-router-dom";
-import { Fragment, useRef, useState, useContext, useEffect } from "react";
+import { Fragment, useRef, useState, useContext } from "react";
 
 import AuthContext from "../../store/auth-context";
 import LoadingSpinner from "../UI/LoadingSpinner";

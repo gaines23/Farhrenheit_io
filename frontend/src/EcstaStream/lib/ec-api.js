@@ -1,6 +1,7 @@
 // API functions for anything related to streaming services
 
 let streaming_services = process.env.REACT_APP_EC_SERVICES;
+let new_playlist_url = process.env.REACT_APP_EC_NEW_PLAYLIST;
 
 // EC-Service Details
 export async function getServicesDetails() {
@@ -51,3 +52,21 @@ export async function getGenres() {
 }
 
 
+export async function addPlaylist({newPlayist}) {
+  const response = await fetch(new_playlist_url, {
+    method: 'POST',
+    body: JSON.stringify({newPlayist}),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+
+  return null;
+
+}

@@ -48,7 +48,7 @@ class UserUpdatePassword(serializers.Serializer):
 class EcCreatePlaylist(serializers.ModelSerializer):
     class Meta:
         EcstaStreamPlaylist
-        fields = ('title', 'private', 'description', 'playlist_follows')
+        fields = ('user', 'title', 'private', 'description', 'playlist_follows')
     
 
 class StreamingServicesSerializer(serializers.ModelSerializer):

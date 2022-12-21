@@ -12,7 +12,8 @@ from .serializers import (
     StreamingServicesSerializer,
     GenreSerlializer,
     UserSerializer,
-    UserUpdatePassword
+    UserUpdatePassword,
+    EcCreatePlaylist
 )
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
@@ -64,18 +65,6 @@ class UserLogout(APIView):
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-
-
-    # def post(self, request):
-    #     try:
-    #         refresh_token = request.data["refresh_token"]
-    #         token = RefreshToken(refresh_token)
-    #         token.blacklist()
-
-    #         return Response(status=status.HTTP_205_RESET_CONTENT)
-    #     except Exception as e:
-    #         return Response(status=status.HTTP_400_BAD_REQUEST)
-
 class UsersList(APIView):
     def get(self, request, *args, **kwargs):
         users = FahrenheitUser.objects.all()
@@ -103,8 +92,18 @@ class UsersList(APIView):
 
 
 
-# class CreatePlaylist(APIView):
-#     def
+class CreatePlaylist(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serializer = EcCreatePlaylist(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                return Response(json, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 class StreamingList(APIView):

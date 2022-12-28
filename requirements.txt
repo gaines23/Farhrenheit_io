@@ -169,5 +169,4 @@ pip==22.1.1
 pypi==2.1
 setuptools==47.1.0
 tomli==2.0.1
-typing_extensions==4.0.1
 wheel==0.37.1

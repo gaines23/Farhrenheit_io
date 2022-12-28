@@ -68,7 +68,6 @@ jinja2-time==0.2.0
 joblib==1.0.1
 jupyter-core==4.11.1
 jupyter_client==7.3.5
-JustWatch==0.5.1
 kiwisolver==1.3.2
 kombu==3.0.37
 lazy-object-proxy==1.7.1
@@ -142,7 +141,6 @@ spark-python==0.0.13
 sqlparse==0.4.2
 text-unidecode==1.3
 textblob==0.15.3
-tmdbv3api==1.7.6
 toml==0.10.2
 tornado==6.2
 tqdm==4.62.3

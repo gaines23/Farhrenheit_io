@@ -9,8 +9,12 @@
             "type": "python",
             "request": "launch",
             "program": "${file}",
+            "python": "${workspaceFolder}/.venv/Scripts/python.exe",
             "console": "integratedTerminal",
-            "justMyCode": true
+            "justMyCode": true,
+            "env": {},
+            "envFile": "${workspaceFolder}/.env"
         }
+        
     ]
 }

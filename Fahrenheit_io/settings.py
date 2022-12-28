@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     #'bootstrap_modal_forms',
     #'djcelery',
 ]
-
+AUTH_USER_MODEL = 'app.FahrenheitUser'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -96,7 +96,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'Fahrenheit_io.urls'
-AUTH_USER_MODEL = 'app.FahrenheitUser'
+
 # Template configuration
 # https://docs.djangoproject.com/en/2.1/topics/templates/
 TEMPLATES = [

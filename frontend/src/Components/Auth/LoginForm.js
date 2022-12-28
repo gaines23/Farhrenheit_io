@@ -50,7 +50,7 @@ const LoginForm = () => {
                     });
                 }
             }).then((data) => {
-                authCtx.login(data.access);
+                authCtx.login(data.access, data.refresh);
                 history.replace('/fahrenheit/user-profile/');
             })
             .catch((err) => {

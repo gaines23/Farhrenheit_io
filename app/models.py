@@ -1,8 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser, PermissionsMixin, AbstractBaseUser
 from datetime import date, time, datetime
 from PIL import Image
 from django.contrib.postgres.fields import ArrayField
+import uuid
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.validators import UnicodeUsernameValidator
+
 
 try:
     from django.db.models import JSONField
@@ -26,21 +30,85 @@ PROFILE_STATUS = (
 # Profile, Friends, Settings
 
 ### follows => all similiar apps too
-class FahrenheitUser(models.Model):
-    #id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class FahrenheitUser(AbstractBaseUser, PermissionsMixin):
+    pass
+    user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    username_validator = UnicodeUsernameValidator()
+
+    username = models.CharField(
+        _('username'),
+        max_length=150,
+        unique=True,
+        help_text=_('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+        validators=[username_validator],
+        error_messages={
+            'unique': _("A user with that username already exists."),
+        },
+    )
+    first_name = models.CharField(_('first name'), max_length=150, blank=True)
+    last_name = models.CharField(_('last name'), max_length=150, blank=True)
+    email = models.EmailField(_('email address'), blank=True)
+    is_staff = models.BooleanField(
+        _('staff status'),
+        default=False,
+        help_text=_('Designates whether the user can log into this admin site.'),
+    )
+    is_active = models.BooleanField(
+        _('active'),
+        default=True,
+        help_text=_(
+            'Designates whether this user should be treated as active. '
+            'Unselect this instead of deleting accounts.'
+        ),
+    )
+    date_joined = models.DateTimeField(_('date joined'), auto_now=True)
+
+    EMAIL_FIELD = 'email'
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
+
+    class Meta:
+        verbose_name = 'fahrenheit_user'
+        verbose_name_plural = 'fahrenheit_users'
+        abstract = True
+
+    def clean(self):
+        super().clean()
+        self.email = self.__class__.objects.normalize_email(self.email)
+
+    def get_full_name(self):
+        """
+        Return the first_name plus the last_name, with a space in between.
+        """
+        full_name = '%s %s' % (self.first_name, self.last_name)
+        return full_name.strip()
+
+    def get_short_name(self):
+        """Return the short name for the user."""
+        return self.first_name
+
+    def __str__(self):
+        return '{}-{}'.format(self.username, self.user_id)
+
+    def get_id(self):
+        fah_id = int(self.user_id)
+        return fah_id
+
+class FahrenheitProfile(models.Model):
+    user_id =models.ForeignKey(FahrenheitUser, on_delete=models.CASCADE)
     bio = models.CharField(max_length=250, blank=True, null=True)
     prof_pic = models.ImageField(default='default.png', upload_to='profile_images', null=True)
     apps_following = ArrayField(models.IntegerField(), blank=True, null=True) ## user.objects.contains=[1, 2, 3]
     date_created = models.DateTimeField(auto_now=True)
     last_modified = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True) # profile setting, user can still be active without profile (techincally)
     status = status = models.IntegerField(choices=STATUS, default=0)
     profile_status = models.IntegerField(choices=PROFILE_STATUS, default=0)
-    #follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
+    follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
 
     def __str__(self):
-        return self.user.username
+        return '{}'.format(self.user_id)
 
     def save(self, *args, **kwargs):
         super().save()
@@ -53,77 +121,77 @@ class FahrenheitUser(models.Model):
             img.save(self.prof_pic.path)
 
 
-### EcstaStream DB endpoints
-class StreamingServices(models.Model):
-    provider_id = models.IntegerField(primary_key=True)
-    display_priority = models.IntegerField(blank=True, null=True)
-    logo_path = models.CharField(max_length=200, blank=True, null=True)
-    provider_name = models.CharField(max_length=150, blank=True, null=True)
+# ### EcstaStream DB endpoints
+# class StreamingServices(models.Model):
+#     provider_id = models.IntegerField(primary_key=True)
+#     display_priority = models.IntegerField(blank=True, null=True)
+#     logo_path = models.CharField(max_length=200, blank=True, null=True)
+#     provider_name = models.CharField(max_length=150, blank=True, null=True)
 
-    def __str__(self):
-        return self.provider_name
+#     def __str__(self):
+#         return self.provider_name
 
-    class Meta:
-        managed = False
-        db_table = 'app_streamingservices'
+#     class Meta:
+#         managed = False
+#         db_table = 'app_streamingservices'
 
-class Streamingurls(models.Model):
-    provider_id = models.IntegerField(primary_key=True)
-    url_path = models.CharField(max_length=300, blank=True, null=True)
+# class Streamingurls(models.Model):
+#     provider_id = models.IntegerField(primary_key=True)
+#     url_path = models.CharField(max_length=300, blank=True, null=True)
 
-    class Meta:
-        managed = False
-        db_table = 'app_streamingurls'
+#     class Meta:
+#         managed = False
+#         db_table = 'app_streamingurls'
 
-class Genre(models.Model):
-    id = models.IntegerField(primary_key=True)
-    genre = models.CharField(max_length=50, blank=True, null=True)
+# class Genre(models.Model):
+#     id = models.IntegerField(primary_key=True)
+#     genre = models.CharField(max_length=50, blank=True, null=True)
 
-    def __str__(self):
-        return self.genre
+#     def __str__(self):
+#         return self.genre
 
-    class Meta:
-        managed = False
-        db_table = 'app_genre'
+#     class Meta:
+#         managed = False
+#         db_table = 'app_genre'
 
-class EcstaStreamProfile(models.Model):
-    ec_id = models.BigIntegerField(primary_key=True)
-    user_id = models.OneToOneField(User, on_delete=models.CASCADE)
-    status = models.IntegerField(choices=STATUS, default=0)
-    profile_status = models.IntegerField(choices=PROFILE_STATUS, default=0)
-    follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
+# class EcstaStreamProfile(models.Model):
+#     ec_id = models.BigIntegerField(primary_key=True)
+#     user_id = models.OneToOneField(FahrenheitUser, on_delete=models.CASCADE)
+#     status = models.IntegerField(choices=STATUS, default=0)
+#     profile_status = models.IntegerField(choices=PROFILE_STATUS, default=0)
+#     follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
 
 
-class EcstaStreamPlaylist(models.Model):
-    ec_playlist_id = models.BigAutoField(primary_key=True)
-    created_by = models.OneToOneField(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=50)
-    created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
-    private = models.BooleanField(default=True) #on
-    description = models.TextField(null=True, max_length=150)
-    cover_img = models.ImageField(default='defaultplaylist.png', upload_to='cover_images', null=True)
-    comments = models.TextField(null=True)
-    comments_on = models.BooleanField(default=True) #on
-    playlist_follows = models.ManyToManyField(User, related_name="following", default=None)  
-    share_list = models.ManyToManyField(User, related_name="sharing", default=None)
-    status = models.BooleanField(choices=STATUS, default=0)
+# class EcstaStreamPlaylist(models.Model):
+#     ec_playlist_id = models.BigAutoField(primary_key=True)
+#     created_by = models.OneToOneField(FahrenheitUser, on_delete=models.CASCADE, related_name="playlists")
+#     title = models.CharField(max_length=50)
+#     created_on = models.DateTimeField(auto_now_add=True)
+#     updated_on = models.DateTimeField(auto_now=True)
+#     private = models.BooleanField(default=True) #on
+#     description = models.TextField(null=True, max_length=150)
+#     cover_img = models.ImageField(default='defaultplaylist.png', upload_to='cover_images', null=True)
+#     comments = models.TextField(null=True)
+#     comments_on = models.BooleanField(default=True) #on
+#     playlist_follows = models.ManyToManyField(FahrenheitUser, related_name="following", default=None)  
+#     share_list = models.ManyToManyField(FahrenheitUser, related_name="sharing", default=None)
+#     status = models.BooleanField(choices=STATUS, default=0)
 
-    def __str__(self):
-        return '{} {} {}'.format(self.created_by, self.created_on, self.ec_playlist_id)
+#     def __str__(self):
+#         return '{} {} {}'.format(self.created_by, self.created_on, self.ec_playlist_id)
 
-    def playlist_id(self):
-        return self.created_by
+#     # def playlist_id(self):
+#     #     return ec_playlist_id
 
-    def save(self, *args, **kwargs):
-        super().save()
-        img = Image.open(self.cover_img.path)
+#     def save(self, *args, **kwargs):
+#         super().save()
+#         img = Image.open(self.cover_img.path)
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=["created_by", "ec_playlist_id", "title"], name='user_playlist_constraint')    
-        ]
-        ordering = ['-created_on']
+#     class Meta:
+#         constraints = [
+#             models.UniqueConstraint(fields=["created_by", "ec_playlist_id", "title"], name='user_playlist_constraint')    
+#         ]
+#         ordering = ['-created_on']
 
 
 

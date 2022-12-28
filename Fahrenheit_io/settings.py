@@ -9,6 +9,7 @@ import pprint
 #import djcelery
 from django.conf import settings
 import datetime
+#from app.models import FahrenheitUser
 
 env = environ.Env()
 environ.Env.read_env()
@@ -40,7 +41,7 @@ CORS_ALLOWED_ORIGINS = [
 
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
-INSTALLED_APPS = [
+INSTALLED_APPS = [    
     'app',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -59,6 +60,7 @@ INSTALLED_APPS = [
     #'bootstrap_modal_forms',
     #'djcelery',
 ]
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -94,7 +96,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'Fahrenheit_io.urls'
-
+AUTH_USER_MODEL = 'app.FahrenheitUser'
 # Template configuration
 # https://docs.djangoproject.com/en/2.1/topics/templates/
 TEMPLATES = [

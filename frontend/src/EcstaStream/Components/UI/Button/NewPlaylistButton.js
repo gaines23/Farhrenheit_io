@@ -1,11 +1,27 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import useHttp from "../../../../hooks/use-http";
+import { addPlaylist } from "../../../lib/ec-api";
 
 import CreatePlaylistModal from "../../../Modal/CreatePlaylistModal";
 import { BsPlusLg } from "react-icons/bs";
 
-
 const NewPlaylistButton = () => {
     const [isOpen, setIsOpen] = useState(false);
+
+    const { sendRequest, status } = useHttp(addPlaylist);
+    const history = useHistory();
+
+    useEffect(() => {
+        if (status === 'completed') {
+            history.push('/fahrenheit/ecstastream/playlists');
+        }
+    }, [status, history]);
+
+    const addPlaylistHandler = newPlaylist => {
+        sendRequest(newPlaylist);
+    }
+
 
     return (
         <Fragment>
@@ -22,7 +38,7 @@ const NewPlaylistButton = () => {
                     </div>
                 </button>
             </div>
-            {isOpen && <CreatePlaylistModal setIsOpen={setIsOpen} />}
+            {isOpen && <CreatePlaylistModal setIsOpen={setIsOpen} isLoading={status === 'pending'} onAddPlaylist={addPlaylistHandler} />}
         </Fragment>
     );
 }

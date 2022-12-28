@@ -52,10 +52,10 @@ export async function getGenres() {
 }
 
 
-export async function addPlaylist({newPlayist}) {
+export async function addPlaylist(newPlayist) {
   const response = await fetch(new_playlist_url, {
     method: 'POST',
-    body: JSON.stringify({newPlayist}),
+    body: JSON.stringify(newPlayist),
     headers: {
       'Content-Type': 'application/json',
     },

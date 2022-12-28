@@ -2,14 +2,18 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin import AdminSite
-from .models import FahrenheitUser, Genre, StreamingServices, Streamingurls
+from .models import FahrenheitUser, FahrenheitProfile
+#, Genre, StreamingServices, Streamingurls #EcstaStreamPlaylist
 
 class FahrenheitUserAdmin(admin.ModelAdmin):
-    list_display = ("user", "date_created", "is_active", "last_modified")
+    model = FahrenheitUser
+
 admin.site.register(FahrenheitUser, FahrenheitUserAdmin)
-admin.site.register(Genre)
-admin.site.register(StreamingServices)
-admin.site.register(Streamingurls)
+admin.site.register(FahrenheitProfile)
+#admin.site.register(Genre)
+#admin.site.register(EcstaStreamPlaylist)
+# admin.site.register(StreamingServices)
+# admin.site.register(Streamingurls)
 
 
 # admin.site.register(FavoriteListData)

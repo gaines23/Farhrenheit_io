@@ -55,12 +55,13 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'Fahrenheit_io',
     'multiselectfield',
-
     #'social_django',    
     #'bootstrap_modal_forms',
     #'djcelery',
 ]
-AUTH_USER_MODEL = 'app.FahrenheitUser'
+
+# AUTH_USER_MODEL = 'app.Fahrenheit_Profile'
+# swappable = 'AUTH_USER_MODEL'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

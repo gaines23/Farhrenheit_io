@@ -30,98 +30,18 @@ PROFILE_STATUS = (
 # Profile, Friends, Settings
 
 ### follows => all similiar apps too
-class FahrenheitUser(AbstractUser):
-    user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
-    class Meta(AbstractUser.Meta):
-        swappable = 'AUTH_USER_MODEL'
-
-    def __str__(self):
-        return '{}-{}'.format(self.username, self.user_id)
-
-    def get_id(self):
-        fah_id = int(self.user_id)
-        return fah_id
-
-# class FahrenheitUser(AbstractBaseUser, PermissionsMixin):
-#     pass
-#     user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
-#     username_validator = UnicodeUsernameValidator()
-
-#     username = models.CharField(
-#         _('username'),
-#         max_length=150,
-#         unique=True,
-#         help_text=_('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
-#         validators=[username_validator],
-#         error_messages={
-#             'unique': _("A user with that username already exists."),
-#         },
-#     )
-#     first_name = models.CharField(_('first name'), max_length=150, blank=True)
-#     last_name = models.CharField(_('last name'), max_length=150, blank=True)
-#     email = models.EmailField(_('email address'), blank=True)
-#     is_staff = models.BooleanField(
-#         _('staff status'),
-#         default=False,
-#         help_text=_('Designates whether the user can log into this admin site.'),
-#     )
-#     is_active = models.BooleanField(
-#         _('active'),
-#         default=True,
-#         help_text=_(
-#             'Designates whether this user should be treated as active. '
-#             'Unselect this instead of deleting accounts.'
-#         ),
-#     )
-#     date_joined = models.DateTimeField(_('date joined'), auto_now=True)
-
-#     EMAIL_FIELD = 'email'
-#     USERNAME_FIELD = 'username'
-#     REQUIRED_FIELDS = ['email']
-
-#     class Meta:
-#         verbose_name = 'fahrenheit_user'
-#         verbose_name_plural = 'fahrenheit_users'
-#         abstract = True
-
-#     def clean(self):
-#         super().clean()
-#         self.email = self.__class__.objects.normalize_email(self.email)
-
-#     def get_full_name(self):
-#         """
-#         Return the first_name plus the last_name, with a space in between.
-#         """
-#         full_name = '%s %s' % (self.first_name, self.last_name)
-#         return full_name.strip()
-
-#     def get_short_name(self):
-#         """Return the short name for the user."""
-#         return self.first_name
-
-#     def __str__(self):
-#         return '{}-{}'.format(self.username, self.user_id)
-
-#     def get_id(self):
-#         fah_id = int(self.user_id)
-#         return fah_id
-
-class FahrenheitProfile(models.Model):
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+class Fahrenheit_Profile(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_acct_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     bio = models.CharField(max_length=250, blank=True, null=True)
     prof_pic = models.ImageField(default='default.png', upload_to='profile_images', null=True)
     apps_following = ArrayField(models.IntegerField(), blank=True, null=True) ## user.objects.contains=[1, 2, 3]
-    date_created = models.DateTimeField(auto_now=True)
     last_modified = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=True) # profile setting, user can still be active without profile (techincally)
-    status = status = models.IntegerField(choices=STATUS, default=0)
-    profile_status = models.IntegerField(choices=PROFILE_STATUS, default=0)
+    profile_status = models.IntegerField(choices=PROFILE_STATUS, default=0) # profile public/private -> user choses
     follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
 
     def __str__(self):
-        return '{}'.format(self.user_id)
+        return '{}-{}'.format(self.user_id, self.user_acct_id)
 
     def save(self, *args, **kwargs):
         super().save()
@@ -133,6 +53,14 @@ class FahrenheitProfile(models.Model):
             img.thumbnail(new_img)
             img.save(self.prof_pic.path)
 
+    def get_user_id(self):
+        id = self.user_acct_id
+        return str(id)
+    
+    class Meta:
+        db_table = 'app_fahrenheit_profile'
+
+    
 
 # ### EcstaStream DB endpoints
 # class StreamingServices(models.Model):

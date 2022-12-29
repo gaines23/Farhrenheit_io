@@ -1,56 +1,53 @@
-# from rest_framework import serializers
-# from django.contrib.auth.models import User
-# from .models import (
-#     StreamingServices,
-#     Genre,
-#     FahrenheitUser,
-#     # EcstaStreamPlaylist,
-#     # EcstaStreamProfile
-# )
-# from django.contrib.auth.hashers import make_password
-# from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework import serializers
+from django.contrib.auth.models import User
+from .models import (
+    # StreamingServices,
+    # Genre,
+    Fahrenheit_Profile,
+    # EcstaStreamPlaylist,
+    # EcstaStreamProfile
+)
+from django.contrib.auth.hashers import make_password
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+class NewTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        return token
 
-# class NewTokenObtainSerializer(TokenObtainPairSerializer):
-#     @classmethod
-#     def get_token(cls, fahrenheit_user):
-#         token = super(NewTokenObtainSerializer, cls).get_token(fahrenheit_user)
+class UserSerializer(serializers.ModelSerializer):
+    date_created = serializers.DateTimeField(read_only=True)
 
-#         token['id'] = fahrenheit_user.id
-#         return token
+    class Meta:
+        model = Fahrenheit_Profile
+        exclude = ('password', )
 
-# class UserSerializer(serializers.ModelSerializer):
-#     date_created = serializers.DateTimeField(read_only=True)
+class UserCreateSerializer(serializers.ModelSerializer):
+    password1 = serializers.CharField(write_only=True)
+    password2 = serializers.CharField(write_only=True)
 
-#     class Meta:
-#         model = FahrenheitUser
-#         exclude = ('password', )
+    def validate(self, data):
+        if data['password1'] != data['password2']:
+            raise serializers.ValidationError('Passwords must match!')
+        return data
 
-# class UserCreateSerializer(serializers.ModelSerializer):
-#     password1 = serializers.CharField(write_only=True)
-#     password2 = serializers.CharField(write_only=True)
+    def create(self, validated_data):
+        data = {
+            key: value for key, value in validated_data.items()
+            if key not in ('password1', 'password2')
+        }
 
-#     def validate(self, data):
-#         if data['password1'] != data['password2']:
-#             raise serializers.ValidationError('Passwords must match!')
-#         return data
+        data['password'] = make_password(validated_data['password1'])
 
-#     def create(self, validated_data):
-#         data = {
-#             key: value for key, value in validated_data.items()
-#             if key not in ('password1', 'password2')
-#         }
-
-#         data['password'] = make_password(validated_data['password1'])
-
-#         return FahrenheitUser.objects.create(**data)
+        return User.objects.create(**data)
     
-#     class Meta:
-#         model = FahrenheitUser
-#         fields = (
-#             'id', 'username', 'email', 'password1', 'password2'
-#         )
-#         read_only_fields = ('id',)
+    class Meta:
+        model = User
+        fields = (
+            'id', 'username', 'email', 'password1', 'password2'
+        )
+        read_only_fields = ('id',)
 
 # class UserUpdatePassword(serializers.Serializer):
 #     model = FahrenheitUser

@@ -49,8 +49,8 @@ const LoginForm = () => {
                         throw new Error(errorMessage);
                     });
                 }
-            }).then((data) => {
-                authCtx.login(data.access, data.refresh);
+            }).then((data) => {   
+                authCtx.login(data.access, data.refresh, data.fah_user_id);
                 history.replace('/fahrenheit/user-profile/');
             })
             .catch((err) => {

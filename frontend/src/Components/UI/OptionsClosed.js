@@ -22,7 +22,7 @@ const OptionsClosed = () => {
 
     useEffect(() => {
         if (status === 'completed' || !error) {
-            history.replace('/fahrenheit');
+            history.replace('/fahrenheit/user/login/');
         }
     }, []);
     

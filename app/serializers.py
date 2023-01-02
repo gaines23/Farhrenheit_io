@@ -1,31 +1,31 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import (
-    # StreamingServices,
-    # Genre,
-    Fahrenheit_Profile,
-    # EcstaStreamPlaylist,
-    # EcstaStreamProfile
+    CustomUser,
+    User_Following,
+    User_App_Following,
+    Follow_Request,
+    User_App_Following,
+    Fahrenheit_App_List,
+    StreamingServices,
+    Genre,
+    EcstaStreamPlaylist,
+    EcstaStreamProfile,
 )
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+        
 class NewTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
         return token
 
-class UserSerializer(serializers.ModelSerializer):
-    date_created = serializers.DateTimeField(read_only=True)
-
-    class Meta:
-        model = Fahrenheit_Profile
-        exclude = ('password', )
 
 class UserCreateSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
-    password2 = serializers.CharField(write_only=True)
+    password2 = serializers.CharField(write_only=True)    
 
     def validate(self, data):
         if data['password1'] != data['password2']:
@@ -40,42 +40,91 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
         data['password'] = make_password(validated_data['password1'])
 
-        return User.objects.create(**data)
+        return CustomUser.objects.create(**data)
     
     class Meta:
-        model = User
+        model = CustomUser
         fields = (
             'id', 'username', 'email', 'password1', 'password2'
         )
         read_only_fields = ('id',)
 
-# class UserUpdatePassword(serializers.Serializer):
-#     model = FahrenheitUser
-
-#     old_password = serializers.CharField(required=True)
-#     new_password = serializers.CharField(required=True)
 
 
+class UserUpdatePassword(serializers.Serializer):
+    model = CustomUser
 
-# # class EcCreateNewUser(serializers.Serializer):
-# #     model = EcstaStreamProfile
-# #     fields = '__all__'
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
+
+class UserSerializer(serializers.ModelSerializer):
+    date_created = serializers.DateTimeField(read_only=True)
+
+    user_following = serializers.SerializerMethodField()
+    user_followers = serializers.SerializerMethodField()
+    user_apps = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CustomUser
+        exclude = ('password', )
+    
+    def get_user_following(self, obj):
+        return FollowingSerializer(obj.user_following.all(), many=True).data
+
+    def get_user_followers(self, obj):
+        return FollowersSerializer(obj.user_followers.all(), many=True).data
+
+    def get_apps_following(self, obj):
+        return AppFollowingSerializer(obj.following_app.all(), many=True).data
+
+    def get_apps_user_created(self, obj):
+        return CreateNewAppSerializer(obj.app_created_by.all(), many=True).data
+
+class FollowingSerializer(serializers.ModelField):
+    model = User_Following
+    fields = ('id', 'following_user_id', 'date_added')
+
+class FollowersSerializer(serializers.ModelField):
+    model = User_Following
+    fields = ('id', 'user', 'date_added')
+
+class AppFollowingSerializer(serializers.ModelField):
+    model = User_App_Following
+    fields = ('id', 'following_app_id', 'date_added')
+
+
+
+class CreateNewAppSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Fahrenheit_App_List
+        fields = ['created_by', 'app_name', 'app_base_link', 'app_icon']
+        read_only_fields = ('created_by',)
+
+
+
+
+
+
+class EcCreateNewUser(serializers.ModelSerializer):
+    model = EcstaStreamProfile
+    fields = ('id', 'user_id')
+    read_only_fields = ('id',)
     
 
-# # class EcCreatePlaylist(serializers.ModelSerializer):
-# #     created_by = serializers.Field(source=User.id, required=True)
+class EcCreatePlaylist(serializers.ModelSerializer):
 
-# #     class Meta:
-# #         model = EcstaStreamPlaylist
-# #         fields = ('created_by', 'title', 'private', 'description') #playlist_follows
+    class Meta:
+        model = EcstaStreamPlaylist
+        fields = ('created_by', 'title', 'private', 'description') #playlist_follows
     
 
-# class StreamingServicesSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = StreamingServices
-#         fields = ('provider_id', 'logo_path', 'provider_name')
+class StreamingServicesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StreamingServices
+        fields = ('provider_id', 'logo_path', 'provider_name')
 
-# class GenreSerlializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Genre
-#         fields = ('id', 'genre')
+class GenreSerlializer(serializers.ModelSerializer):
+    class Meta:
+        model = Genre
+        fields = ('id', 'genre')

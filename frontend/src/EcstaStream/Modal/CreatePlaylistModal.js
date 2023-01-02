@@ -17,12 +17,13 @@ const CreatePlaylistModal = (props) => {
 
     const submitPlaylistForm = (e) => {
         e.preventDefault();
-
+        
+        let created_by = localStorage.getItem('fah_id');
         const enteredTitle = titleRef.current.value;
         const enteredDesc = descRef.current.value;
         const enteredPrivate = privateRef.current;
 
-        props.onAddPlaylist( { title: enteredTitle, description: enteredDesc, private: enteredPrivate } );
+        props.onAddPlaylist( { created_by: created_by, title: enteredTitle, description: enteredDesc, private: enteredPrivate } );
     }
 
 

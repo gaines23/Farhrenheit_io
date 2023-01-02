@@ -1,5 +1,4 @@
 // Profile, Friends, Likes, Comments, Lists, Msgs, etc
-let login_url = process.env.REACT_APP_FAHRENHEIT_LOGIN;
 let register_url = process.env.REACT_APP_FAHRENHEIT_REGISTER;
 let logout_url = process.env.REACT_APP_FAHRENHEIT_LOGOUT;
 

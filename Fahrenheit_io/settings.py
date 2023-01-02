@@ -39,6 +39,10 @@ CORS_ALLOWED_ORIGINS = [
      'http://localhost:3000',
 ]
 
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000',
+)
+
 # Application references
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-INSTALLED_APPS
 INSTALLED_APPS = [    
@@ -60,7 +64,7 @@ INSTALLED_APPS = [
     #'djcelery',
 ]
 
-# AUTH_USER_MODEL = 'app.Fahrenheit_Profile'
+AUTH_USER_MODEL = 'app.CustomUser'
 # swappable = 'AUTH_USER_MODEL'
 
 REST_FRAMEWORK = {
@@ -79,9 +83,7 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
-CORS_ORIGIN_WHITELIST = (
-    'localhost:3000',
-)
+
 
 # Middleware framework
 # https://docs.djangoproject.com/en/2.1/topics/http/middleware/

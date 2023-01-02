@@ -28,20 +28,26 @@ PROFILE_STATUS = (
 
 ## Fahrenheit endpoints
 # Profile, Friends, Settings
+class BaseModel(models.Model):
+    """Base model for the application. Uses UUID for pk."""
+    id = models.UUIDField(
+        primary_key=True,
+        editable=False,
+        default=uuid.uuid4,
+    )
+
+    class Meta:
+        abstract = True
 
 ### follows => all similiar apps too
-class Fahrenheit_Profile(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    user_acct_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+class CustomUser(BaseModel, AbstractUser):
     bio = models.CharField(max_length=250, blank=True, null=True)
     prof_pic = models.ImageField(default='default.png', upload_to='profile_images', null=True)
-    apps_following = ArrayField(models.IntegerField(), blank=True, null=True) ## user.objects.contains=[1, 2, 3]
     last_modified = models.DateTimeField(auto_now=True)
     profile_status = models.IntegerField(choices=PROFILE_STATUS, default=0) # profile public/private -> user choses
-    follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
 
     def __str__(self):
-        return '{}-{}'.format(self.user_id, self.user_acct_id)
+        return '{}'.format(self.username)
 
     def save(self, *args, **kwargs):
         super().save()
@@ -54,85 +60,133 @@ class Fahrenheit_Profile(models.Model):
             img.save(self.prof_pic.path)
 
     def get_user_id(self):
-        id = self.user_acct_id
+        id = self.id
         return str(id)
     
     class Meta:
         db_table = 'app_fahrenheit_profile'
 
+class Fahrenheit_App_List(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    created_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='app_created_by')
+    app_name = models.CharField(max_length=125, null=True, blank=True)
+    app_base_link = models.CharField(
+        max_length=100, 
+        null=True, 
+        blank=True,
+        help_text='Ex: /app_name/'
+    )
+    app_icon = models.ImageField(default='defaultplaylist.png', upload_to='app_icons', null=True)
+    date_added = models.DateTimeField(auto_now=True)
+    app_status = models.IntegerField(choices=PROFILE_STATUS, default=0) # user chooses public/private
+    internal_app_status = models.IntegerField(choices=STATUS, default=0) # fahrenheit chooses status
+
+    def __str__(self):
+        return self.app_name
+
+    def save(self, *args, **kwargs):
+        super().save()
+
+        img = Image.open(self.app_icon.path)
     
+        if img.height > 100 or img.width > 100:
+            new_img = (100, 100)
+            img.thumbnail(new_img)
+            img.save(self.app_icon.path)
 
-# ### EcstaStream DB endpoints
-# class StreamingServices(models.Model):
-#     provider_id = models.IntegerField(primary_key=True)
-#     display_priority = models.IntegerField(blank=True, null=True)
-#     logo_path = models.CharField(max_length=200, blank=True, null=True)
-#     provider_name = models.CharField(max_length=150, blank=True, null=True)
+    class Meta:
+        db_table = 'app_fahrenheit_app_list'
 
-#     def __str__(self):
-#         return self.provider_name
+### User Following Actions ###
+class User_Following(models.Model):
+    user = models.ForeignKey(CustomUser, related_name="user_following", on_delete=models.CASCADE)
+    following_user_id = models.ForeignKey(CustomUser, related_name="user_followers", on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now=True)
 
-#     class Meta:
-#         managed = False
-#         db_table = 'app_streamingservices'
+class User_App_Following(models.Model):
+    user = models.ForeignKey(CustomUser, related_name="following_app", on_delete=models.CASCADE)
+    following_app_id = models.ForeignKey(Fahrenheit_App_List, related_name="apps", on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now=True)
 
-# class Streamingurls(models.Model):
-#     provider_id = models.IntegerField(primary_key=True)
-#     url_path = models.CharField(max_length=300, blank=True, null=True)
-
-#     class Meta:
-#         managed = False
-#         db_table = 'app_streamingurls'
-
-# class Genre(models.Model):
-#     id = models.IntegerField(primary_key=True)
-#     genre = models.CharField(max_length=50, blank=True, null=True)
-
-#     def __str__(self):
-#         return self.genre
-
-#     class Meta:
-#         managed = False
-#         db_table = 'app_genre'
-
-# class EcstaStreamProfile(models.Model):
-#     ec_id = models.BigIntegerField(primary_key=True)
-#     user_id = models.OneToOneField(FahrenheitUser, on_delete=models.CASCADE)
-#     status = models.IntegerField(choices=STATUS, default=0)
-#     profile_status = models.IntegerField(choices=PROFILE_STATUS, default=0)
-#     follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
+class Follow_Request(models.Model):
+    from_user = models.ForeignKey(CustomUser, related_name='from_user', on_delete=models.CASCADE)
+    to_user = models.ForeignKey(CustomUser, related_name='to_user', on_delete=models.CASCADE)
+    date_requested = models.DateTimeField(auto_now=True)
 
 
-# class EcstaStreamPlaylist(models.Model):
-#     ec_playlist_id = models.BigAutoField(primary_key=True)
-#     created_by = models.OneToOneField(FahrenheitUser, on_delete=models.CASCADE, related_name="playlists")
-#     title = models.CharField(max_length=50)
-#     created_on = models.DateTimeField(auto_now_add=True)
-#     updated_on = models.DateTimeField(auto_now=True)
-#     private = models.BooleanField(default=True) #on
-#     description = models.TextField(null=True, max_length=150)
-#     cover_img = models.ImageField(default='defaultplaylist.png', upload_to='cover_images', null=True)
-#     comments = models.TextField(null=True)
-#     comments_on = models.BooleanField(default=True) #on
-#     playlist_follows = models.ManyToManyField(FahrenheitUser, related_name="following", default=None)  
-#     share_list = models.ManyToManyField(FahrenheitUser, related_name="sharing", default=None)
-#     status = models.BooleanField(choices=STATUS, default=0)
 
-#     def __str__(self):
-#         return '{} {} {}'.format(self.created_by, self.created_on, self.ec_playlist_id)
 
-#     # def playlist_id(self):
-#     #     return ec_playlist_id
+### EcstaStream DB endpoints
+class StreamingServices(models.Model):
+    provider_id = models.IntegerField(primary_key=True)
+    display_priority = models.IntegerField(blank=True, null=True)
+    logo_path = models.CharField(max_length=200, blank=True, null=True)
+    provider_name = models.CharField(max_length=150, blank=True, null=True)
 
-#     def save(self, *args, **kwargs):
-#         super().save()
-#         img = Image.open(self.cover_img.path)
+    def __str__(self):
+        return self.provider_name
 
-#     class Meta:
-#         constraints = [
-#             models.UniqueConstraint(fields=["created_by", "ec_playlist_id", "title"], name='user_playlist_constraint')    
-#         ]
-#         ordering = ['-created_on']
+    class Meta:
+        managed = False
+        db_table = 'app_streamingservices'
+
+class Streamingurls(models.Model):
+    provider_id = models.IntegerField(primary_key=True)
+    url_path = models.CharField(max_length=300, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'app_streamingurls'
+
+class Genre(models.Model):
+    id = models.IntegerField(primary_key=True)
+    genre = models.CharField(max_length=50, blank=True, null=True)
+
+    def __str__(self):
+        return self.genre
+
+    class Meta:
+        managed = False
+        db_table = 'app_genre'
+
+class EcstaStreamProfile(models.Model):
+    ec_id = models.BigAutoField(primary_key=True)
+    user_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    status = models.IntegerField(choices=STATUS, default=0)
+    profile_status = models.IntegerField(choices=PROFILE_STATUS, default=0)
+#    follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
+
+
+class EcstaStreamPlaylist(models.Model):
+    ec_playlist_id = models.BigAutoField(primary_key=True)
+    created_by = models.OneToOneField(EcstaStreamProfile, on_delete=models.CASCADE, related_name="playlists")
+    title = models.CharField(max_length=50)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    private = models.BooleanField(default=True) #on
+    description = models.TextField(null=True, max_length=150)
+    cover_img = models.ImageField(default='defaultplaylist.png', upload_to='cover_images', null=True)
+    comments = models.TextField(null=True)
+    comments_on = models.BooleanField(default=True) #on
+    playlist_follows = models.ManyToManyField(CustomUser, related_name="playlist_following", default=None)  
+    share_list = models.ManyToManyField(CustomUser, related_name="sharing", default=None)
+    status = models.BooleanField(choices=STATUS, default=0)
+
+    def __str__(self):
+        return '{} {} {}'.format(self.created_by, self.created_on, self.ec_playlist_id)
+
+    # def playlist_id(self):
+    #     return ec_playlist_id
+
+    def save(self, *args, **kwargs):
+        super().save()
+        img = Image.open(self.cover_img.path)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["created_by", "ec_playlist_id", "title"], name='user_playlist_constraint')    
+        ]
+        ordering = ['-created_on']
 
 
 

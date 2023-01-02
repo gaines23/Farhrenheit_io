@@ -2,25 +2,63 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin import AdminSite
-from .models import Fahrenheit_Profile #, Fahrenheit_Profile
-#, Genre, StreamingServices, Streamingurls #EcstaStreamPlaylist
+from .models import (
+    Fahrenheit_App_List,
+    CustomUser,
+    User_Following,
+    User_App_Following,
+    Follow_Request,
+    Genre,
+    StreamingServices,
+    Streamingurls,
+    EcstaStreamProfile,
+    EcstaStreamPlaylist,
+)
+
+class FahrenheitAppListAdmin(admin.ModelAdmin):
+    model = Fahrenheit_App_List
+    list_display = ['id', 'app_name', 'created_by', 'date_added', 'internal_app_status', 'app_base_link']
+    search_fields = ['app_name']
+    ordering = ['date_added']
+    list_filter = ['date_added']
+admin.site.register(Fahrenheit_App_List, FahrenheitAppListAdmin)
 
 class FahrenheitUserAdmin(admin.ModelAdmin):
-    model = Fahrenheit_Profile
-    readonly_fields = ['user_acct_id']
-admin.site.register(Fahrenheit_Profile, FahrenheitUserAdmin)
-
-# class FahrenheitProfileAdmin(admin.ModelAdmin):
-#     model = Fahrenheit_Profile
-#     fields = ['user_id', 'last_modified', 'status', 'is_active', 'date_created']
-# admin.site.register(Fahrenheit_Profile, FahrenheitProfileAdmin)
+    model = CustomUser
+    list_display = ['username', 'id', 'date_joined', 'last_modified', ]
+    readonly_fields = ['id']
+    search_fields = ['username', 'email', 'first_name', 'last_name']
+    ordering = ['date_joined']
+admin.site.register(CustomUser, FahrenheitUserAdmin)
 
 
+class UserFollowingAdmin(admin.ModelAdmin):
+    model = User_Following
+    list_display = ['user', 'following_user_id', 'date_added']
+    search_fields = ['user']
+    order = ['date_added']
+    list_filter = ['date_added']
+admin.site.register(User_Following, UserFollowingAdmin)
 
-#admin.site.register(Genre)
-#admin.site.register(EcstaStreamPlaylist)
-# admin.site.register(StreamingServices)
-# admin.site.register(Streamingurls)
+class UserAppFollowingAdmin(admin.ModelAdmin):
+    model = User_App_Following
+    list_display = ['user', 'following_app_id', 'date_added']
+    search_fields = ['user']
+    order = ['date_added']
+    list_filter = ['date_added']
+admin.site.register(User_App_Following, UserAppFollowingAdmin)
+
+admin.site.register(Follow_Request)
+
+admin.site.register(EcstaStreamProfile)
+
+admin.site.register(Genre)
+
+admin.site.register(EcstaStreamPlaylist)
+
+admin.site.register(StreamingServices)
+
+admin.site.register(Streamingurls)
 
 
 # admin.site.register(FavoriteListData)

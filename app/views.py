@@ -6,25 +6,41 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from .forms import *
 import environ
-from .models import Fahrenheit_Profile
+from .models import (
+    CustomUser,
+    User_Following,
+    User_App_Following,
+    Fahrenheit_App_List,
+    EcstaStreamProfile,
+    Genre,
+    StreamingServices
+)
 from .serializers import (
+    CreateNewAppSerializer,
     NewTokenObtainPairSerializer,
     UserCreateSerializer,
-    # StreamingServicesSerializer,
-    # GenreSerlializer,
+    StreamingServicesSerializer,
+    GenreSerlializer,
     UserSerializer,
+    FollowingSerializer,
+    FollowersSerializer,
+    AppFollowingSerializer,
+    CreateNewAppSerializer,
     # UserUpdatePassword,
-    # EcCreatePlaylist
+    EcCreateNewUser,
+    EcCreatePlaylist
 )
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets
+from rest_framework.serializers import ModelSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
+import uuid
 
 env = environ.Env()
 environ.Env.read_env()
@@ -33,6 +49,7 @@ environ.Env.read_env()
     # permission_classes = [IsAuthenticated]
 
 ## env\Scripts\activate
+
 
 class NewTokenObtainPairView(TokenObtainPairView):
     serializer_class = NewTokenObtainPairSerializer
@@ -43,16 +60,16 @@ class UserCreate(APIView):
         if serializer.is_valid():
             user = serializer.save()
             if user:
-                Fahrenheit_Profile.objects.create(user_id=user)
                 return Response(json, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserProfile(APIView):
-    permission_classes = [IsAuthenticated]
+   # permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        user = UserSerializer(request.Fahrenheit_Profile)
-        return Response(user.data)
+        user = CustomUser.objects.get(id='7a20448e-b5f4-465b-8a9a-af2694e0984a')
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class UserLogout(APIView):
     permission_classes = [IsAuthenticated]
@@ -61,7 +78,7 @@ class UserLogout(APIView):
         try:
             if self.request.data.get('all'):
                 token: OutstandingToken
-                for token in OutstandingToken.objects.filter(user=request.user.id):
+                for token in OutstandingToken.objects.filter(user=request.CustomUser.id):
                     _, _ = BlacklistedToken.objects.get_or_create(token=token)
                 return Response(status=status.HTTP_205_RESET_CONTENT)
             refresh_token = self.request.data.get('refresh_token')
@@ -73,10 +90,43 @@ class UserLogout(APIView):
 
 class UsersList(APIView):
     def get(self, request, *args, **kwargs):
-        users = Fahrenheit_Profile.objects.all()
+        users = CustomUser.objects.filter(id=self.request.id)
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+
+class AppListView(viewsets.ModelViewSet):
+    serializer_class = CreateNewAppSerializer
+    queryset = Fahrenheit_App_List.objects.all()
+
+
+class CreateNewApp(APIView):
+    def post(self, request):
+        app = Fahrenheit_App_List.objects.create(data=request.data)
+        serlialzer = CreateNewAppSerializer(app)
+        return Response(serlialzer.data, status=status.HTTP_200_OK)
+
+
+class UserFollowing(viewsets.ModelViewSet):
+    serializer_class = FollowingSerializer
+    queryset = User_Following.objects.all()
+
+class UserFollowers(viewsets.ModelViewSet):
+    serializer_class = FollowersSerializer
+    queryset = User_Following.objects.all()
+
+class AppFollowing(APIView):
+    def get(self):
+        user = CustomUser.objects.get(id='7a20448e-b5f4-465b-8a9a-af2694e0984a')
+        serializer = AppFollowingSerializer(id=user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # def get(self):
+    #     queryset = User_App_Following.objects.all()
+    #     serializer = AppFollowingSerializer(queryset, many=True)
+    #     return serializer
+    
 
 
 
@@ -96,53 +146,48 @@ class UsersList(APIView):
 #             if not
 
 
-# class NewEcstaStreamUser(APIView):
-#     def post(self, request, format='json'):
-#         serializer = UserCreateSerializer(created_by=request.user)
-#         if serializer.is_valid():
-#             user = serializer.save()
-#             if user:
-#                 return Response(json, status=status.HTTP_201_CREATED)
-#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class CreateEcstaStreamUser(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        create_user = EcCreateNewUser(user_id=request.data)
+        if create_user.is_valid():
+            user = create_user.save()
+            if user:
+                return Response(json, status=status.HTTP_201_CREATED)
+            return Response(create_user.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# class CreatePlaylist(APIView):
-#     permission_classes = [IsAuthenticated]
+class CreatePlaylist(APIView):
+    #permission_classes = [IsAuthenticated]
 
-#     def get(self):
-#         user = self.request.FahrenheitUser
-#         return user
-
-#     def post(self, request, format='json'):
-#         #request.data._mutable = True
-#         # data = request.data
-#         # data['created_by'] = self.request.user.id
-#         #request.data._mutable = False
-#         serializer = EcCreatePlaylist(data=request.data)
-#         if serializer.is_valid():
-#             playlist = serializer.save()
-#             if playlist:
-#                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request, format='json'):
+        serializer = EcCreatePlaylist(data=request.data)
+        if serializer.is_valid():
+            created_by = uuid.UUID(serializer['created_by']).hex
+            playlist = serializer.save(created_by)
+            if playlist:
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
 
-# class StreamingList(APIView):
-#     #permission_classes = [permissions.IsAdminUser]
+class StreamingList(APIView):
+    #permission_classes = [permissions.IsAdminUser]
 
-#     ### GET ###
-#     def get(self, request, *args, **kwargs):
-#         services = StreamingServices.objects.all()
-#         serializer = StreamingServicesSerializer(services, many=True)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
+    ### GET ###
+    def get(self, request, *args, **kwargs):
+        services = StreamingServices.objects.all()
+        serializer = StreamingServicesSerializer(services, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-# class AllGenreList(APIView):
+class AllGenreList(APIView):
 
-#     def get(self, request, *args, **kwargs):
-#         services = Genre.objects.all()
-#         serializer = GenreSerlializer(services, many=True)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
+    def get(self, request, *args, **kwargs):
+        services = Genre.objects.all()
+        serializer = GenreSerlializer(services, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 # class SingleGenre(APIView):
 #     def get(self, requests, *args, **kwargs):

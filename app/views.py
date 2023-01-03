@@ -21,7 +21,8 @@ from .serializers import (
     UserCreateSerializer,
     StreamingServicesSerializer,
     GenreSerlializer,
-    UserSerializer,
+    UserProfileSerializer,
+    AllUsersList,
     FollowingSerializer,
     FollowersSerializer,
     AppFollowingSerializer,
@@ -63,13 +64,25 @@ class UserCreate(APIView):
                 return Response(json, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class UserProfile(APIView):
-   # permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        user = CustomUser.objects.get(id='7a20448e-b5f4-465b-8a9a-af2694e0984a')
-        serializer = UserSerializer(user)
+
+class UserProfile(APIView):
+    def get(self, request, *args, **kwargs):
+        user = CustomUser.objects.get(id=self.request.id)# self.request.id'7a20448e-b5f4-465b-8a9a-af2694e0984a'
+        serializer = UserProfileSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
+class UsersList(APIView):
+    def get(self, *args):
+        user = CustomUser.objects.all()
+        serializer = AllUsersList(user, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
 
 class UserLogout(APIView):
     permission_classes = [IsAuthenticated]
@@ -88,17 +101,7 @@ class UserLogout(APIView):
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-class UsersList(APIView):
-    def get(self, request, *args, **kwargs):
-        users = CustomUser.objects.filter(id=self.request.id)
-        serializer = UserSerializer(users, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
-
-
-class AppListView(viewsets.ModelViewSet):
-    serializer_class = CreateNewAppSerializer
-    queryset = Fahrenheit_App_List.objects.all()
 
 
 class CreateNewApp(APIView):
@@ -108,19 +111,63 @@ class CreateNewApp(APIView):
         return Response(serlialzer.data, status=status.HTTP_200_OK)
 
 
-class UserFollowing(viewsets.ModelViewSet):
-    serializer_class = FollowingSerializer
-    queryset = User_Following.objects.all()
+class UserAppFollowing(APIView):
+    def get(self, request, *args):
+        app = User_App_Following.objects.filter(user=self.request.id)#self.request.id
+        serializer = AppFollowingSerializer(app, many=True).data
+        return Response(serializer, status=status.HTTP_200_OK)
 
-class UserFollowers(viewsets.ModelViewSet):
-    serializer_class = FollowersSerializer
-    queryset = User_Following.objects.all()
-
-class AppFollowing(APIView):
-    def get(self):
-        user = CustomUser.objects.get(id='7a20448e-b5f4-465b-8a9a-af2694e0984a')
-        serializer = AppFollowingSerializer(id=user)
+    def post(self, request):
+        app = User_App_Following.objects.create(user=self.request.id)
+        serializer = AppFollowingSerializer(app)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def delete(self, request):
+        app = User_App_Following.objects.get(id=id).delete()
+        return Response(app, status=status.HTTP_200_OK)
+
+
+
+class UserFollowing(APIView):
+    def get(self, request, *args):
+        app = User_Following.objects.filter(user=self.request.id)#self.request.id
+        serializer = FollowingSerializer(app, many=True).data
+        return Response(serializer, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        app = User_Following.objects.create(user=self.request.id)
+        serializer = FollowingSerializer(app)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def delete(self, request):
+        app = User_Following.objects.get(id=id).delete()
+        return Response(app, status=status.HTTP_200_OK)
+
+
+
+class UserFollowers(APIView):
+    def get(self, request, *args):
+        app = User_Following.objects.filter(user=self.request.id)#self.request.id
+        serializer = FollowersSerializer(app, many=True).data
+        return Response(serializer, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        app = User_Following.objects.create(user=self.request.id)
+        serializer = FollowersSerializer(app)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def delete(self, request):
+        app = User_Following.objects.get(id=id).delete()
+        return Response(app, status=status.HTTP_200_OK)
+
+
+
+
+
+
+
+
+
 
     # def get(self):
     #     queryset = User_App_Following.objects.all()

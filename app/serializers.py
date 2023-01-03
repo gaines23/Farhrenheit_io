@@ -58,12 +58,13 @@ class UserUpdatePassword(serializers.Serializer):
     new_password = serializers.CharField(required=True)
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserProfileSerializer(serializers.ModelSerializer):
     date_created = serializers.DateTimeField(read_only=True)
 
     user_following = serializers.SerializerMethodField()
     user_followers = serializers.SerializerMethodField()
-    user_apps = serializers.SerializerMethodField()
+    user_apps_following = serializers.SerializerMethodField()
+    apps_user_created = serializers.SerializerMethodField()
 
     class Meta:
         model = CustomUser
@@ -75,30 +76,39 @@ class UserSerializer(serializers.ModelSerializer):
     def get_user_followers(self, obj):
         return FollowersSerializer(obj.user_followers.all(), many=True).data
 
-    def get_apps_following(self, obj):
+    def get_user_apps_following(self, obj):
         return AppFollowingSerializer(obj.following_app.all(), many=True).data
 
     def get_apps_user_created(self, obj):
         return CreateNewAppSerializer(obj.app_created_by.all(), many=True).data
 
-class FollowingSerializer(serializers.ModelField):
-    model = User_Following
-    fields = ('id', 'following_user_id', 'date_added')
 
-class FollowersSerializer(serializers.ModelField):
-    model = User_Following
-    fields = ('id', 'user', 'date_added')
+class AllUsersList(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('id', 'username', 'first_name', 'last_name', 'date_joined')
 
-class AppFollowingSerializer(serializers.ModelField):
-    model = User_App_Following
-    fields = ('id', 'following_app_id', 'date_added')
+class FollowingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User_Following
+        fields = ('id', 'following_user_id', 'date_added')
+
+class FollowersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User_Following
+        fields = ('id', 'user', 'date_added')
+
+class AppFollowingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User_App_Following
+        fields = ('id', 'following_app_id', 'date_added')
 
 
 
 class CreateNewAppSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fahrenheit_App_List
-        fields = ['created_by', 'app_name', 'app_base_link', 'app_icon']
+        fields = ('created_by', 'app_name', 'app_base_link', 'app_icon')
         read_only_fields = ('created_by',)
 
 

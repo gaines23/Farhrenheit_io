@@ -64,28 +64,4 @@ export async function getUserProfile(token) {
 }
 
 
-export async function getUserDetails(token) {
-    const response = await fetch(`${profile_url}`,{ 
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
-    });
-
-    const data = await response.json();
-    
-    if (!response.ok) {
-        throw new Error(response.status_message);
-    }
-
-    let username = await data.username;
-
-    const userDetails = {
-        username,
-    }
-
-    return userDetails;
-}
-
 

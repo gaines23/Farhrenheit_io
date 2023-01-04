@@ -45,7 +45,9 @@ const AppListOpen = () => {
                              </div>
                         </NavLink>
                     </li>
-                    <li className={OpenNavListClass}>
+
+
+                    {/* <li className={OpenNavListClass}>
                         <NavLink 
                             to={'/fahrenheit/the-anime-wire/'} 
                             className={linkClassName}
@@ -61,7 +63,9 @@ const AppListOpen = () => {
                                 </p>
                              </div>
                         </NavLink>
-                    </li>
+                    </li> */}
+
+
                 </ul>
             </div>
         </Fragment>

@@ -2,6 +2,7 @@ from django.urls import path, include
 from app.views import (
     UserCreate,
     CreateNewApp,
+    AppList,
     UserAppFollowing,
     StreamingList,
     AllGenreList,
@@ -30,6 +31,7 @@ urlpatterns = [
     path('users-list/', UsersList.as_view()),
 
     ### User Apps ###
+    path('app-list/', AppList.as_view()),
     path('user/add-new-app/', CreateNewApp.as_view()),  ### Create New App Form ###
     path('user/app-following/', UserAppFollowing.as_view()),
 

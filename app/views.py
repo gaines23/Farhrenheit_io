@@ -27,6 +27,7 @@ from .serializers import (
     FollowersSerializer,
     AppFollowingSerializer,
     CreateNewAppSerializer,
+    AllAppsList,
     # UserUpdatePassword,
     EcCreateNewUser,
     EcCreatePlaylist
@@ -35,7 +36,6 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status, viewsets
-from rest_framework.serializers import ModelSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -110,18 +110,26 @@ class CreateNewApp(APIView):
         serlialzer = CreateNewAppSerializer(app)
         return Response(serlialzer.data, status=status.HTTP_200_OK)
 
+class AppList(APIView):
+    def get(self, *args):
+        app = Fahrenheit_App_List.objects.all()
+        serializer = AllAppsList(app, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class UserAppFollowing(APIView):
+    ### All apps user follows
     def get(self, request, *args):
         app = User_App_Following.objects.filter(user=self.request.id)#self.request.id
         serializer = AppFollowingSerializer(app, many=True).data
         return Response(serializer, status=status.HTTP_200_OK)
 
+    ### User adds new app to follow
     def post(self, request):
         app = User_App_Following.objects.create(user=self.request.id)
         serializer = AppFollowingSerializer(app)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    ### User deletes app following
     def delete(self, request):
         app = User_App_Following.objects.get(id=id).delete()
         return Response(app, status=status.HTTP_200_OK)
@@ -207,8 +215,6 @@ class CreatePlaylist(APIView):
 
 
 class StreamingList(APIView):
-    #permission_classes = [permissions.IsAdminUser]
-
     ### GET ###
     def get(self, request, *args, **kwargs):
         services = StreamingServices.objects.all()

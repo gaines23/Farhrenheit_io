@@ -1,9 +1,8 @@
-import { Fragment, useContext, useState, useRef, useEffect } from 'react';
+import { Fragment, useContext, useState, useRef } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import AuthContext from "../../../store/auth-context";
 import useOutsideClick from "../../../hooks/useOutsideClick";
-import useHttp from '../../../hooks/use-http';
-import { getUserDetails } from '../../../lib/fahrenheit-api';
+
 
 import NavbarOpen from './NavbarOpen';
 import AppListOpen from './AppListOpen';
@@ -26,24 +25,14 @@ import Options from '../../UI/Options';
 
 
 const SideBarOpen = () => {
-    const [isAuth, setIsAuth] = useState(false);
+    const authCtx = useContext(AuthContext);
+    const isLoggedIn = authCtx.isLoggedIn;
+    const username = authCtx.username;
 
-    useEffect(() => {
-        if (localStorage.getItem('token') !== null) {
-            setIsAuth(true);
-        }
-    }, [isAuth]);
-    const token = localStorage.getItem('token');
-
-    const { sendRequest, status, data: userDetails } = useHttp(getUserDetails, true);
     const [optionsIsOpen, setOptionsIsOpen] = useState(false);
 
     const ref = useRef();
-
-    useEffect(() => {
-        sendRequest(token);
-    }, [sendRequest, token]);
-
+    
     const handleDropdown = () => {
         if(optionsIsOpen) {
             setOptionsIsOpen(false);
@@ -55,12 +44,6 @@ const SideBarOpen = () => {
     useOutsideClick(ref, () => {
         setOptionsIsOpen(false);
     });
-
-    const authCtx = useContext(AuthContext);
-
-    const isLoggedIn = authCtx.isLoggedIn;
-
-    if (status === 'completed') {
 
         return (
             <Fragment>
@@ -136,7 +119,7 @@ const SideBarOpen = () => {
                 </Fragment>
                 )}
 
-                {(isLoggedIn && isAuth) && (
+                {isLoggedIn && (
                     <Fragment>
                         <div className="h-3/4 w-11/12 mx-auto flex flex-col">
                             <div className="h-2/5 w-full m-auto flex flex-col">
@@ -157,7 +140,7 @@ const SideBarOpen = () => {
                                     <div className="w-full h-full flex bg-bg-fill/10 m-auto rounded-lg shadow shadow-md shadow-bg-fill/20">
                                         <Link to="/fahrenheit/user-profile/" className="w-3/4 h-full">
                                             <button className="h-full w-full my-auto float-left rounded-l-lg hover:border-far-teal hover:text-far-teal/80 hover:bg-bg-fill/20">
-                                                {userDetails.username}
+                                                {username}
                                             </button>
                                         </Link>
 
@@ -184,7 +167,6 @@ const SideBarOpen = () => {
                 )}
             </Fragment>
         );
-    }
 };
     
 

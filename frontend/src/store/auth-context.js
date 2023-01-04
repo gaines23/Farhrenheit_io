@@ -3,8 +3,9 @@ import React, { useState, useCallback } from "react";
 const AuthContext = React.createContext({
     token: '',
     refresh: '',
+    username: '',
     isLoggedIn: false,
-    login: (token, refresh) => {},
+    login: (token, refresh, username) => {},
     logout: () => {}
 });
 
@@ -31,6 +32,7 @@ export const AuthContextProvider = (props) => {
 
     const [token, setToken] = useState(initialToken);
     const [refresh, setRefresh] = useState(initialRefresh);
+    const [username, setUsername] = useState('');
 
     const userIsLoggedIn = !!token;
 
@@ -40,9 +42,10 @@ export const AuthContextProvider = (props) => {
         localStorage.clear();
     }, []);
 
-    const loginHandler = (token, refresh) => {
+    const loginHandler = (token, refresh, username) => {
         setToken(token);
         setRefresh(refresh);
+        setUsername(username);
         localStorage.clear();
         localStorage.setItem('token', token);
         localStorage.setItem('refresh', refresh);
@@ -51,6 +54,7 @@ export const AuthContextProvider = (props) => {
     const contextValue = {
         token: token,
         refresh: refresh,
+        username: username,
         isLoggedIn: userIsLoggedIn,
         login: loginHandler,
         logout: logoutHandler

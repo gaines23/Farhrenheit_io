@@ -13,7 +13,7 @@ from .models import (
     EcstaStreamProfile,
 )
 from django.contrib.auth.hashers import make_password
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer  
 
         
 class NewTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -102,12 +102,19 @@ class FollowersSerializer(serializers.ModelSerializer):
         model = User_Following
         fields = ('id', 'user', 'date_added')
 
+
+
+### App Info ##
+
 class AppFollowingSerializer(serializers.ModelSerializer):
     class Meta:
         model = User_App_Following
         fields = ('id', 'following_app_id', 'date_added')
 
-
+class AllAppsList(serializers.ModelSerializer):
+    class Meta:
+        model = Fahrenheit_App_List
+        exclude = ('internal_app_status', )
 
 class CreateNewAppSerializer(serializers.ModelSerializer):
     class Meta:
@@ -127,7 +134,6 @@ class EcCreateNewUser(serializers.ModelSerializer):
     
 
 class EcCreatePlaylist(serializers.ModelSerializer):
-
     class Meta:
         model = EcstaStreamPlaylist
         fields = ('created_by', 'title', 'private', 'description') #playlist_follows

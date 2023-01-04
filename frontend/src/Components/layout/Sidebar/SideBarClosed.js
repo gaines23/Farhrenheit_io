@@ -1,4 +1,4 @@
-import { Fragment, useContext, useState } from 'react';
+import { Fragment, useContext, useRef, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
 import AuthContext from '../../../store/auth-context';
@@ -18,19 +18,24 @@ import {
 } from  '../../UI/NavStyles';
 
 import FarheneitLogo2 from '../../../assets/Fahrenheit.logo-clear.png';
+import useOutsideClick from '../../../hooks/useOutsideClick';
 
 
 const SideBarClosed = () => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [optionsIsOpen, setOptionsIsOpen] = useState(false);
+    const ref = useRef();
 
     const handleDropdown = () => {
-        if (isOpen) {
-            setIsOpen(false);
+        if(optionsIsOpen) {
+            setOptionsIsOpen(false);
             return;
         }
-
-        setIsOpen(true);
+        setOptionsIsOpen(true);
     }
+
+    useOutsideClick(ref, () => {
+        setOptionsIsOpen(false);
+    });
 
     const authCtx = useContext(AuthContext);
 
@@ -107,7 +112,7 @@ const SideBarClosed = () => {
                         </div>
                     </div>
 
-                    <div className="h-1/6 w-full py-2 font-light flex flex-col">
+                    <div className="h-1/6 w-full py-2 font-light flex flex-col" ref={ref}>
                         <div className="h-3/4 w-full relative flex flex-col my-auto px-1">
                             <div className={ClosedListClassName}>
                                 <div className={ClosedLinkClassName}>
@@ -118,7 +123,7 @@ const SideBarClosed = () => {
                                 </div>
                             </div>
 
-                            {isOpen && <OptionsClosed />}
+                            {optionsIsOpen && <OptionsClosed setOptionsIsOpen={setOptionsIsOpen} />}
                             
                         </div>
                     </div>

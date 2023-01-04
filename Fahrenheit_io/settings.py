@@ -65,13 +65,16 @@ INSTALLED_APPS = [
 ]
 
 AUTH_USER_MODEL = 'app.CustomUser'
-# swappable = 'AUTH_USER_MODEL'
 
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-    )
+        'rest_framework.authentication.BasicAuthentication',
+    ),
 }
 
 SIMPLE_JWT = {
@@ -81,9 +84,8 @@ SIMPLE_JWT = {
     'SIGNING_KEY': SECRET_KEY,
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
+
 }
-
-
 
 # Middleware framework
 # https://docs.djangoproject.com/en/2.1/topics/http/middleware/

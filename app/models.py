@@ -62,7 +62,7 @@ class CustomUser(BaseModel, AbstractUser):
     def get_user_id(self):
         id = self.id
         return str(id)
-    
+
     class Meta:
         db_table = 'app_fahrenheit_profile'
 

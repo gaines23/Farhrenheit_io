@@ -36,7 +36,7 @@ const RegisterForm = (props) => {
     return (
         <Fragment>
             <div className="h-5/6 w-1/3 m-auto flex text-input-fill/60">
-                <div className="w-full h-4/6 flex my-auto self-center bg-bg-fill/30 rounded-lg shadow shadow-md shadow-bg-fill/40">
+                <div className="w-5/6 h-4/6 flex m-auto self-center bg-bg-fill/30 rounded-lg shadow shadow-md shadow-bg-fill/40">
                     <div className="h-auto w-full my-auto p-2">
                         <p className="w-full text-center font-bold text-3xl">Register</p>
 
@@ -90,11 +90,14 @@ const RegisterForm = (props) => {
                                     ref={passwordTwoRef}    
                                 />
                             </div>
-                            <div className={sectionClassName}>                           
-                                <button type='submit' className="w-full text-sm h-10 shadow-md shadow-black/20 border-solid border border-input-fill/30 rounded-lg bg-input-fill/30 hover:bg-input-fill/10">
-                                    Create Account
-                                </button>
+                            <div className="h-16 w-4/5 m-auto text-xs my-3">
+                                <div className="h-full w-5/6 mx-auto">                           
+                                    <button type='submit' className="w-full text-sm h-10 shadow-md shadow-black/20 border-solid border border-input-fill/30 rounded-lg bg-input-fill/30 hover:bg-input-fill/10">
+                                        Create Account
+                                    </button>
+                                </div>
                             </div>
+                            
 
                             <div className="flex w-1/2 m-auto justify-self-center mt-5 h-5">
                                 <p className="w-16 h-3 float-left border-b-2 border-solid border-white/30"></p>

@@ -50,8 +50,8 @@ const LoginForm = () => {
                     });
                 }
             }).then((data) => {   
-                authCtx.login(data.access, data.refresh, data.fah_user_id);
-                history.replace('/fahrenheit/user-profile/');
+                authCtx.login(data.access, data.refresh);
+                history.replace('/fahrenheit/home/');
             })
             .catch((err) => {
                 alert(err.message);

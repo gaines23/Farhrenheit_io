@@ -83,6 +83,10 @@ class UserProfileSerializer(serializers.ModelSerializer):
         return CreateNewAppSerializer(obj.app_created_by.all(), many=True).data
 
 
+### class UserEditProfileSerializer(serializers.ModelSerializer):
+
+
+
 class AllUsersList(serializers.ModelSerializer):
     class Meta:
         model = CustomUser

@@ -66,9 +66,9 @@ class UserCreate(APIView):
 
 
 
-class UserProfile(APIView):
-    def get(self, request, *args, **kwargs):
-        user = CustomUser.objects.get(id=self.request.id)# self.request.id'7a20448e-b5f4-465b-8a9a-af2694e0984a'
+class UserProfile(APIView):   
+    def get(self, request, format='json', *args, **kwargs):
+        user = CustomUser.objects.get(id=request.user.id)# self.request.id'7a20448e-b5f4-465b-8a9a-af2694e0984a'
         serializer = UserProfileSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -165,20 +165,6 @@ class UserFollowers(APIView):
 
 
 
-
-
-
-
-    # def get(self):
-    #     queryset = User_App_Following.objects.all()
-    #     serializer = AppFollowingSerializer(queryset, many=True)
-    #     return serializer
-    
-
-
-
-#     def post(self, request):
-#         serializer =
 
 # class UserChangePassword(APIView):
 #     permission_classes = [IsAuthenticated]

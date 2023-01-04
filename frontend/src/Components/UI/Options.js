@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect } from "react";
+import { Fragment, useContext, useRef } from "react";
 import { Link , useHistory } from 'react-router-dom';
 import useHttp from "../../hooks/use-http";
 import { getLogoutUrl } from "../../lib/fahrenheit-api";
@@ -14,23 +14,19 @@ import {
 } from './NavStyles';
 
 
-const Options = () => {
+const Options = ({setOptionsIsOpen}) => {
     const history = useHistory();
 
-    const { sendRequest, status, error } = useHttp(getLogoutUrl);
+    const { sendRequest, status } = useHttp(getLogoutUrl);
     const authCtx = useContext(AuthContext);
 
-    useEffect(() => {
-        if (status === 'completed' || !error) {
-            history.replace('/fahrenheit/user/login/');
-        }
-    }, []);
-    
     const logoutHandler = (e) => {
         e.preventDefault();
 
         sendRequest();
         authCtx.logout();
+        history.replace('/fahrenheit/user/login/');
+        setOptionsIsOpen(false);
     }
 
     if (status === 'pending') {

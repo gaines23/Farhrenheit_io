@@ -1,8 +1,8 @@
-# from app.serializers import UserSerializer
+from .serializers import UserProfileSerializer #you have already created UserSerializer
 
-
-# def my_jwt_response_handler(token, user=None, request=None):
-#     return {
-#         'token': token,
-#         'user': UserSerializer(user, context={'request': request}).data
-#     }
+def jwt_response_payload_handler(token, user=None, request=None):
+    user = UserProfileSerializer(user, context={'request': request}).data
+    return {
+        'token': token,
+        'id': user['id'],
+    }

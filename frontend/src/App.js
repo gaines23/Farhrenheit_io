@@ -10,17 +10,18 @@ const Login = React.lazy(() => import ('./Pages/Login'));
 const Register = React.lazy(() => import ('./Pages/Register'));
 const Profile = React.lazy(() => import ('./Pages/Profile'));
 const NotFound = React.lazy(() => import ('./Pages/NotFound'));
+
+// Apps Base Links 
 const EcstaApp = React.lazy(() => import ('./EcstaStream/EcstaApp.js'));
 
 function App() {
 
   const [isAuth, setIsAuth] = useState(false);   
-    useEffect(() => {     
-      if (localStorage.getItem('token') !== null) {        
-        setIsAuth(true); 
+  useEffect(() => {     
+    if (localStorage.getItem('token') !== null) {        
+      setIsAuth(true); 
     }    
   }, [isAuth]);
-  console.log(`Auth: ${isAuth}`)
 
   return (
     <Layout>
@@ -42,9 +43,9 @@ function App() {
           <Route path='/fahrenheit/user/register/'>
             <Register />
           </Route>
-          <Route path='/fahrenheit/user-profile/'>
+          {isAuth && <Route path='/fahrenheit/user-profile/'>
             <Profile />
-          </Route>
+          </Route>}
           <Route path='/fahrenheit/ecstastream'>
             <EcstaApp />
           </Route>

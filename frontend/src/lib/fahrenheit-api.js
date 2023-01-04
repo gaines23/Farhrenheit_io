@@ -1,6 +1,7 @@
 // Profile, Friends, Likes, Comments, Lists, Msgs, etc
 let register_url = process.env.REACT_APP_FAHRENHEIT_REGISTER;
 let logout_url = process.env.REACT_APP_FAHRENHEIT_LOGOUT;
+let profile_url = process.env.REACT_APP_FAHRENHEIT_PROFILE;
 
 export async function getLogoutUrl() {
     const response = await fetch(`${logout_url}`, {
@@ -38,3 +39,53 @@ export async function getUserRegisteration(credentials) {
 
     return null;
 }
+
+export async function getUserProfile(token) {
+    const response = await fetch(`${profile_url}`,{ 
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    const data = await response.json();
+    
+    if (!response.ok) {
+        throw new Error(response.status_message);
+    }
+
+    const profileDetails = {
+        ...data,
+    }
+
+    return profileDetails;
+
+}
+
+
+export async function getUserDetails(token) {
+    const response = await fetch(`${profile_url}`,{ 
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    const data = await response.json();
+    
+    if (!response.ok) {
+        throw new Error(response.status_message);
+    }
+
+    let username = await data.username;
+
+    const userDetails = {
+        username,
+    }
+
+    return userDetails;
+}
+
+

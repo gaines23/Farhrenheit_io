@@ -2,6 +2,8 @@
 let register_url = process.env.REACT_APP_FAHRENHEIT_REGISTER;
 let logout_url = process.env.REACT_APP_FAHRENHEIT_LOGOUT;
 let profile_url = process.env.REACT_APP_FAHRENHEIT_PROFILE;
+let apps_user_following = process.env.REACT_APP_FAHRENHEIT_USER_APP_FOLLOWING;
+
 
 export async function getLogoutUrl() {
     const response = await fetch(`${logout_url}`, {
@@ -41,7 +43,7 @@ export async function getUserRegisteration(credentials) {
 }
 
 export async function getUserProfile(token) {
-    const response = await fetch(`${profile_url}`,{ 
+    const response = await fetch(`${profile_url}`, { 
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -64,4 +66,20 @@ export async function getUserProfile(token) {
 }
 
 
+export async function getUserAppFollowing(token) {
+    const response = await fetch(`${apps_user_following}`, { 
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
 
+    const data = await response.json();
+
+    const userAppList = {
+        ...data,
+    }
+
+    return userAppList;
+}

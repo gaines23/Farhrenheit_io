@@ -21,7 +21,7 @@ import { FaRegUserCircle } from 'react-icons/fa';
 import { HiOutlineSearch } from 'react-icons/hi';
 import { BsCaretDown, BsCaretUp } from 'react-icons/bs';
 import { HiOutlineHome } from 'react-icons/hi';
-import Options from '../../UI/Options';
+import Options from '../../UI/SideBar/Options';
 
 
 const SideBarOpen = () => {

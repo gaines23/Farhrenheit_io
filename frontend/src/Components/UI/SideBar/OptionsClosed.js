@@ -1,17 +1,17 @@
 import { Fragment, useContext } from "react";
 import { Link , useHistory } from 'react-router-dom';
-import useHttp from "../../hooks/use-http";
-import { getLogoutUrl } from "../../lib/fahrenheit-api";
+import useHttp from "../../../hooks/use-http";
+import { getLogoutUrl } from "../../../lib/fahrenheit-api";
 
-import AuthContext from "../../store/auth-context";
-import LoadingSpinner from "./LoadingSpinner";
+import AuthContext from "../../../store/auth-context";
+import LoadingSpinner from "../LoadingSpinner";
 
 import {
     OpenNavListClass,
     OpenLinkClassName,
     OpenPDivClassName,
     OptionsParaClassName,
-} from './NavStyles';
+} from '../NavStyles';
 
 
 const OptionsClosed = ({setOptionsIsOpen}) => {

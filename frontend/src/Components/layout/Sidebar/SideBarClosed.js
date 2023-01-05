@@ -3,7 +3,7 @@ import { NavLink, Link } from 'react-router-dom';
 
 import AuthContext from '../../../store/auth-context';
 
-import OptionsClosed from '../../UI/OptionsClosed';
+import OptionsClosed from '../../UI/SideBar/OptionsClosed';
 import NavbarClosed from './NavbarClosed';
 import AppListClosed from './AppListClosed';
 

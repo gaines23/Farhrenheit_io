@@ -1,21 +1,49 @@
-import { Fragment } from "react";
-import { NavLink } from 'react-router-dom';
+import { Fragment, useContext, useEffect, useState } from "react";
+import AuthContext from "../../../store/auth-context";
 
-import {
-    OpenNavListClass,
-    OpenPDivClassName,
-    AppIconClassName,
-    AppsActiveLinkClassName,
-} from '../../UI/NavStyles';
+import useHttp from "../../../hooks/use-http";
+import { getUserAppFollowing } from "../../../lib/fahrenheit-api";
 
-import EcstaLogo from '../../../assets/EcstaLogo.png';
-import AnimeWire from '../../../assets/Anime-wire.png';
+import AppCard from '../../UI/SideBar/AppCard';
+import FollowingApps from "../../UI/SideBar/FollowingApps";
 
+let appListURL = process.env.REACT_APP_FAHRENHEIT_APP_LIST;
 
 const AppListOpen = () => {
+    // const [appList, setAppList] = useState([]);
 
-    const linkClassName = "flex group px-1 h-8 w-full items-center rounded-lg hover:bg-bg-fill/10 outline-none";
-    const itemClassName = "text-input-fill/70 w-5/6 text-left mx-auto h-auto my-auto group-hover:text-input-fill/80";    
+    const authCtx = useContext(AuthContext);
+    const isFollowingApps = authCtx.apps;
+    const token = authCtx.token;
+
+    // useEffect(() => {
+    //     fetchAppList();
+    // }, []);
+
+    // const fetchAppList = async () => {
+    //     const data = await fetch(appListURL);
+    //     const apps = await data.json();
+    //     setAppList(apps);
+    // }
+
+    // console.log(authCtx)
+
+    const [userApps, setUserApps] = useState([]);
+    const { sendRequest, status, data: appList } = useHttp(getUserAppFollowing, true);
+
+    useEffect(() => {
+        if(isFollowingApps) {
+            sendRequest(token);
+        }
+    }, [sendRequest, token]);
+
+    useEffect(() => {
+        if (status==='completed') {
+            setUserApps(appList);
+        }
+
+    }, []);
+
 
     return (
         <Fragment>
@@ -24,48 +52,12 @@ const AppListOpen = () => {
             </div>
             <div className="w-full h-auto mx-auto my-2 flex flex-col">
 
-                <p className="w-full h-auto text-xs text-input-fill/30 px-2">Apps</p>
+                <p className="w-full h-auto text-xs text-input-fill/30 px-2">My Apps</p>
                 
-                <ul className="w-full mx-auto h-auto text-xs font-thin">
-                    <li className={OpenNavListClass}>
-                        <NavLink 
-                            to={'/fahrenheit/ecstastream'} 
-                            className={linkClassName}
-                            activeClassName={AppsActiveLinkClassName}
-                        >
-                            < img
-                                src={EcstaLogo}
-                                className={AppIconClassName} 
-                                alt="ec-logo"
-                            />                    
-                            <div className={OpenPDivClassName}>
-                                <p className={itemClassName}>
-                                    EcstaStream
-                                </p>
-                             </div>
-                        </NavLink>
-                    </li>
-
-
-                    {/* <li className={OpenNavListClass}>
-                        <NavLink 
-                            to={'/fahrenheit/the-anime-wire/'} 
-                            className={linkClassName}
-                        >
-                            < img
-                                src={AnimeWire}
-                                className={AppIconClassName} 
-                                alt="anime-wire-logo"
-                            />                    
-                            <div className={OpenPDivClassName}>
-                                <p className={itemClassName}>
-                                    Anime Wire
-                                </p>
-                             </div>
-                        </NavLink>
-                    </li> */}
-
-
+                <ul className="w-full mx-auto h-auto text-xs font-thin mt-3">
+                    {userApps.map(app => {
+                        return <AppCard key={app.id} app={app} />
+                    })}
                 </ul>
             </div>
         </Fragment>

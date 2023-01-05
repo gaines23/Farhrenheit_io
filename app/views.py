@@ -119,13 +119,13 @@ class AppList(APIView):
 class UserAppFollowing(APIView):
     ### All apps user follows
     def get(self, request, *args):
-        app = User_App_Following.objects.filter(user=self.request.id)#self.request.id
+        app = User_App_Following.objects.filter(user=request.user.id)#self.request.id
         serializer = AppFollowingSerializer(app, many=True).data
         return Response(serializer, status=status.HTTP_200_OK)
 
     ### User adds new app to follow
     def post(self, request):
-        app = User_App_Following.objects.create(user=self.request.id)
+        app = User_App_Following.objects.create(user=request.user.id)
         serializer = AppFollowingSerializer(app)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -138,12 +138,12 @@ class UserAppFollowing(APIView):
 
 class UserFollowing(APIView):
     def get(self, request, *args):
-        app = User_Following.objects.filter(user=self.request.id)#self.request.id
+        app = User_Following.objects.filter(user=request.user.id)#self.request.id
         serializer = FollowingSerializer(app, many=True).data
         return Response(serializer, status=status.HTTP_200_OK)
 
     def post(self, request):
-        app = User_Following.objects.create(user=self.request.id)
+        app = User_Following.objects.create(user=request.user.id)
         serializer = FollowingSerializer(app)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -155,12 +155,12 @@ class UserFollowing(APIView):
 
 class UserFollowers(APIView):
     def get(self, request, *args):
-        app = User_Following.objects.filter(user=self.request.id)#self.request.id
+        app = User_Following.objects.filter(user=request.user.id)#self.request.id
         serializer = FollowersSerializer(app, many=True).data
         return Response(serializer, status=status.HTTP_200_OK)
 
     def post(self, request):
-        app = User_Following.objects.create(user=self.request.id)
+        app = User_Following.objects.create(user=request.user.id)
         serializer = FollowersSerializer(app)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

@@ -4,8 +4,9 @@ const AuthContext = React.createContext({
     token: '',
     refresh: '',
     username: '',
+    apps: false,
     isLoggedIn: false,
-    login: (token, refresh, username) => {},
+    login: (token, refresh, username, apps) => {},
     logout: () => {}
 });
 
@@ -33,6 +34,7 @@ export const AuthContextProvider = (props) => {
     const [token, setToken] = useState(initialToken);
     const [refresh, setRefresh] = useState(initialRefresh);
     const [username, setUsername] = useState('');
+    const [isFollowingApps, setFollowingApps] = useState();
 
     const userIsLoggedIn = !!token;
 
@@ -42,10 +44,11 @@ export const AuthContextProvider = (props) => {
         localStorage.clear();
     }, []);
 
-    const loginHandler = (token, refresh, username) => {
+    const loginHandler = (token, refresh, username, apps) => {
         setToken(token);
         setRefresh(refresh);
         setUsername(username);
+        setFollowingApps(apps);
         localStorage.clear();
         localStorage.setItem('token', token);
         localStorage.setItem('refresh', refresh);
@@ -55,6 +58,7 @@ export const AuthContextProvider = (props) => {
         token: token,
         refresh: refresh,
         username: username,
+        apps: isFollowingApps,
         isLoggedIn: userIsLoggedIn,
         login: loginHandler,
         logout: logoutHandler

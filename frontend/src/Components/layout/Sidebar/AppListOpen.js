@@ -1,49 +1,35 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import AuthContext from "../../../store/auth-context";
 
-import useHttp from "../../../hooks/use-http";
-import { getUserAppFollowing } from "../../../lib/fahrenheit-api";
-
 import AppCard from '../../UI/SideBar/AppCard';
-import FollowingApps from "../../UI/SideBar/FollowingApps";
 
-let appListURL = process.env.REACT_APP_FAHRENHEIT_APP_LIST;
+//let appListURL = process.env.REACT_APP_FAHRENHEIT_APP_LIST;
+let apps_user_following = process.env.REACT_APP_FAHRENHEIT_USER_APP_FOLLOWING;
 
 const AppListOpen = () => {
-    // const [appList, setAppList] = useState([]);
+    const [userApps, setUserApps] = useState([]);
 
     const authCtx = useContext(AuthContext);
-    const isFollowingApps = authCtx.apps;
     const token = authCtx.token;
 
-    // useEffect(() => {
-    //     fetchAppList();
-    // }, []);
-
-    // const fetchAppList = async () => {
-    //     const data = await fetch(appListURL);
-    //     const apps = await data.json();
-    //     setAppList(apps);
-    // }
-
-    // console.log(authCtx)
-
-    const [userApps, setUserApps] = useState([]);
-    const { sendRequest, status, data: appList } = useHttp(getUserAppFollowing, true);
-
     useEffect(() => {
-        if(isFollowingApps) {
-            sendRequest(token);
-        }
-    }, [sendRequest, token]);
+        async function getUserAppFollowing() {
+            const response = await fetch(`${apps_user_following}`, { 
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
 
-    useEffect(() => {
-        if (status==='completed') {
-            setUserApps(appList);
+            const data = await response.json();
+
+            setUserApps(data);
         }
+
+        getUserAppFollowing();
 
     }, []);
-
 
     return (
         <Fragment>
@@ -55,9 +41,11 @@ const AppListOpen = () => {
                 <p className="w-full h-auto text-xs text-input-fill/30 px-2">My Apps</p>
                 
                 <ul className="w-full mx-auto h-auto text-xs font-thin mt-3">
-                    {userApps.map(app => {
-                        return <AppCard key={app.id} app={app} />
-                    })}
+                    {userApps ? 
+                        userApps.map(app => {
+                            return <AppCard key={app.id} app={app} />
+                        })
+                    : 'ADD BUTTON'}
                 </ul>
             </div>
         </Fragment>

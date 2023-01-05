@@ -107,9 +107,15 @@ class FollowersSerializer(serializers.ModelSerializer):
 ### App Info ##
 
 class AppFollowingSerializer(serializers.ModelSerializer):
+    app_info = serializers.SerializerMethodField()
+
     class Meta:
         model = User_App_Following
-        fields = ('id', 'following_app_id', 'date_added')
+        #fields = ('id', 'following_app_id', 'date_added')
+        fields = '__all__'
+    
+    def get_app_info(self, obj):
+        return AllAppsList(obj.following_app_id).data
 
 class AllAppsList(serializers.ModelSerializer):
     class Meta:

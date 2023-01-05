@@ -9,6 +9,7 @@ import {
 } from '../../UI/NavStyles';
 
 const AppCard = ({app}) => {
+    let details = app.app_info;
 
     const linkClassName = "flex group px-1 h-8 w-full items-center rounded-lg hover:bg-bg-fill/10 outline-none";
     const itemClassName = "text-input-fill/70 w-5/6 text-left mx-auto h-auto my-auto group-hover:text-input-fill/80";    
@@ -17,18 +18,18 @@ const AppCard = ({app}) => {
         <Fragment>
             <li className={OpenNavListClass}>
                 <NavLink 
-                    to={`/fahrenheit${app.app_base_link}`} 
+                    to={`/fahrenheit${details.app_base_link}`} 
                     className={linkClassName}
                     activeClassName={AppsActiveLinkClassName}
                 >
                     < img
-                        src={app.app_icon}
+                        src={details.app_icon}
                         className={AppIconClassName} 
-                        alt={`${app.app_name}_img`}
+                        alt={`${details.app_name}_img`}
                     />                    
                     <div className={OpenPDivClassName}>
                         <p className={itemClassName}>
-                            {app.app_name}
+                            {details.app_name}
                         </p>
                     </div>
                 </NavLink>

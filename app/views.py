@@ -118,10 +118,13 @@ class AppList(APIView):
 
 class UserAppFollowing(APIView):
     ### All apps user follows
-    def get(self, request, *args):
-        app = User_App_Following.objects.filter(user=request.user.id)#self.request.id
-        serializer = AppFollowingSerializer(app, many=True).data
-        return Response(serializer, status=status.HTTP_200_OK)
+    def get(self, request, format='json', *args):
+        try:
+            app = User_App_Following.objects.filter(user=request.user.id)
+            serializer = AppFollowingSerializer(app, many=True).data
+            return Response(serializer, status=status.HTTP_200_OK)
+        except Exception:
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
     ### User adds new app to follow
     def post(self, request):

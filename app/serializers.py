@@ -95,7 +95,7 @@ class AllUsersList(serializers.ModelSerializer):
 class FollowingSerializer(serializers.ModelSerializer):
     class Meta:
         model = User_Following
-        fields = ('id', 'following_user_id', 'date_added')
+        fields = '__all__'
 
 class FollowersSerializer(serializers.ModelSerializer):
     class Meta:

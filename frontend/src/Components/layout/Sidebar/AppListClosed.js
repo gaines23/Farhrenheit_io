@@ -1,16 +1,31 @@
-import { Fragment } from "react";
-import { NavLink } from 'react-router-dom';
+import { Fragment, useContext, useEffect, useState } from "react";
+import AuthContext from "../../../store/auth-context";
+import ClosedAppCard from "../../UI/SideBar/ClosedAppCard";
 
-import { AppIconClassName, AppsActiveLinkClassName, } from '../../UI/NavStyles';
-
-import EcstaLogo from '../../../assets/EcstaLogo.png';
-import AnimeWire from '../../../assets/Anime-wire.png';
-
+let apps_user_following = process.env.REACT_APP_FAHRENHEIT_USER_APP_FOLLOWING;
 
 const AppListClosed = () => {
+    const [userApps, setUserApps] = useState([]);
 
-    const listClassName = "h-10 w-full my-2 flex justify-center items-center";
-    const linkClassName = "flex group px-1 h-8 w-fit items-center rounded-lg hover:bg-bg-fill/10 outline-none hover:border-y hover:border-bg-fill/30";
+    const authCtx = useContext(AuthContext);
+    const token = authCtx.token;
+
+    useEffect(() => {
+        async function getUserAppFollowing() {
+            const response = await fetch(`${apps_user_following}`, {
+                methd: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            const data = await response.json();
+            setUserApps(data);
+        }
+
+        getUserAppFollowing();
+    }, []);
 
     return (
         <Fragment>
@@ -19,37 +34,16 @@ const AppListClosed = () => {
             </div>
             <div className="w-full h-auto mx-auto my-2 flex flex-col">
 
-                <p className="w-full h-auto text-center text-xs text-input-fill/30 px-2">Apps</p>
+                <p className="w-full h-auto text-center text-xs text-input-fill/30 px-2">My Apps</p>
                 
                 <ul className="w-full mx-auto h-auto text-xs font-thin">
-                    <li className={listClassName} >
-                        <NavLink 
-                            to={'/fahrenheit/ecstastream'} 
-                            className={linkClassName}
-                            title="EcstaStream"
-                            activeClassName={AppsActiveLinkClassName}
-                        >
-                            < img
-                                src={EcstaLogo}
-                                className={AppIconClassName} 
-                                alt="ec-logo"
-                            />
-                        </NavLink>
-                    </li>
-                    <li className={listClassName}>
-                        <NavLink 
-                            to={'/fahrenheit/the-anime-wire/'} 
-                            className={linkClassName}
-                            title="Anime Wire"
-                            activeClassName={AppsActiveLinkClassName}
-                        >
-                            < img
-                                src={AnimeWire}
-                                className={AppIconClassName} 
-                                alt="anime-wire-logo"
-                            />
-                        </NavLink>
-                    </li>
+                    {userApps ?
+                        userApps.map(app => {
+                            return <ClosedAppCard key={app.id} app={app} />
+                        })
+                        : 'ADD BUTTON'
+                    }
+                    
                 </ul>
             </div>
         </Fragment>

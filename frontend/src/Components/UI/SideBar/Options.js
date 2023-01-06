@@ -1,4 +1,4 @@
-import { Fragment, useContext, useRef } from "react";
+import { Fragment, useContext } from "react";
 import { Link , useHistory } from 'react-router-dom';
 import useHttp from "../../../hooks/use-http";
 import { getLogoutUrl } from "../../../lib/fahrenheit-api";

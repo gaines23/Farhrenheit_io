@@ -13,10 +13,12 @@ const AuthContext = React.createContext({
 const retrieveStoredToken = () => {
     const storedToken = localStorage.getItem('token');
     const storedRefresh = localStorage.getItem('refresh');
+    const storedUsername = localStorage.getItem('username');
 
     return {
         token: storedToken,
         refresh: storedRefresh,
+        username: storedUsername,
     };
 };
 
@@ -25,10 +27,12 @@ export const AuthContextProvider = (props) => {
 
     let initialToken;
     let initialRefresh;
+    let initialUsername;
 
     if (tokenData) {
         initialToken = tokenData.token;
         initialRefresh = tokenData.refresh;
+        initialUsername = tokenData.username;
     }
 
     const [token, setToken] = useState(initialToken);
@@ -52,6 +56,7 @@ export const AuthContextProvider = (props) => {
         localStorage.clear();
         localStorage.setItem('token', token);
         localStorage.setItem('refresh', refresh);
+        localStorage.setItem('username', username);
     };
 
     const contextValue = {

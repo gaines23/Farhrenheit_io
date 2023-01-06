@@ -25,6 +25,11 @@ PROFILE_STATUS = (
     (1, "Private")
 )
 
+MUTE_NOTIFICATIONS = {
+    (0, "Yes"),
+    (1, "No")
+}
+
 
 ## Fahrenheit endpoints
 # Profile, Friends, Settings
@@ -106,6 +111,7 @@ class User_Following(models.Model):
 class User_App_Following(models.Model):
     user = models.ForeignKey(CustomUser, related_name="following_app", on_delete=models.CASCADE)
     following_app_id = models.ForeignKey(Fahrenheit_App_List, related_name="apps", on_delete=models.CASCADE)
+    mute_notifications = models.BooleanField(choices=MUTE_NOTIFICATIONS, default=1)
     date_added = models.DateTimeField(auto_now=True)
 
 class Follow_Request(models.Model):

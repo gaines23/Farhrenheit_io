@@ -27,7 +27,7 @@ import Options from '../../UI/SideBar/Options';
 const SideBarOpen = () => {
     const authCtx = useContext(AuthContext);
     const isLoggedIn = authCtx.isLoggedIn;
-    const username = authCtx.username;
+    const username = localStorage.getItem('username');
 
     const [optionsIsOpen, setOptionsIsOpen] = useState(false);
 
@@ -148,7 +148,7 @@ const SideBarOpen = () => {
                                             <button 
                                                 className="h-full w-full flex my-auto float-right rounded-r-lg hover:border-far-teal hover:text-far-teal/80 hover:bg-bg-fill/20" 
                                                 ref={ref}
-                                                >
+                                            >
                                                 
                                                 {!optionsIsOpen ? 
                                                     <BsCaretDown className="w-fit h-fit m-auto" /> 

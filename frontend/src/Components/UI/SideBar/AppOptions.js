@@ -1,9 +1,7 @@
-import { Fragment, } from "react";
+import { Fragment, useEffect, useRef, useState} from "react";
 import { Link } from 'react-router-dom';
-// import useHttp from "../../../hooks/use-http";
 
-// import AuthContext from "../../../store/auth-context";
-// import LoadingSpinner from "../LoadingSpinner";
+import LoadingSpinner from "../LoadingSpinner";
 
 import {
     OpenNavListClass,
@@ -12,7 +10,51 @@ import {
     OptionsParaClassName,
 } from '../NavStyles';
 
-const AppOptions = ({setOptionsIsOpen, following, muted}) => {
+
+let apps_user_following = process.env.REACT_APP_FAHRENHEIT_USER_APP_FOLLOWING;
+
+const AppOptions = ({app, following}) => {
+    // following = POST , unfollow = DELETE
+    // mute = PUT
+    
+    const submitFollow = async (e) => {
+        e.preventDefault();
+
+        let id = app.id;
+ 
+        fetch (
+            apps_user_following, 
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    following_app_id: id,
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(async res => {
+                if (res.ok) {
+                    return res.json();
+                } else {
+                    return res.json().then(data => {
+                        errorMessage = data.error.message;
+                    });
+                }
+                throw new Error(errorMessage);
+            });
+    }
+
+
+    useEffect(() => {
+        apps_user_following,
+        {
+            method: 'POST',
+            body: JSON.stringify({
+
+            }),
+        }
+    }, []);
+
 
     return (
         <Fragment>
@@ -33,7 +75,7 @@ const AppOptions = ({setOptionsIsOpen, following, muted}) => {
                         </Link>
                     </li>
 
-                    {(following) ? (
+                    {following ? (
                         <Fragment>
                             <div className="w-5/6 my-1 mx-auto border-t border-bg-fill/20 flex"></div>
                         
@@ -45,7 +87,7 @@ const AppOptions = ({setOptionsIsOpen, following, muted}) => {
                                 >
                                     <div className={OpenPDivClassName}>
                                         <p className={OptionsParaClassName} >
-                                            {(muted && following) ? 'Unmute' : 'Mute'}
+                                            {app.app_info.mute_notifications !== '' ? 'Unmute' : 'Mute'}
                                         </p>
                                     </div>
                                 </button>

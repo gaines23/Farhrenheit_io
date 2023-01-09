@@ -109,13 +109,26 @@ class FollowersSerializer(serializers.ModelSerializer):
 class AppFollowingSerializer(serializers.ModelSerializer):
     app_info = serializers.SerializerMethodField()
 
+    #user = serializers.UUIDField()
+    #following_app_id = serializers.IntegerField()
+    mute_notifications = serializers.BooleanField()
+
     class Meta:
         model = User_App_Following
-        #fields = ('id', 'following_app_id', 'date_added')
         fields = '__all__'
     
     def get_app_info(self, obj):
         return AllAppsList(obj.following_app_id).data
+
+    # def create(self, obj):
+    #     return User_App_Following.objects.create(*obj)
+
+    # def update(self, instance, validated_data):
+    #     instance.mute_notifications = validated_data.get('mute_notifications', instance.mute_notifications)
+    #     instance.id = validated_data.get('id', instance.id)
+
+    #     instance.save()
+    #     return instance
 
 class AllAppsList(serializers.ModelSerializer):
     class Meta:

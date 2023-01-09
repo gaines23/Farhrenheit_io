@@ -1,5 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from "react";
-import AuthContext from "../../../store/auth-context";
+import { Fragment, useEffect, useState } from "react";
 
 import AppCard from '../../UI/SideBar/AppCard';
 
@@ -11,8 +10,7 @@ const AppListOpen = () => {
     const [allApps, setAllApps] = useState([]);
     const [userApps, setUserApps] = useState([]);
 
-    const authCtx = useContext(AuthContext);
-    const token = authCtx.token;
+    let token = localStorage.getItem('token'); 
 
     useEffect(() => {
         async function getAllApps() {
@@ -31,7 +29,7 @@ const AppListOpen = () => {
 
         getAllApps();
 
-    }, []);
+    }, [token]);
 
     useEffect(() => {
         async function getUserAppFollowing() {
@@ -50,7 +48,7 @@ const AppListOpen = () => {
 
         getUserAppFollowing();
 
-    }, []);
+    }, [token]);
 
     return (
         <Fragment>
@@ -64,14 +62,14 @@ const AppListOpen = () => {
                 <ul className="w-full mx-auto h-auto text-xs font-thin mt-3">
                     {userApps ? 
                         userApps.map(app => {
-                            return <AppCard key={app.id} app={app.app_info} following={true} />
+                            return <AppCard key={app.id} app={app} following={true} />
                         })
                     : 'ADD BUTTON'}
                 </ul>
                 <p className="w-full h-auto text-xs text-input-fill/30 px-2">Other Apps</p>
                 
                 <ul className="w-full mx-auto h-auto text-xs font-thin mt-3">
-                    { allApps.map(app => {
+                    {allApps.map(app => {
                         return <AppCard key={app.id} app={app} following={false} />
                     })}
                 </ul>

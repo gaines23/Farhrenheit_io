@@ -7,8 +7,6 @@ import {
     OpenPDivClassName,
     AppIconClassName,
     AppsActiveLinkClassName,
-    OpenLinkClassName,
-    OptionsParaClassName,
 } from '../../UI/NavStyles';
 import { BsCaretDown, BsCaretUp } from 'react-icons/bs';
 import AppOptions from "./AppOptions";
@@ -37,18 +35,18 @@ const AppCard = ({app, following}) => {
         <Fragment>
             <li className={OpenNavListClass}>
                 <NavLink 
-                    to={`/fahrenheit${app.app_base_link}`} 
+                    to={following ? `/fahrenheit${app.app_info.app_base_link}` : `/fahrenheit${app.app_base_link}`} 
                     className={linkClassName}
                     activeClassName={AppsActiveLinkClassName}
                 >
                     < img
-                        src={app.app_icon}
+                        src={following ? app.app_info.app_icon : app.app_icon}
                         className={AppIconClassName} 
-                        alt={`${app.app_name}_img`}
+                        alt={following ? `${app.app_info.app_name}_img` : `${app.app_name}_img`}
                     />                    
                     <div className={OpenPDivClassName}>
                         <p className={itemClassName}>
-                            {app.app_name}
+                            {following ? app.app_info.app_name : app.app_name}
                         </p>
                     </div>
                 </NavLink>
@@ -63,7 +61,8 @@ const AppCard = ({app, following}) => {
                         }
                     </button>
                 </div>
-                {appOptionsIsOpen && <AppOptions setAppOptionsIsOpen={setAppOptionsIsOpen} following={following} muted={app.mute_notifications}/> }
+                {appOptionsIsOpen && <AppOptions following={following} app={app} /> }
+                
             </li>
         </Fragment>
     );

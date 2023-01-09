@@ -91,7 +91,7 @@ class UserLogout(APIView):
         try:
             if self.request.data.get('all'):
                 token: OutstandingToken
-                for token in OutstandingToken.objects.filter(user=request.CustomUser.id):
+                for token in OutstandingToken.objects.filter(user=request.user.id):
                     _, _ = BlacklistedToken.objects.get_or_create(token=token)
                 return Response(status=status.HTTP_205_RESET_CONTENT)
             refresh_token = self.request.data.get('refresh_token')
@@ -108,7 +108,10 @@ class CreateNewApp(APIView):
     def post(self, request):
         app = Fahrenheit_App_List.objects.create(data=request.data)
         serlialzer = CreateNewAppSerializer(app)
-        return Response(serlialzer.data, status=status.HTTP_200_OK)
+        if serlialzer.is_valid():
+            new = serlialzer.save()
+            return Response(new, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class AppList(APIView):
     def get(self, *args):
@@ -117,25 +120,46 @@ class AppList(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class UserAppFollowing(APIView):
+    def get_object(self):
+        return self.request.user.id
+
     ### All apps user follows
     def get(self, request, format='json', *args):
         try:
-            app = User_App_Following.objects.filter(user=request.user.id)
+            app = User_App_Following.objects.filter(user=self.request.user)
             serializer = AppFollowingSerializer(app, many=True).data
             return Response(serializer, status=status.HTTP_200_OK)
         except Exception:
             return Response(status=status.HTTP_204_NO_CONTENT)
 
     ### User adds new app to follow
-    def post(self, request):
-        app = User_App_Following.objects.create(user=request.user.id)
-        serializer = AppFollowingSerializer(app)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def post(self, request, *args, **kwargs):
+        user = CustomUser.objects.get(id=self.request.user.id)
+        app_following = request.data['following_app_id']
+        app = {
+            "user": uuid.UUID(str(user.id)),
+            "following_app_id": app_following,
+            "mute_notifications": False
+        }
+        serializer = AppFollowingSerializer(data=app)
+        if serializer.is_valid():
+            following = serializer.save()
+            return Response(following, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    ### User deletes app following
-    def delete(self, request):
-        app = User_App_Following.objects.get(id=id).delete()
-        return Response(app, status=status.HTTP_200_OK)
+    # ### User deletes app following
+    # def delete(self, request, id):
+    #     app = User_App_Following.objects.get(id=id).delete()
+    #     return Response(app, status=status.HTTP_200_OK)
+
+    # def put(self, request, id):
+    #     app = User_App_Following.objects.get(id=id)
+    #     serializer = AppFollowingSerializer(app)
+    #     if serializer.is_valid():
+    #         following = serializer.save()
+    #         return Response(following, status=status.HTTP_201_CREATED)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 

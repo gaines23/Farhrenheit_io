@@ -123,12 +123,12 @@ class AppFollowingSerializer(serializers.ModelSerializer):
     # def create(self, obj):
     #     return User_App_Following.objects.create(*obj)
 
-    # def update(self, instance, validated_data):
-    #     instance.mute_notifications = validated_data.get('mute_notifications', instance.mute_notifications)
-    #     instance.id = validated_data.get('id', instance.id)
+    def update(self, instance, validated_data):
+        instance.mute_notifications = validated_data.get('mute_notifications', instance.mute_notifications)
+        instance.id = validated_data.get('id', instance.id)
 
-    #     instance.save()
-    #     return instance
+        instance.save()
+        return instance
 
 class AllAppsList(serializers.ModelSerializer):
     class Meta:

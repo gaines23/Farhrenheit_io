@@ -33,9 +33,10 @@ from .serializers import (
     EcCreatePlaylist
 )
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
+from django.http.response import JsonResponse
+from rest_framework.parsers import JSONParser 
 from rest_framework.response import Response
-from rest_framework import status, viewsets
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -135,30 +136,39 @@ class UserAppFollowing(APIView):
     ### User adds new app to follow
     def post(self, request, *args, **kwargs):
         user = CustomUser.objects.get(id=self.request.user.id)
-        app_following = request.data['following_app_id']
+        
         app = {
             "user": uuid.UUID(str(user.id)),
-            "following_app_id": app_following,
+            "following_app_id": request.data['following_app_id'],
             "mute_notifications": False
         }
+        
         serializer = AppFollowingSerializer(data=app)
         if serializer.is_valid():
-            following = serializer.save()
-            return Response(following, status=status.HTTP_200_OK)
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # ### User deletes app following
-    # def delete(self, request, id):
-    #     app = User_App_Following.objects.get(id=id).delete()
-    #     return Response(app, status=status.HTTP_200_OK)
+    ### User deletes app following
+    def delete(self, request):
+        id = request.data['id']
+        app = User_App_Following.objects.get(id=id).delete()
+        return Response(app, status=status.HTTP_200_OK)
 
-    # def put(self, request, id):
-    #     app = User_App_Following.objects.get(id=id)
-    #     serializer = AppFollowingSerializer(app)
-    #     if serializer.is_valid():
-    #         following = serializer.save()
-    #         return Response(following, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    ### Edits mute notificaions
+    def put(self, request, *args, **kwargs):
+        id = request.data['id']
+        app = User_App_Following.objects.get(id=id)
+        data = {
+            "id": app,
+            "mute_notifications": request.data['mute_notifications']
+        }
+
+        serializer = AppFollowingSerializer(instance=app, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

@@ -164,14 +164,16 @@ class Genre(models.Model):
 class EcstaStreamProfile(models.Model):
     ec_id = models.BigAutoField(primary_key=True)
     user_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    status = models.IntegerField(choices=STATUS, default=0)
-    profile_status = models.IntegerField(choices=PROFILE_STATUS, default=0)
-#    follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
+    status = models.IntegerField(choices=STATUS, default=0) 
+    profile_status = models.IntegerField(choices=PROFILE_STATUS, default=0)## internal
+    date_created = models.DateTimeField(auto_now_add=True)
 
-
+    def __str__(self):
+        return '{}'.format(self.user_id)
+    
 class EcstaStreamPlaylist(models.Model):
     ec_playlist_id = models.BigAutoField(primary_key=True)
-    created_by = models.OneToOneField(EcstaStreamProfile, on_delete=models.CASCADE, related_name="playlists")
+    created_by = models.ForeignKey(EcstaStreamProfile, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -179,16 +181,12 @@ class EcstaStreamPlaylist(models.Model):
     description = models.TextField(null=True, max_length=150)
     cover_img = models.ImageField(default='defaultplaylist.png', upload_to='cover_images', null=True)
     comments = models.TextField(null=True)
-    comments_on = models.BooleanField(default=True) #on
-    playlist_follows = models.ManyToManyField(CustomUser, related_name="playlist_following", default=None)  
-    share_list = models.ManyToManyField(CustomUser, related_name="sharing", default=None)
+    comments_on = models.BooleanField(default=False) #on
+    #share_list = models.ManyToManyField(CustomUser, related_name="sharing", default=None)
     status = models.BooleanField(choices=STATUS, default=0)
 
     def __str__(self):
         return '{} {} {}'.format(self.created_by, self.created_on, self.ec_playlist_id)
-
-    # def playlist_id(self):
-    #     return ec_playlist_id
 
     def save(self, *args, **kwargs):
         super().save()
@@ -196,9 +194,36 @@ class EcstaStreamPlaylist(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["created_by", "ec_playlist_id", "title"], name='user_playlist_constraint')    
+            models.UniqueConstraint(fields=["created_by", "ec_playlist_id"], name='user_playlist_constraint')    
         ]
         ordering = ['-created_on']
+
+
+
+class EcstaStream_Playlists_Following(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    user_following = models.ForeignKey(EcstaStreamProfile, related_name="user_pl", on_delete=models.CASCADE)
+    playlist_id = models.ForeignKey(EcstaStreamPlaylist, related_name="playlist", on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user_following", "playlist_id"], name='user_playlist_following')    
+        ]
+
+
+class EcstaStream_User_Steaming_List(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    user_streaming = models.ForeignKey(EcstaStreamProfile, related_name="user_streaming", on_delete=models.CASCADE)
+    streaming_id = models.ForeignKey(StreamingServices, related_name="streaming", on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user_streaming", "streaming_id"], name='user_streaming')    
+        ]
+        ordering = ['id']
+
+
+
 
 
 

@@ -1,7 +1,7 @@
 from django.urls import path, include
 from app.views import (
     UserCreate,
-    CreateNewApp,
+    UserFahrenheitApps,
     AppList,
     UserAppFollowing,
     StreamingList,
@@ -9,11 +9,12 @@ from app.views import (
     UsersList,
     UserProfile,
     UserLogout,
-    CreateEcstaStreamUser,
-    CreatePlaylist,
+    EcstaStreamUserProfile,
+    EcstaStreamPlaylists,
     NewTokenObtainPairView,
     UserFollowing,
     UserFollowers,
+    EcstaStreamUserList,
 )
 #CreatePlaylist,
 
@@ -32,7 +33,7 @@ urlpatterns = [
 
     ### User Apps ###
     path('app-list/', AppList.as_view()),
-    path('user/add-new-app/', CreateNewApp.as_view()),  ### Create New App Form ###
+    path('user/user-app/', UserFahrenheitApps.as_view()),  ### Create New App Form ###
     path('user/app-following/', UserAppFollowing.as_view()),
 
     ### User Following Actions ##
@@ -40,8 +41,9 @@ urlpatterns = [
     path('user/followers/', UserFollowers.as_view()),
 
     ### EcstaStream ###
-    path('ecstastream/add-user/', CreateEcstaStreamUser.as_view()),
+    path('ecstastream/user-list/', EcstaStreamUserList.as_view()),
+    path('ecstastream/profile/', EcstaStreamUserProfile.as_view()),
     path('ecstastream/streamingservices/', StreamingList.as_view()),
     path('ecstastream/genres/', AllGenreList.as_view()),
-    path('ecstastream/new-playlist/', CreatePlaylist.as_view()),
+    path('ecstastream/playlists/', EcstaStreamPlaylists.as_view()),
 ]

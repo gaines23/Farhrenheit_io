@@ -11,6 +11,8 @@ from .models import (
     Genre,
     EcstaStreamPlaylist,
     EcstaStreamProfile,
+    EcstaStream_Playlists_Following,
+    EcstaStream_User_Steaming_List
 )
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer  
@@ -80,10 +82,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         return AppFollowingSerializer(obj.following_app.all(), many=True).data
 
     def get_apps_user_created(self, obj):
-        return CreateNewAppSerializer(obj.app_created_by.all(), many=True).data
-
-
-### class UserEditProfileSerializer(serializers.ModelSerializer):
+        return FahrenheitAppSerializer(obj.app_created_by.all(), many=True).data
 
 
 
@@ -105,12 +104,9 @@ class FollowersSerializer(serializers.ModelSerializer):
 
 
 ### App Info ##
-
 class AppFollowingSerializer(serializers.ModelSerializer):
     app_info = serializers.SerializerMethodField()
 
-    #user = serializers.UUIDField()
-    #following_app_id = serializers.IntegerField()
     mute_notifications = serializers.BooleanField()
 
     class Meta:
@@ -118,10 +114,7 @@ class AppFollowingSerializer(serializers.ModelSerializer):
         fields = '__all__'
     
     def get_app_info(self, obj):
-        return AllAppsList(obj.following_app_id).data
-
-    # def create(self, obj):
-    #     return User_App_Following.objects.create(*obj)
+        return AllAppsListSerializer(obj.following_app_id).data
 
     def update(self, instance, validated_data):
         instance.mute_notifications = validated_data.get('mute_notifications', instance.mute_notifications)
@@ -130,34 +123,36 @@ class AppFollowingSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-class AllAppsList(serializers.ModelSerializer):
+class AllAppsListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fahrenheit_App_List
         exclude = ('internal_app_status', )
 
-class CreateNewAppSerializer(serializers.ModelSerializer):
+class FahrenheitAppSerializer(serializers.ModelSerializer):
+    date_added = serializers.DateTimeField(read_only=True)
+
     class Meta:
         model = Fahrenheit_App_List
-        fields = ('created_by', 'app_name', 'app_base_link', 'app_icon')
-        read_only_fields = ('created_by',)
+        fields = ('__all__')
 
-
-
-
-
-
-class EcCreateNewUser(serializers.ModelSerializer):
-    model = EcstaStreamProfile
-    fields = ('id', 'user_id')
-    read_only_fields = ('id',)
+    def update(self, instance, validated_data):
+        instance.app_name = validated_data.get('app_name', instance.app_name)
+        instance.app_base_link = validated_data.get('app_base_link', instance.app_base_link)
+        instance.app_icon = validated_data.get('app_icon', instance.app_icon)
+        instance.app_status = validated_data.get('app_status', instance.app_status)
     
+        instance.save()
+        return instance
 
-class EcCreatePlaylist(serializers.ModelSerializer):
-    class Meta:
-        model = EcstaStreamPlaylist
-        fields = ('created_by', 'title', 'private', 'description') #playlist_follows
-    
 
+
+
+
+
+
+
+
+### EcstaStream ###
 class StreamingServicesSerializer(serializers.ModelSerializer):
     class Meta:
         model = StreamingServices
@@ -167,3 +162,81 @@ class GenreSerlializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
         fields = ('id', 'genre')
+
+
+class EcstaStreamUsersListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EcstaStreamProfile
+        fields = ('__all__')
+
+
+
+class EcUserProfileSerializer(serializers.ModelSerializer):
+    date_created = serializers.DateTimeField(read_only=True)
+
+    user_playlists = serializers.SerializerMethodField()
+    playlist_following = serializers.SerializerMethodField()
+    streaming_list = serializers.SerializerMethodField()
+
+    class Meta:
+        model = EcstaStreamProfile
+        fields = ('__all__')
+
+    def update(self, instance, validated_data):
+        instance.profile_status = validated_data.get('profile_status', instance.profile_status)
+        instance.ec_id = validated_data.get('ec_id', instance.ec_id)
+
+        instance.save()
+        return instance
+
+    def get_user_playlists(self, obj):
+        return EcstaStreamPlaylistSerializer(obj.created_by).data
+    
+    def get_playlist_following(self, obj):
+        return EcUserPlaylistFollowingSerializer(obj.user_pl).data
+
+    def get_streaming_list(self, obj):
+        return EcUserStreamingListSerializer(obj.user_streaming).data
+
+
+
+
+class EcstaStreamPlaylistSerializer(serializers.ModelSerializer):
+    created_on = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = EcstaStreamPlaylist
+        fields = ('__all__')
+        read_only_fields = ('ec_playlist_id', 'created_by', 'created_on')
+    
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get('title', instance.title)
+        instance.private = validated_data.get('private', instance.private)
+        instance.description = validated_data.get('description', instance.description)
+        instance.cover_img = validated_data.get('cover_img', instance.cover_img)
+        instance.comments_on = validated_data.get('comments_on', instance.comments_on)
+
+        instance.save()
+        return instance
+
+
+class EcUserPlaylistFollowingSerializer(serializers.ModelSerializer):
+    app_info = serializers.SerializerMethodField()
+
+    class Meta:
+        model = EcstaStream_Playlists_Following
+        fields = '__all__'
+    
+    def get_app_info(self, obj):
+        return EcstaStreamPlaylistSerializer(obj.playlist_id).data
+
+
+class EcUserStreamingListSerializer(serializers.ModelSerializer):
+    app_info = serializers.SerializerMethodField()
+
+    class Meta:
+        model = EcstaStream_User_Steaming_List
+        fields = '__all__'
+    
+    def get_app_info(self, obj):
+        return EcstaStreamPlaylistSerializer(obj.streaming_id).data

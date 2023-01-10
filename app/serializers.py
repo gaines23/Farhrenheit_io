@@ -190,7 +190,7 @@ class EcUserProfileSerializer(serializers.ModelSerializer):
         return instance
 
     def get_user_playlists(self, obj):
-        return EcstaStreamPlaylistSerializer(obj.created_by).data
+        return EcstaStreamPlaylistSerializer(obj.playlists).data
     
     def get_playlist_following(self, obj):
         return EcUserPlaylistFollowingSerializer(obj.user_pl).data
@@ -207,7 +207,6 @@ class EcstaStreamPlaylistSerializer(serializers.ModelSerializer):
     class Meta:
         model = EcstaStreamPlaylist
         fields = ('__all__')
-        read_only_fields = ('ec_playlist_id', 'created_by', 'created_on')
     
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)

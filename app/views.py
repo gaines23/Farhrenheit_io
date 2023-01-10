@@ -297,13 +297,16 @@ class EcstaStreamUserList(APIView):
 
 
 class EcstaStreamUserProfile(APIView):
-    def get(self, request):
+    def get_object_or_404(self):
+        return self.request.user.id
+
+    def get(self, request, *args, **kwargs):
         try:
-            profile = EcstaStreamProfile.objects.get(user_id=request.user.id)
+            profile = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
             serializer = EcUserProfileSerializer(profile)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception:
-            return Response('No User with that id/username', status=status.HTTP_204_NO_CONTENT)
+            return Response('No user found', status=status.HTTP_204_NO_CONTENT)
 
     def post(self, request, *args, **kwargs):
         user = CustomUser.objects.get(id=self.request.user.id)
@@ -349,15 +352,16 @@ class EcstaStreamPlaylists(APIView):
             return Response('No Playlists Found', status=status.HTTP_204_NO_CONTENT)
 
     def post(self, request, *args, **kwargs):
-        user = EcstaStreamProfile.objects.get(ec_id=request.data['ec_id'])
+        user = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
 
         data = {
-            "created_by": user,
+            "created_by": user.ec_id,
             "title": request.data['title'],
             "private": request.data['private'],
             "description": request.data['description'],
-            "cover_img": request.data['cover_img'],
-            "comments_on": request.data['comments_on'] 
+            #"cover_img": request.data['cover_img'],
+            "comments_on": False,
+            "status": 0,
         }
 
         serializer = EcstaStreamPlaylistSerializer(data=data)

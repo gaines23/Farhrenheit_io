@@ -23,6 +23,8 @@ class FahrenheitAppListAdmin(admin.ModelAdmin):
     list_filter = ['date_added']
 admin.site.register(Fahrenheit_App_List, FahrenheitAppListAdmin)
 
+
+
 class FahrenheitUserAdmin(admin.ModelAdmin):
     model = CustomUser
     list_display = ['username', 'id', 'date_joined', 'last_modified', ]
@@ -39,6 +41,8 @@ class UserFollowingAdmin(admin.ModelAdmin):
     order = ['date_added']
     list_filter = ['date_added']
 admin.site.register(User_Following, UserFollowingAdmin)
+
+
 
 class UserAppFollowingAdmin(admin.ModelAdmin):
     model = User_App_Following

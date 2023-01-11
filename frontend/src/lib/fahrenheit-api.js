@@ -3,6 +3,9 @@ let register_url = process.env.REACT_APP_FAHRENHEIT_REGISTER;
 let logout_url = process.env.REACT_APP_FAHRENHEIT_LOGOUT;
 let profile_url = process.env.REACT_APP_FAHRENHEIT_PROFILE;
 
+let apps_user_following = process.env.REACT_APP_FAHRENHEIT_USER_APP_FOLLOWING;
+
+
 export async function getLogoutUrl() {
     const response = await fetch(`${logout_url}`, {
         method: 'POST',
@@ -64,3 +67,23 @@ export async function getUserProfile(token) {
 }
 
 
+export async function getFollowNewAppURL({appId}) {
+    const response = await fetch (`${apps_user_following}`, {
+        method: 'POST',
+        body: JSON.stringify(
+            localStorage.getItem('token'),
+            appId    
+        ),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
+    return;
+}

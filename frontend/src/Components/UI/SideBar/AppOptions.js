@@ -1,5 +1,7 @@
 import { Fragment, useEffect, useRef, useState} from "react";
 import { Link, useHistory } from 'react-router-dom';
+import useHttp from "../../../hooks/use-http";
+import { getFollowNewAppURL } from "../../../lib/fahrenheit-api";
 
 import LoadingSpinner from "../LoadingSpinner";
 
@@ -11,13 +13,13 @@ import {
 } from '../NavStyles';
 
 
-let apps_user_following = process.env.REACT_APP_FAHRENHEIT_USER_APP_FOLLOWING;
+//let apps_user_following = process.env.REACT_APP_FAHRENHEIT_USER_APP_FOLLOWING;
 
 const AppOptions = ({app, following}) => {
     const history = useHistory();
     // following = POST , unfollow = DELETE
     // mute = PUT
-
+    const { sendRequest, status } = useHttp(getFollowNewAppURL);
     let token = localStorage.getItem('token'); 
 
     const appId = app.id;
@@ -27,30 +29,45 @@ const AppOptions = ({app, following}) => {
 
     const followHandler = async (e) => {
         e.preventDefault();
+        
 
+        sendRequest(appId);
         setIsLoading(true);
 
-        fetch(
-            apps_user_following,
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    following_app_id: appId,
-                }),
-                header: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                }
-            }
-        ).then(async res => {
-            setIsLoading(false)
-            if (res.ok) {
-                return res.json();
-            }
-        }).then(() => {
-            //history.replace(`/fahrenheit${appUrl}`);
-        });
+        //history.replace(`/fahrenheit${appUrl}`);
+
     }
+
+    if (status === 'pending') {
+        <LoadingSpinner />
+    }
+
+    // const followHandler = async (e) => {
+    //     e.preventDefault();
+
+    //     setIsLoading(true);
+
+    //     fetch(
+    //         apps_user_following,
+    //         {
+    //             method: 'POST',
+    //             body: JSON.stringify({
+    //                 following_app_id: appId,
+    //             }),
+    //             header: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Bearer ${token}`,
+    //             }
+    //         }
+    //     ).then(async res => {
+    //         setIsLoading(false)
+    //         if (res.ok) {
+    //             return res.json();
+    //         }
+    //     }).then(() => {
+    //         //history.replace(`/fahrenheit${appUrl}`);
+    //     });
+    // }
 
 
     return (

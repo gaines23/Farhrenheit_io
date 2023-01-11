@@ -99,7 +99,7 @@ class UserLogout(APIView):
         try:
             if self.request.data.get('all'):
                 token: OutstandingToken
-                for token in OutstandingToken.objects.filter(user=request.user.id):
+                for token in OutstandingToken.objects.filter(user=self.request.user.id):
                     _, _ = BlacklistedToken.objects.get_or_create(token=token)
                 return Response(status=status.HTTP_205_RESET_CONTENT)
             refresh_token = self.request.data.get('refresh_token')

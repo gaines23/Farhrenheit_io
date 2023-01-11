@@ -153,6 +153,41 @@ class FahrenheitAppSerializer(serializers.ModelSerializer):
 
 
 ### EcstaStream ###
+class EcUserProfileSerializer(serializers.ModelSerializer):
+    date_created = serializers.DateTimeField(read_only=True)
+
+    user_playlists = serializers.SerializerMethodField()
+    playlist_following = serializers.SerializerMethodField()
+    streaming_list = serializers.SerializerMethodField()
+
+    class Meta:
+        model = EcstaStreamProfile
+        fields = ('__all__')
+
+    def update(self, instance, validated_data):
+        instance.profile_status = validated_data.get('profile_status', instance.profile_status)
+
+        instance.save()
+        return instance
+
+    def get_user_playlists(self, obj):
+        try:
+            return EcstaStreamPlaylistSerializer(obj.playlists).data
+        except Exception:
+            return 
+
+    def get_playlist_following(self, obj):
+        try:
+            return EcUserPlaylistFollowingSerializer(obj.user_pl).data
+        except Exception:
+            return 
+
+    def get_streaming_list(self, obj):
+        try:
+            return EcUserStreamingListSerializer(obj.user_streaming).data
+        except Exception:
+            return 
+
 class StreamingServicesSerializer(serializers.ModelSerializer):
     class Meta:
         model = StreamingServices
@@ -168,37 +203,6 @@ class EcstaStreamUsersListSerializer(serializers.ModelSerializer):
     class Meta:
         model = EcstaStreamProfile
         fields = ('__all__')
-
-
-
-class EcUserProfileSerializer(serializers.ModelSerializer):
-    date_created = serializers.DateTimeField(read_only=True)
-
-    user_playlists = serializers.SerializerMethodField()
-    playlist_following = serializers.SerializerMethodField()
-    streaming_list = serializers.SerializerMethodField()
-
-    class Meta:
-        model = EcstaStreamProfile
-        fields = ('__all__')
-
-    def update(self, instance, validated_data):
-        instance.profile_status = validated_data.get('profile_status', instance.profile_status)
-        instance.ec_id = validated_data.get('ec_id', instance.ec_id)
-
-        instance.save()
-        return instance
-
-    def get_user_playlists(self, obj):
-        return EcstaStreamPlaylistSerializer(obj.playlists).data
-    
-    def get_playlist_following(self, obj):
-        return EcUserPlaylistFollowingSerializer(obj.user_pl).data
-
-    def get_streaming_list(self, obj):
-        return EcUserStreamingListSerializer(obj.user_streaming).data
-
-
 
 
 class EcstaStreamPlaylistSerializer(serializers.ModelSerializer):

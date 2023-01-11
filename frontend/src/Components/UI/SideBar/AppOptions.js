@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useRef, useState} from "react";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import LoadingSpinner from "../LoadingSpinner";
 
@@ -14,46 +14,43 @@ import {
 let apps_user_following = process.env.REACT_APP_FAHRENHEIT_USER_APP_FOLLOWING;
 
 const AppOptions = ({app, following}) => {
+    const history = useHistory();
     // following = POST , unfollow = DELETE
     // mute = PUT
-    
-    const submitFollow = async (e) => {
+
+    let token = localStorage.getItem('token'); 
+
+    const appId = app.id;
+    const appUrl = app.app_base_link;
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const followHandler = async (e) => {
         e.preventDefault();
 
-        let id = app.id;
- 
-        fetch (
-            apps_user_following, 
+        setIsLoading(true);
+
+        fetch(
+            apps_user_following,
             {
                 method: 'POST',
                 body: JSON.stringify({
-                    following_app_id: id,
+                    following_app_id: appId,
                 }),
-                headers: {
+                header: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 }
-            }).then(async res => {
-                if (res.ok) {
-                    return res.json();
-                } else {
-                    return res.json().then(data => {
-                        errorMessage = data.error.message;
-                    });
-                }
-                throw new Error(errorMessage);
-            });
+            }
+        ).then(async res => {
+            setIsLoading(false)
+            if (res.ok) {
+                return res.json();
+            }
+        }).then(() => {
+            //history.replace(`/fahrenheit${appUrl}`);
+        });
     }
-
-
-    useEffect(() => {
-        apps_user_following,
-        {
-            method: 'POST',
-            body: JSON.stringify({
-
-            }),
-        }
-    }, []);
 
 
     return (
@@ -62,17 +59,15 @@ const AppOptions = ({app, following}) => {
                 className="absolute z-10 left-full bottom-0 w-full h-auto py-2 mt-1 bg-far-navy rounded-lg shadow-sm shadow shadow-bg-fill/50"
             >
                 <ul className="h-full w-5/6 mx-auto">
-                    <li className={OpenNavListClass}>
-                        <Link 
-                            to={'/fahrenheit'} 
-                            className={OpenLinkClassName}
-                        >
-                            <div className={OpenPDivClassName}>
+                    <li className={OpenNavListClass} >
+                        <div className={OpenLinkClassName} >
+                            <button className={OpenPDivClassName} type="submit" onClick={followHandler}>
                                 <p className={OptionsParaClassName}>
                                     {following ? 'Unfollow' : 'Follow'}
                                 </p>
-                            </div>
-                        </Link>
+                                { isLoading && <LoadingSpinner /> }
+                            </button>
+                        </div>
                     </li>
 
                     {following ? (
@@ -92,7 +87,7 @@ const AppOptions = ({app, following}) => {
                                     </div>
                                 </button>
                             </li>
-                    </Fragment>
+                        </Fragment>
                     ) : ''}
                     
                 </ul>

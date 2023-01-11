@@ -163,7 +163,7 @@ class Genre(models.Model):
 
 class EcstaStreamProfile(models.Model):
     ec_id = models.BigAutoField(primary_key=True)
-    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="ecstastream_user")
     status = models.IntegerField(choices=STATUS, default=0) 
     profile_status = models.IntegerField(choices=PROFILE_STATUS, default=0)## internal
     date_created = models.DateTimeField(auto_now_add=True)
@@ -171,23 +171,15 @@ class EcstaStreamProfile(models.Model):
     def __str__(self):
         return '{} - {}'.format(self.ec_id, self.user_id)
 
-    def get_user_id(self):
-        id = self.user_id.id
-        return id
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=["user_id"], name="ec_profile")
-        ]
-    
 class EcstaStreamPlaylist(models.Model):
     ec_playlist_id = models.BigAutoField(primary_key=True)
     created_by = models.ForeignKey(EcstaStreamProfile, related_name="playlists", on_delete=models.CASCADE)
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=50, null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     private = models.BooleanField(default=True) #on
-    description = models.TextField(null=True, max_length=150)
+    description = models.TextField(null=True, max_length=150, blank=True)
     cover_img = models.ImageField(default='defaultplaylist.png', upload_to='cover_images', null=True)
     #comments = models.TextField(null=True)
     comments_on = models.BooleanField(default=False) #on

@@ -162,10 +162,25 @@ class AppList(APIView):
             return Response(serializer.errors, status=status.HTTP_204_NO_CONTENT)
 
 
-class UserAppFollowing(APIView):
-    def get_object(self):
-        return self.request.user.id
+class UserNotFollowingApps(APIView):
+    def get(self, *args):
+        try:
+            all_apps = Fahrenheit_App_List.objects.all()
+            following = User_App_Following.objects.filter(user=self.request.user.id)
 
+            apps = []
+            for x in all_apps:
+                for y in following:
+                    if x.id != y.id:
+                        apps.append(x)
+
+            serializer = AllAppsListSerializer(apps, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception:
+            return Response(serializer.errors, status=status.HTTP_204_NO_CONTENT)
+
+
+class UserAppFollowing(APIView):
     ### All apps user follows
     def get(self, request, format='json', *args):
         try:
@@ -297,16 +312,11 @@ class EcstaStreamUserList(APIView):
 
 
 class EcstaStreamUserProfile(APIView):
-    def get_object_or_404(self):
-        return self.request.user.id
-
     def get(self, request, *args, **kwargs):
-        try:
-            profile = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
+            profile = EcstaStreamProfile.objects.get(user_id_id=self.request.user.id)
             serializer = EcUserProfileSerializer(profile)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except Exception:
-            return Response('No user found', status=status.HTTP_204_NO_CONTENT)
+
 
     def post(self, request, *args, **kwargs):
         user = CustomUser.objects.get(id=self.request.user.id)
@@ -317,7 +327,7 @@ class EcstaStreamUserProfile(APIView):
             "profile_status": 0
         }
         
-        serializer = EcUserProfileSerializer(data=data)
+        serializer = EcstaStreamUsersListSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=status.HTTP_200_OK)
@@ -326,8 +336,7 @@ class EcstaStreamUserProfile(APIView):
     def put(self, request, *args, **kwargs):
         user = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
         app = {
-            "profile_status": request.data['profile_status'],
-            "ec_id": request.data['ec_id']
+            "profile_status": request.data['profile_status']
         }
 
         serializer = EcUserProfileSerializer(instance=user, data=app, partial=True)

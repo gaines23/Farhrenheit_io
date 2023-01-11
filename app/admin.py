@@ -54,7 +54,13 @@ admin.site.register(User_App_Following, UserAppFollowingAdmin)
 
 admin.site.register(Follow_Request)
 
-admin.site.register(EcstaStreamProfile)
+class EcstaStreamProfileAdmin(admin.ModelAdmin):
+    model = EcstaStreamProfile
+    list_display = ['user_id', 'ec_id', 'date_created', 'profile_status', 'status']
+    search_fields = ['user_id', 'ec_id']
+    order = ['date_created']
+    list_filter = ['status']
+admin.site.register(EcstaStreamProfile, EcstaStreamProfileAdmin)
 
 admin.site.register(Genre)
 

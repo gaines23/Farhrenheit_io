@@ -21,10 +21,7 @@ const AppOptions = ({app, following}) => {
     const appId = app.id;
     const appUrl = app.app_base_link;
     
-    
     const [isLoading, setIsLoading] = useState(false);
-
-
 
     const submitFollowHandler = async (e) => {
         e.preventDefault();
@@ -41,7 +38,34 @@ const AppOptions = ({app, following}) => {
                 headers: {
                     'Content-Type': 'application/json' ,
                     'Authorization': `Bearer ${token}`,
-                    'accept': 'application/json',
+                }
+            }
+        ).then(async res => {
+            setIsLoading(false)
+            if (res.ok) {
+                return res.json();
+            }
+        }).then(() => {
+            //history.replace(`/fahrenheit${appUrl}`);
+        });
+    }
+
+    const submitUnFollowHandler = async (e) => {
+        console.log(appId)
+        e.preventDefault();
+
+        setIsLoading(true);
+
+        fetch(
+            apps_user_following,
+            {
+                method: 'DELETE',
+                body: JSON.stringify({
+                    id: appId,
+                }),
+                headers: {
+                    'Content-Type': 'application/json' ,
+                    'Authorization': `Bearer ${token}`,
                 }
             }
         ).then(async res => {
@@ -62,13 +86,22 @@ const AppOptions = ({app, following}) => {
             >
                 <ul className="h-full w-5/6 mx-auto">
                     <li className={OpenNavListClass} >
-                        <div className={OpenLinkClassName} >
-                            <button className={OpenPDivClassName} type="submit" onClick={submitFollowHandler}>
-                                <p className={OptionsParaClassName}>
-                                    {following ? 'Unfollow' : 'Follow'}
-                                </p>
-                                { isLoading && <LoadingSpinner /> }
-                            </button>
+                        <div className={OpenLinkClassName}>
+                            {following ? (
+                                <button className={OpenPDivClassName} type="submit" onClick={submitUnFollowHandler}>
+                                    <p className={OptionsParaClassName}>
+                                        Unfollow
+                                    </p>
+                                    { isLoading && <LoadingSpinner /> }
+                                </button>
+                            ):(
+                                <button className={OpenPDivClassName} type="submit" onClick={submitFollowHandler}>
+                                    <p className={OptionsParaClassName}>
+                                        Follow
+                                    </p>
+                                    { isLoading && <LoadingSpinner /> }
+                                </button>
+                            )}
                         </div>
                     </li>
 

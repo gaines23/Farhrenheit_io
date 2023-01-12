@@ -61,7 +61,7 @@ const AppListOpen = () => {
 
                 <p className="w-full h-auto text-xs text-input-fill/30 px-2">My Apps</p>
                 
-                <ul className="w-full mx-auto h-auto text-xs font-thin mt-3">
+                <ul className="w-full mx-auto h-auto text-xs font-thin my-2">
                     {userApps !== null ? 
                         userApps.map(app => {
                             return <AppCard key={app.id} app={app} following={true} />
@@ -70,11 +70,12 @@ const AppListOpen = () => {
                 </ul>
                 <p className="w-full h-auto text-xs text-input-fill/30 px-2">All Apps</p>
                 
-                <ul className="w-full mx-auto h-auto text-xs font-thin mt-3">
+                <ul className="w-full mx-auto h-auto text-xs font-thin mt-2">
 
                     {notUserApps.map(app => {
                         return <AppCard key={app.id} app={app} following={false} />
                     })}
+                    
                 </ul>
             </div>
         </Fragment>

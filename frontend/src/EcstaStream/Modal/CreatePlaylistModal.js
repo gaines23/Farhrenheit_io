@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import LoadingSpinner from "../../Components/UI/LoadingSpinner";
+import useOutsideClick from "../../hooks/useOutsideClick";
 
 const CreatePlaylistModal = (props) => {
     const [toggle, setToggle] = useState(true); // private === true
@@ -7,6 +8,7 @@ const CreatePlaylistModal = (props) => {
     const titleRef = useRef();
     const descRef = useRef();
     const privateRef = useRef(true);
+    const ref = useRef();
 
     useEffect(() => {
         if (privateRef.current) {
@@ -18,13 +20,17 @@ const CreatePlaylistModal = (props) => {
     const submitPlaylistForm = (e) => {
         e.preventDefault();
         
-        let created_by = localStorage.getItem('fah_id');
+        let created_by = localStorage.getItem('token');
         const enteredTitle = titleRef.current.value;
         const enteredDesc = descRef.current.value;
         const enteredPrivate = privateRef.current;
 
         props.onAddPlaylist( { created_by: created_by, title: enteredTitle, description: enteredDesc, private: enteredPrivate } );
     }
+
+    useOutsideClick(ref, () => {
+        props.setIsOpen(false)
+    });
 
 
     const inputClassName = "w-full h-10 mt-1 pl-5 shadow-md shadow-black/20 border-solid border border-input-fill/30 rounded-lg bg-input-fill/30 focus:border-input-fill hover:bg-input-fill/10 focus:text-sm focus:outline-none focus:bg-input-fill/10";

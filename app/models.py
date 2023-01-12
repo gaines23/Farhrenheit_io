@@ -115,9 +115,8 @@ class User_App_Following(models.Model):
     date_added = models.DateTimeField(auto_now=True)
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=["user", "following_app_id"], name='user_following_app')    
-        ]
+        managed = False
+        unique_together = (('following_app_id'), ('user'))
         ordering = ['date_added']
 
 class Follow_Request(models.Model):

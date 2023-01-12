@@ -49,6 +49,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
 import uuid
+from django.db.models import Q
 
 env = environ.Env()
 environ.Env.read_env()
@@ -162,20 +163,19 @@ class AppList(APIView):
         except Exception:
             return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class UserNotFollowingApps(APIView):
-    def get(self, *args):
+    def get(self, request, *args, **kwargs):
         try:
             all_apps = Fahrenheit_App_List.objects.all()
             following = User_App_Following.objects.filter(user=self.request.user)
+            apps_following = [x.following_app_id for x in following]
 
-            apps = []
-            for x in all_apps:
-                for y in following:
-                    if x.id != y.id:
-                        apps.append(x)
+            x = [z.id for z in all_apps and apps_following]
+            not_following = Fahrenheit_App_List.objects.exclude(id__in=x)
 
-            serializer = AppNotFollowingSerializer(apps, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            serializer = AppNotFollowingSerializer(not_following, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK,)
         except Exception:
             return Response(status=status.HTTP_204_NO_CONTENT)
 

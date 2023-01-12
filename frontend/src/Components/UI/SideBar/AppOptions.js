@@ -1,7 +1,5 @@
 import { Fragment, useEffect, useRef, useState} from "react";
 import { Link, useHistory } from 'react-router-dom';
-import useHttp from "../../../hooks/use-http";
-import { getFollowNewAppURL } from "../../../lib/fahrenheit-api";
 
 import LoadingSpinner from "../LoadingSpinner";
 
@@ -13,61 +11,48 @@ import {
 } from '../NavStyles';
 
 
-//let apps_user_following = process.env.REACT_APP_FAHRENHEIT_USER_APP_FOLLOWING;
+let apps_user_following = process.env.REACT_APP_FAHRENHEIT_USER_APP_FOLLOWING;
 
 const AppOptions = ({app, following}) => {
     const history = useHistory();
     // following = POST , unfollow = DELETE
     // mute = PUT
-    const { sendRequest, status } = useHttp(getFollowNewAppURL);
     let token = localStorage.getItem('token'); 
-
     const appId = app.id;
     const appUrl = app.app_base_link;
-
+    
+    
     const [isLoading, setIsLoading] = useState(false);
 
-    const followHandler = async (e) => {
-        e.preventDefault();
-        
 
-        sendRequest(appId);
+
+    const submitFollowHandler = async (e) => {
+        e.preventDefault();
+
         setIsLoading(true);
 
-        //history.replace(`/fahrenheit${appUrl}`);
-
+        fetch(
+            apps_user_following,
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    following_app_id: appId,
+                }),
+                headers: {
+                    'Content-Type': 'application/json' ,
+                    'Authorization': `Bearer ${token}`,
+                    'accept': 'application/json',
+                }
+            }
+        ).then(async res => {
+            setIsLoading(false)
+            if (res.ok) {
+                return res.json();
+            }
+        }).then(() => {
+            //history.replace(`/fahrenheit${appUrl}`);
+        });
     }
-
-    if (status === 'pending') {
-        <LoadingSpinner />
-    }
-
-    // const followHandler = async (e) => {
-    //     e.preventDefault();
-
-    //     setIsLoading(true);
-
-    //     fetch(
-    //         apps_user_following,
-    //         {
-    //             method: 'POST',
-    //             body: JSON.stringify({
-    //                 following_app_id: appId,
-    //             }),
-    //             header: {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Bearer ${token}`,
-    //             }
-    //         }
-    //     ).then(async res => {
-    //         setIsLoading(false)
-    //         if (res.ok) {
-    //             return res.json();
-    //         }
-    //     }).then(() => {
-    //         //history.replace(`/fahrenheit${appUrl}`);
-    //     });
-    // }
 
 
     return (
@@ -78,7 +63,7 @@ const AppOptions = ({app, following}) => {
                 <ul className="h-full w-5/6 mx-auto">
                     <li className={OpenNavListClass} >
                         <div className={OpenLinkClassName} >
-                            <button className={OpenPDivClassName} type="submit" onClick={followHandler}>
+                            <button className={OpenPDivClassName} type="submit" onClick={submitFollowHandler}>
                                 <p className={OptionsParaClassName}>
                                     {following ? 'Unfollow' : 'Follow'}
                                 </p>

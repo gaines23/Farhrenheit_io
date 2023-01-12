@@ -4,12 +4,15 @@ let logout_url = process.env.REACT_APP_FAHRENHEIT_LOGOUT;
 let profile_url = process.env.REACT_APP_FAHRENHEIT_PROFILE;
 
 let apps_user_following = process.env.REACT_APP_FAHRENHEIT_USER_APP_FOLLOWING;
+let apps_user_not_following = process.env.REACT_APP_FAHRENHEIT_USER_APPS_NOT_FOLLOWING;
+let all_apps = process.env.REACT_APP_FAHRENHEIT_APP_LIST;
 
+let user_token = localStorage.getItem('token');
 
 export async function getLogoutUrl() {
     const response = await fetch(`${logout_url}`, {
         method: 'POST',
-        body: JSON.stringify(localStorage.getItem("token")),
+        body: JSON.stringify(user_token),
         headers: {
             'Content-Type': 'application/json',
         }
@@ -43,12 +46,12 @@ export async function getUserRegisteration(credentials) {
     return null;
 }
 
-export async function getUserProfile(token) {
+export async function getUserProfile() {
     const response = await fetch(`${profile_url}`, { 
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${user_token}`
         }
     });
 
@@ -66,24 +69,70 @@ export async function getUserProfile(token) {
 
 }
 
-
-export async function getFollowNewAppURL({appId}) {
-    const response = await fetch (`${apps_user_following}`, {
-        method: 'POST',
-        body: JSON.stringify(
-            localStorage.getItem('token'),
-            appId    
-        ),
+export async function getAllApps() {
+    const response = await fetch(`${all_apps}`, { 
+        method: 'GET',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user_token}`
         }
     });
 
     const data = await response.json();
-
+    
     if (!response.ok) {
-        throw new Error(data.message);
+        throw new Error(response.status_message);
     }
 
-    return;
+    const allAppDetails = {
+        ...data,
+    }
+
+    return allAppDetails;
+
 }
+
+
+    export async function getNotFollowingApps() {
+        const response = await fetch(`${apps_user_not_following}`, { 
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user_token}`
+            }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(response.status_message);
+        }
+    
+        const notFollowingApps = {
+            ...data,
+        }
+    
+        return notFollowingApps;
+    }
+
+
+    export async function getUserAppFollowing() {
+        const response = await fetch(`${apps_user_following}`, { 
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user_token}`
+            }
+        });
+
+        const data = await response.json();
+
+        const appsFollowingData = {
+            ...data,
+        }
+
+        return appsFollowingData;
+    }
+
+
+

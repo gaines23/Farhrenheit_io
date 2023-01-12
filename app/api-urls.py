@@ -33,10 +33,10 @@ urlpatterns = [
     path('users-list/', UsersList.as_view()),
 
     ### User Apps ###
-    path('app-list/', AppList.as_view()),
-    path('user/user-app/', UserFahrenheitApps.as_view()),  ### Create New App Form ###
-    path('user/app-following/', UserAppFollowing.as_view()),
-    path('user/user-not-following/', UserNotFollowingApps.as_view()),
+    path('apps-list/', AppList.as_view()),
+    path('user/user-apps/', UserFahrenheitApps.as_view()),  ### Create New App Form ###
+    path('user/apps-following/', UserAppFollowing.as_view()),
+    path('user/apps-not-following/', UserNotFollowingApps.as_view()),
 
     ### User Following Actions ##
     path('user/following/', UserFollowing.as_view()),

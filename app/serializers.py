@@ -123,10 +123,19 @@ class AppFollowingSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-class AllAppsListSerializer(serializers.ModelSerializer):
+
+class AppNotFollowingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fahrenheit_App_List
         exclude = ('internal_app_status', )
+
+class AllAppsListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Fahrenheit_App_List
+        exclude = ('internal_app_status', )
+
+
 
 class FahrenheitAppSerializer(serializers.ModelSerializer):
     date_added = serializers.DateTimeField(read_only=True)

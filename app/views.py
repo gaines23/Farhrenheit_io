@@ -37,6 +37,7 @@ from .serializers import (
     EcUserPlaylistFollowingSerializer,
     EcUserStreamingListSerializer,
     EcstaStreamUsersListSerializer,
+    AppNotFollowingSerializer,
 )
 from rest_framework.views import APIView
 from django.http.response import JsonResponse
@@ -159,14 +160,13 @@ class AppList(APIView):
             serializer = AllAppsListSerializer(app, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception:
-            return Response(serializer.errors, status=status.HTTP_204_NO_CONTENT)
-
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
 class UserNotFollowingApps(APIView):
     def get(self, *args):
         try:
             all_apps = Fahrenheit_App_List.objects.all()
-            following = User_App_Following.objects.filter(user=self.request.user.id)
+            following = User_App_Following.objects.filter(user=self.request.user)
 
             apps = []
             for x in all_apps:
@@ -174,10 +174,10 @@ class UserNotFollowingApps(APIView):
                     if x.id != y.id:
                         apps.append(x)
 
-            serializer = AllAppsListSerializer(apps, many=True)
+            serializer = AppNotFollowingSerializer(apps, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception:
-            return Response(serializer.errors, status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class UserAppFollowing(APIView):
@@ -189,7 +189,7 @@ class UserAppFollowing(APIView):
             return Response(serializer, status=status.HTTP_200_OK)
         except Exception:
             return Response(status=status.HTTP_204_NO_CONTENT)
-
+        
     ### User adds new app to follow
     def post(self, request, *args, **kwargs):
         user = CustomUser.objects.get(id=self.request.user.id)

@@ -166,6 +166,7 @@ class AppList(APIView):
 
 class UserNotFollowingApps(APIView):
     def get(self, request, *args, **kwargs):
+        
         try:
             all_apps = Fahrenheit_App_List.objects.all()
             following = User_App_Following.objects.filter(user=self.request.user)

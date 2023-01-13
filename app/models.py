@@ -101,11 +101,6 @@ class Fahrenheit_App_List(models.Model):
     class Meta:
         db_table = 'app_fahrenheit_app_list'
 
-### User Following Actions ###
-class User_Following(models.Model):
-    user = models.ForeignKey(CustomUser, related_name="user_following", on_delete=models.CASCADE)
-    following_user_id = models.ForeignKey(CustomUser, related_name="user_followers", on_delete=models.CASCADE)
-    date_added = models.DateTimeField(auto_now=True)
 
 class User_App_Following(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -115,9 +110,30 @@ class User_App_Following(models.Model):
     date_added = models.DateTimeField(auto_now=True)
 
     class Meta:
-        managed = False
-        unique_together = (('following_app_id'), ('user'))
+        constraints = [
+            models.UniqueConstraint(fields=["following_app_id", "user"], name='user_app_following')    
+        ]
+        #unique_together = (('following_app_id'), ('user'))
         ordering = ['date_added']
+
+
+
+
+
+
+
+
+
+
+### User Following Actions ###
+class User_Following(models.Model):
+    user = models.ForeignKey(CustomUser, related_name="user_following", on_delete=models.CASCADE)
+    following_user_id = models.ForeignKey(CustomUser, related_name="user_followers", on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now=True)
+
+
+
+
 
 class Follow_Request(models.Model):
     from_user = models.ForeignKey(CustomUser, related_name='from_user', on_delete=models.CASCADE)

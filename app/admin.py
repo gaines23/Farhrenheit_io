@@ -47,7 +47,7 @@ admin.site.register(User_Following, UserFollowingAdmin)
 class UserAppFollowingAdmin(admin.ModelAdmin):
     model = User_App_Following
     list_display = ['user', 'following_app_id', 'date_added']
-    search_fields = ['user']
+    search_fields = ['user', 'following_app_id']
     order = ['date_added']
     list_filter = ['date_added']
 admin.site.register(User_App_Following, UserAppFollowingAdmin)

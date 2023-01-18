@@ -15,8 +15,10 @@ let apps_user_following = process.env.REACT_APP_FAHRENHEIT_USER_APP_FOLLOWING;
 
 const AppOptions = ({app, following}) => {
     const history = useHistory();
+
     // following = POST , unfollow = DELETE
     // mute = PUT
+
     let token = localStorage.getItem('token'); 
     const appId = app.id;
     const appUrl = app.app_base_link;
@@ -45,7 +47,7 @@ const AppOptions = ({app, following}) => {
             if (res.ok) {
                 return res.json();
             }
-        }).then(() => {
+        }).then(() => { 
             //history.replace(`/fahrenheit${appUrl}`);
         });
     }
@@ -75,7 +77,8 @@ const AppOptions = ({app, following}) => {
             }
         }).then(() => {
             //history.replace(`/fahrenheit${appUrl}`);
-        });
+        }); 
+
     }
 
 

@@ -67,8 +67,10 @@ class UserCreate(APIView):
     def post(self, request, *args, **kwargs):
         serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+            new_user = serializer.save()
+            id = uuid.UUID(str(new_user.id))
+            EcstaStreamProfile.objects.get_or_create(user_id=id)
+            return JsonResponse(new_user.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -294,7 +296,6 @@ class StreamingList(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class AllGenreList(APIView):
-
     def get(self, request, *args, **kwargs):
         services = Genre.objects.all()
         serializer = GenreSerlializer(services, many=True)
@@ -317,7 +318,6 @@ class EcstaStreamUserProfile(APIView):
             profile = EcstaStreamProfile.objects.get(user_id_id=self.request.user.id)
             serializer = EcUserProfileSerializer(profile)
             return Response(serializer.data, status=status.HTTP_200_OK)
-
 
     def post(self, request, *args, **kwargs):
         user = CustomUser.objects.get(id=self.request.user.id)
@@ -362,22 +362,35 @@ class EcstaStreamPlaylists(APIView):
             return Response('No Playlists Found', status=status.HTTP_204_NO_CONTENT)
 
     def post(self, request, *args, **kwargs):
-        user = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
+        id = CustomUser.objects.get(id=self.request.user.id)
+        
+        try:
+            EcstaStreamProfile.objects.get_or_create(user_id=id)
+            ec_id = EcstaStreamProfile.objects.get(user_id=id)
 
-        data = {
-            "created_by": user.ec_id,
-            "title": request.data['title'],
-            "private": request.data['private'],
-            "description": request.data['description'],
-            #"cover_img": request.data['cover_img'],
-            "comments_on": False,
-            "status": 0,
-        }
+            data = {
+                "created_by": ec_id.ec_id,
+                "title": request.data['title'],
+                "private": request.data['private'],
+                "description": request.data['description'],
+                #"cover_img": request.data['cover_img'],
+                "comments_on": False,
+                "status": 0,
+            }
+            serializer = EcstaStreamPlaylistSerializer(data=data)
+        except Exception:
+            return Response('no user id found')
 
-        serializer = EcstaStreamPlaylistSerializer(data=data)
+        
         if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+            playlist = serializer.save()
+            if playlist:
+                pl = playlist.data
+                EcstaStream_Playlists_Following.objects.create(
+                    user_following = id,
+                    playlist_id = pl.ec_playlist_id
+                )
+                return JsonResponse(pl, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, *args, **kwargs):

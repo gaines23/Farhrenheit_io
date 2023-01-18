@@ -64,7 +64,13 @@ admin.site.register(EcstaStreamProfile, EcstaStreamProfileAdmin)
 
 admin.site.register(Genre)
 
-admin.site.register(EcstaStreamPlaylist)
+
+class EcstaStreamPlaylistAdmin(admin.ModelAdmin):
+    model = EcstaStreamPlaylist
+    list_display = ['created_by', 'title', 'created_on', 'updated_on', 'status']
+    order = ['created_on']
+    list_filter = ['status']
+admin.site.register(EcstaStreamPlaylist, EcstaStreamPlaylistAdmin)
 
 admin.site.register(StreamingServices)
 

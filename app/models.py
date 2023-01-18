@@ -202,7 +202,7 @@ class EcstaStreamPlaylist(models.Model):
     status = models.BooleanField(choices=STATUS, default=0)
 
     def __str__(self):
-        return '{} {}'.format(self.created_on, self.ec_playlist_id)
+        return self.created_by.user_id
 
     def save(self, *args, **kwargs):
         super().save()
@@ -220,6 +220,7 @@ class EcstaStream_Playlists_Following(models.Model):
     id = models.BigAutoField(primary_key=True)
     user_following = models.ForeignKey(EcstaStreamProfile, related_name="user_pl", on_delete=models.CASCADE)
     playlist_id = models.ForeignKey(EcstaStreamPlaylist, related_name="playlist", on_delete=models.CASCADE)
+    data_added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         constraints = [

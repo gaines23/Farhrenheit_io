@@ -3,6 +3,8 @@
 let streaming_services = process.env.REACT_APP_EC_SERVICES;
 let new_playlist_url = process.env.REACT_APP_EC_NEW_PLAYLIST;
 
+let user_token = localStorage.getItem('token');
+
 // EC-Service Details
 export async function getServicesDetails() {
   const response = await fetch(streaming_services);
@@ -58,6 +60,7 @@ export async function addPlaylist(newPlayist) {
     body: JSON.stringify(newPlayist),
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${user_token}`,
     },
   });
 

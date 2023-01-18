@@ -19,19 +19,19 @@ const CreatePlaylistModal = (props) => {
 
     const submitPlaylistForm = (e) => {
         e.preventDefault();
-        
-        let created_by = localStorage.getItem('token');
+
         const enteredTitle = titleRef.current.value;
         const enteredDesc = descRef.current.value;
         const enteredPrivate = privateRef.current;
 
-        props.onAddPlaylist( { created_by: created_by, title: enteredTitle, description: enteredDesc, private: enteredPrivate } );
+        props.onAddPlaylist( { title: enteredTitle, description: enteredDesc, private: enteredPrivate } );
     }
 
-    useOutsideClick(ref, () => {
-        props.setIsOpen(false)
-    });
+    // useOutsideClick(ref, () => {
+    //     props.setIsOpen(false);
+    // });
 
+    // console.log(useOutsideClick())
 
     const inputClassName = "w-full h-10 mt-1 pl-5 shadow-md shadow-black/20 border-solid border border-input-fill/30 rounded-lg bg-input-fill/30 focus:border-input-fill hover:bg-input-fill/10 focus:text-sm focus:outline-none focus:bg-input-fill/10";
 

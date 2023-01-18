@@ -28,7 +28,7 @@ const NewPlaylistButton = () => {
     }
 
     const openPlaylistForm = () => {
-        if (isOpen) {console.log('clicked')
+        if (isOpen) {
             setIsOpen(false);
             return;
 
@@ -37,10 +37,9 @@ const NewPlaylistButton = () => {
         setIsOpen(true);
     }
 
-    useOutsideClick(ref, () => {
-        
-        setIsOpen(false);
-    });
+    // useOutsideClick(ref, () => {
+    //     setIsOpen(false);
+    // });
 
     return (
         <Fragment>

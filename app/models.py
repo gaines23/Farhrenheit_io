@@ -100,6 +100,9 @@ class Fahrenheit_App_List(models.Model):
 
     class Meta:
         db_table = 'app_fahrenheit_app_list'
+        constraints = [
+            models.UniqueConstraint(fields=["app_name"], name="app_id_constraint")
+        ]
 
 
 class User_App_Following(models.Model):
@@ -178,7 +181,7 @@ class Genre(models.Model):
 
 class EcstaStreamProfile(models.Model):
     ec_id = models.BigAutoField(primary_key=True)
-    user_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="ecstastream_user")
+    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="ecstastream_user")
     status = models.IntegerField(choices=STATUS, default=0) 
     profile_status = models.IntegerField(choices=PROFILE_STATUS, default=0)## internal
     date_created = models.DateTimeField(auto_now_add=True)
@@ -186,6 +189,10 @@ class EcstaStreamProfile(models.Model):
     def __str__(self):
         return '{} - {}'.format(self.ec_id, self.user_id)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user_id"], name="EcstaStreamUserConstraint")
+        ]
 
 class EcstaStreamPlaylist(models.Model):
     ec_playlist_id = models.BigAutoField(primary_key=True)

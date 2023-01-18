@@ -106,7 +106,6 @@ class FollowersSerializer(serializers.ModelSerializer):
 ### App Info ##
 class AppFollowingSerializer(serializers.ModelSerializer):
     app_info = serializers.SerializerMethodField()
-
     mute_notifications = serializers.BooleanField()
 
     class Meta:

@@ -67,10 +67,8 @@ class UserCreate(APIView):
     def post(self, request, *args, **kwargs):
         serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid():
-            new_user = serializer.save()
-            id = uuid.UUID(str(new_user.id))
-            EcstaStreamProfile.objects.get_or_create(user_id=id)
-            return JsonResponse(new_user.data, status=status.HTTP_201_CREATED)
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -115,7 +113,7 @@ class UserLogout(APIView):
 
 
 
-
+### User Creates, updates, deletes personal Apps
 class UserFahrenheitApps(APIView):
     def post(self, request, *args, **kwargs):
         user = CustomUser.objects.get(id=self.request.user.id)
@@ -129,8 +127,15 @@ class UserFahrenheitApps(APIView):
         }
 
         serlialzer = FahrenheitAppSerializer(data=data)
+        
         if serlialzer.is_valid():
-            serlialzer.save()
+            app = serlialzer.save()
+            if app:
+                id = app.data
+                User_App_Following.objects.create(
+                    user = user,
+                    following_app_id = id.id
+                )
             return JsonResponse(serlialzer.data, status=status.HTTP_200_OK)
         return Response(serlialzer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -380,7 +385,6 @@ class EcstaStreamPlaylists(APIView):
             serializer = EcstaStreamPlaylistSerializer(data=data)
         except Exception:
             return Response('no user id found')
-
         
         if serializer.is_valid():
             playlist = serializer.save()

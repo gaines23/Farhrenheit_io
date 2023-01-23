@@ -13,7 +13,6 @@ const Playlists = () => {
                 </div>
                 
                 <div className="w-full h-auto">
-                    <p>My Playlists</p>
                     <UserCreatedList />
                 </div>
 

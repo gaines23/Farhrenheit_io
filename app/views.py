@@ -115,7 +115,7 @@ class UserLogout(APIView):
 
 ### User Creates, updates, deletes personal Apps
 class UserFahrenheitApps(APIView):
-    def create(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         user = CustomUser.objects.get(id=self.request.user.id)
 
         data = {
@@ -130,13 +130,14 @@ class UserFahrenheitApps(APIView):
         
         if serlialzer.is_valid():
             serlialzer.save()
-            # app = serlialzer.save()
-            # if app:
-            #     id = app.data
-            #     User_App_Following.objects.create(
-            #         user = user,
-            #         following_app_id = id.id
-            #     )
+            app = serlialzer.save()
+            if app:
+                id = Fahrenheit_App_List.objects.get(created_by=app.created_by, app_base_link=app.app_base_link)
+                User_App_Following.objects.create(
+                        user =  user,
+                        following_app_id = id,
+                        mute_notifications = False,
+                )
             return JsonResponse(serlialzer.data, status=status.HTTP_200_OK)
         return Response(serlialzer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -321,9 +322,12 @@ class EcstaStreamUserList(APIView):
 
 class EcstaStreamUserProfile(APIView):
     def get(self, request, *args, **kwargs):
-            profile = EcstaStreamProfile.objects.get(user_id_id=self.request.user.id)
-            serializer = EcUserProfileSerializer(profile)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+        try:
+            profile = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
+            serializer = EcUserProfileSerializer(profile).data
+            return JsonResponse(serializer, status=status.HTTP_200_OK)
+        except Exception:
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
     def post(self, request, *args, **kwargs):
         user = CustomUser.objects.get(id=self.request.user.id)

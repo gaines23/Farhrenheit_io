@@ -100,8 +100,9 @@ class Fahrenheit_App_List(models.Model):
 
     class Meta:
         db_table = 'app_fahrenheit_app_list'
+        unique_together = (('app_name', 'app_base_link'))
         constraints = [
-            models.UniqueConstraint(fields=["app_name"], name="app_id_constraint")
+            models.UniqueConstraint(fields=["app_name", "app_base_link"], name="app_id_constraint")
         ]
 
 

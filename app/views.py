@@ -115,7 +115,7 @@ class UserLogout(APIView):
 
 ### User Creates, updates, deletes personal Apps
 class UserFahrenheitApps(APIView):
-    def post(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):
         user = CustomUser.objects.get(id=self.request.user.id)
 
         data = {
@@ -129,13 +129,14 @@ class UserFahrenheitApps(APIView):
         serlialzer = FahrenheitAppSerializer(data=data)
         
         if serlialzer.is_valid():
-            app = serlialzer.save()
-            if app:
-                id = app.data
-                User_App_Following.objects.create(
-                    user = user,
-                    following_app_id = id.id
-                )
+            serlialzer.save()
+            # app = serlialzer.save()
+            # if app:
+            #     id = app.data
+            #     User_App_Following.objects.create(
+            #         user = user,
+            #         following_app_id = id.id
+            #     )
             return JsonResponse(serlialzer.data, status=status.HTTP_200_OK)
         return Response(serlialzer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -357,11 +358,32 @@ class EcstaStreamUserProfile(APIView):
         return Response(profile, status=status.HTTP_200_OK)
 
 
-class EcstaStreamPlaylists(APIView):
+
+
+
+### All EC Playlists ###
+class AllEcstaStreamPlaylists(APIView):
     def get(self, request, *args, **kwargs):
         try:
             playlists = EcstaStreamPlaylist.objects.all()
-            serializer = EcstaStreamPlaylistSerializer(data=playlists)
+            serializer = EcstaStreamPlaylistSerializer(playlists, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception:
+            return Response('No Playlists Found', status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+
+
+class EcstaStreamPlaylists(APIView):
+    ### All playlists user created ###
+    def get(self, request, *args, **kwargs):
+        try:
+            id = CustomUser.objects.get(id=self.request.user.id)
+            ec_id = EcstaStreamProfile.objects.get(user_id=id)
+            user_playlists = EcstaStreamPlaylist.objects.filter(created_by=ec_id)
+            serializer = EcstaStreamPlaylistSerializer(user_playlists, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception:
             return Response('No Playlists Found', status=status.HTTP_204_NO_CONTENT)
@@ -383,19 +405,14 @@ class EcstaStreamPlaylists(APIView):
                 "status": 0,
             }
             serializer = EcstaStreamPlaylistSerializer(data=data)
-        except Exception:
-            return Response('no user id found')
         
-        if serializer.is_valid():
-            playlist = serializer.save()
-            if playlist:
-                pl = playlist.data
-                EcstaStream_Playlists_Following.objects.create(
-                    user_following = id,
-                    playlist_id = pl.ec_playlist_id
-                )
-                return JsonResponse(pl, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception:
+            return Response('Playlist could not save')
 
     def put(self, request, *args, **kwargs):
         profile_id = EcstaStreamProfile.objects.get(ec_playlist_id=request.data['ec_playlist_id'])
@@ -424,15 +441,15 @@ class EcstaPlaylistFollowing(APIView):
     ### All playlists user follows
     def get(self, request, *args, **kwargs):
         try:
-            following = User_App_Following.objects.filter(user_following=request.data['ec_id'])
-            serializer = AppFollowingSerializer(following, many=True).data
+            following = EcstaStream_Playlists_Following.objects.filter(user_following=request.data['ec_id'])
+            serializer = EcUserPlaylistFollowingSerializer(following, many=True).data
             return Response(serializer, status=status.HTTP_200_OK)
         except Exception:
             return Response(status=status.HTTP_204_NO_CONTENT)
 
     ### User adds new playlist to follow
     def post(self, request, *args, **kwargs):
-        user = EcstaStreamProfile.objects.get(user_following=request.data['ec_id'])
+        user = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
         
         app = {
             "user_following": user.ec_id,

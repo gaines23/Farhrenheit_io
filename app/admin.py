@@ -13,6 +13,8 @@ from .models import (
     Streamingurls,
     EcstaStreamProfile,
     EcstaStreamPlaylist,
+    EcstaStream_Playlists_Following,
+
 )
 
 class FahrenheitAppListAdmin(admin.ModelAdmin):
@@ -75,6 +77,12 @@ admin.site.register(EcstaStreamPlaylist, EcstaStreamPlaylistAdmin)
 admin.site.register(StreamingServices)
 
 admin.site.register(Streamingurls)
+
+
+class EcstastreamPlaylistFollowing(admin.ModelAdmin):
+    model = EcstaStream_Playlists_Following
+    order = ['date_added']
+admin.site.register(EcstaStream_Playlists_Following, EcstastreamPlaylistFollowing)
 
 
 # admin.site.register(FavoriteListData)

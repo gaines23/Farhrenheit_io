@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import PlaylistTotals from "../Components/Playlists/UI/PlaylistTotals";
 import NewPlaylistButton from "../Components/UI/Button/NewPlaylistButton";
+import UserCreatedList from "../Components/Playlists/UI/UserCreatedList";
 
 const Playlists = () => {
     return (
@@ -12,7 +13,8 @@ const Playlists = () => {
                 </div>
                 
                 <div className="w-full h-auto">
-                    MINE
+                    <p>My Playlists</p>
+                    <UserCreatedList />
                 </div>
 
                 <div className="w-full h-auto">

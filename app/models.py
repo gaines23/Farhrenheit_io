@@ -187,7 +187,7 @@ class EcstaStreamProfile(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return '{} - {}'.format(self.ec_id, self.user_id)
+        return '{}'.format(self.user_id)
 
     class Meta:
         constraints = [
@@ -209,16 +209,14 @@ class EcstaStreamPlaylist(models.Model):
     status = models.BooleanField(choices=STATUS, default=0)
 
     def __str__(self):
-        return self.created_by.user_id
+        return '{} by {}'.format(self.title, self.created_by.user_id)
 
     def save(self, *args, **kwargs):
         super().save()
         img = Image.open(self.cover_img.path)
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=["created_by", "ec_playlist_id"], name='user_playlist_constraint')    
-        ]
+        unique_together = (('created_by', 'title'))
         ordering = ['-created_on']
 
 
@@ -227,12 +225,14 @@ class EcstaStream_Playlists_Following(models.Model):
     id = models.BigAutoField(primary_key=True)
     user_following = models.ForeignKey(EcstaStreamProfile, related_name="user_pl", on_delete=models.CASCADE)
     playlist_id = models.ForeignKey(EcstaStreamPlaylist, related_name="playlist", on_delete=models.CASCADE)
-    data_added = models.DateTimeField(auto_now_add=True)
+    date_added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        unique_together = (('user_following', 'playlist_id'))
         constraints = [
             models.UniqueConstraint(fields=["user_following", "playlist_id"], name='user_playlist_following')    
         ]
+        ordering = ['date_added']
 
 
 class EcstaStream_User_Steaming_List(models.Model):
@@ -244,7 +244,7 @@ class EcstaStream_User_Steaming_List(models.Model):
         constraints = [
             models.UniqueConstraint(fields=["user_streaming", "streaming_id"], name='user_streaming')    
         ]
-        ordering = ['id']
+
 
 
 

@@ -19,7 +19,7 @@ const NewPlaylistButton = () => {
 
     useEffect(() => {
         if (status === 'completed') {
-            history.push('/fahrenheit/ecstastream/playlists');
+            history.push('/fahrenheit/ecstastream/user-playlists');
         }
     }, [status, history]);
 

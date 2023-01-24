@@ -192,7 +192,7 @@ class UserNotFollowingApps(APIView):
 
 class UserAppFollowing(APIView):
     ### All apps user follows
-    def get(self, request, format='json', *args):
+    def get(self, request, *args, **kwargs):
         try:
             app = User_App_Following.objects.filter(user=self.request.user)
             serializer = AppFollowingSerializer(app, many=True).data
@@ -339,6 +339,7 @@ class EcstaStreamUserProfile(APIView):
         }
         
         serializer = EcstaStreamUsersListSerializer(data=data)
+
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=status.HTTP_200_OK)
@@ -374,9 +375,6 @@ class AllEcstaStreamPlaylists(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception:
             return Response('No Playlists Found', status=status.HTTP_204_NO_CONTENT)
-
-
-
 
 
 

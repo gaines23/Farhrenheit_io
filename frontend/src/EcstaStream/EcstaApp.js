@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Layout from './Components/Layout/Layout';
 import LoadingSpinner from '../Components/UI/LoadingSpinner';
+import useHttp from '../hooks/use-http';
 
 const Home = React.lazy(() => import ('./Pages/Home'));
 const SearchResults = React.lazy(() => import ('./Pages/SearchResults'));
@@ -11,6 +12,7 @@ const MovieDetails = React.lazy(() => import ('./Pages/MovieDetails'));
 const TvDetails = React.lazy(() => import ('./Pages/TvDetails'));
 const CreditDetails = React.lazy(() => import ('./Pages/CreditDetails'));
 const Playlist = React.lazy(() => import ('./Pages/Playlists'));
+const PlaylistDetails = React.lazy(() => import ('./Pages/PlaylistDetails'));
 // const News = React.lazy(() => ('./Pages/News'));
 
 function EcstaApp() {
@@ -43,12 +45,14 @@ function EcstaApp() {
           <Route path='/fahrenheit/ecstastream/playlists'>
             <Playlist />
           </Route>
-      {/*    <Route path='/Profile/:userId/:username'>
-            <Profile />
+          <Route path='/fahrenheit/ecstastream/playlist-details/:title/:user_id'>
+            <Playlist />
           </Route>
+      {/*
           <Route path='/ecstastream/news'>
             <News />
-          </Route> */}
+          </Route> 
+      */}
         </Switch>
       </Suspense>
     </Layout>

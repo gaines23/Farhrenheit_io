@@ -16,7 +16,8 @@ from .models import (
     StreamingServices,
     EcstaStreamPlaylist,
     EcstaStream_Playlists_Following,
-    EcstaStream_User_Steaming_List,
+    EcstaStream_User_Streaming_List,
+    Ecstastream_Playlist_Data,
 
 )
 from .serializers import (
@@ -38,6 +39,7 @@ from .serializers import (
     EcUserStreamingListSerializer,
     EcstaStreamUsersListSerializer,
     AppNotFollowingSerializer,
+    EcPlaylistDataSerializer,
 )
 from rest_framework.views import APIView
 from django.http.response import JsonResponse
@@ -475,7 +477,7 @@ class EcstaUserStreamingList(APIView):
     ### All playlists user follows
     def get(self, request, *args, **kwargs):
         try:
-            streaming = EcstaStream_User_Steaming_List.objects.filter(user_streaming=request.data['ec_id'])
+            streaming = EcstaStream_User_Streaming_List.objects.filter(user_streaming=request.data['ec_id'])
             serializer = EcUserStreamingListSerializer(streaming, many=True).data
             return Response(serializer, status=status.HTTP_200_OK)
         except Exception:
@@ -499,7 +501,7 @@ class EcstaUserStreamingList(APIView):
     ### User deletes playlists following
     def delete(self, request):
         id = request.data['id']
-        streaming = EcstaStream_User_Steaming_List.objects.get(id=id).delete()
+        streaming = EcstaStream_User_Streaming_List.objects.get(id=id).delete()
         return Response(streaming, status=status.HTTP_200_OK)
 
 

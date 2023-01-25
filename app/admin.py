@@ -14,6 +14,7 @@ from .models import (
     EcstaStreamProfile,
     EcstaStreamPlaylist,
     EcstaStream_Playlists_Following,
+    Ecstastream_Playlist_Data,
 
 )
 
@@ -84,6 +85,12 @@ class EcstastreamPlaylistFollowing(admin.ModelAdmin):
     order = ['date_added']
 admin.site.register(EcstaStream_Playlists_Following, EcstastreamPlaylistFollowing)
 
+class EC_UserPlaylsitDataAdmin(admin.ModelAdmin):
+    model = Ecstastream_Playlist_Data
+    list_display = ['user', 'user_playlist_id', 'pl_date_added', 'media_type']
+    order = ['pl_date_added']
+    list_filter = ['user', 'user_playlist_id']
+admin.site.register(Ecstastream_Playlist_Data, EC_UserPlaylsitDataAdmin)
 
 # admin.site.register(FavoriteListData)
 # admin.site.register(UserFavoritesList)

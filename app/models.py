@@ -100,6 +100,7 @@ class Fahrenheit_App_List(models.Model):
 
     class Meta:
         db_table = 'app_fahrenheit_app_list'
+        verbose_name_plural = 'Fahrenheit Apps'
         unique_together = (('app_name', 'app_base_link'))
         constraints = [
             models.UniqueConstraint(fields=["app_name", "app_base_link"], name="app_id_constraint")
@@ -117,7 +118,8 @@ class User_App_Following(models.Model):
         constraints = [
             models.UniqueConstraint(fields=["following_app_id", "user"], name='user_app_following')    
         ]
-        #unique_together = (('following_app_id'), ('user'))
+        unique_together = (('following_app_id'), ('user'))
+        verbose_name_plural = 'Fahrenheit App Followers'
         ordering = ['date_added']
 
 
@@ -134,7 +136,9 @@ class User_Following(models.Model):
     user = models.ForeignKey(CustomUser, related_name="user_following", on_delete=models.CASCADE)
     following_user_id = models.ForeignKey(CustomUser, related_name="user_followers", on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now=True)
-
+    
+    class Meta:
+        verbose_name_plural = 'Fahrenheit Followers'
 
 
 
@@ -144,6 +148,8 @@ class Follow_Request(models.Model):
     to_user = models.ForeignKey(CustomUser, related_name='to_user', on_delete=models.CASCADE)
     date_requested = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name_plural = 'Fahrenheit Follower Requests'
 
 
 
@@ -160,6 +166,7 @@ class StreamingServices(models.Model):
     class Meta:
         managed = False
         db_table = 'app_streamingservices'
+        verbose_name_plural = 'Ecstastream Streaming Services'
 
 class Streamingurls(models.Model):
     provider_id = models.IntegerField(primary_key=True)
@@ -168,6 +175,7 @@ class Streamingurls(models.Model):
     class Meta:
         managed = False
         db_table = 'app_streamingurls'
+        verbose_name_plural = 'Ecstastream Streaming URLs'
 
 class Genre(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -179,6 +187,7 @@ class Genre(models.Model):
     class Meta:
         managed = False
         db_table = 'app_genre'
+        verbose_name_plural = 'Ecstastream Genres'
 
 class EcstaStreamProfile(models.Model):
     ec_id = models.BigAutoField(primary_key=True)
@@ -191,6 +200,8 @@ class EcstaStreamProfile(models.Model):
         return '{}'.format(self.user_id)
 
     class Meta:
+        unique_together = (('user_id'),)
+        verbose_name_plural = 'Ecstastream Profiles'
         constraints = [
             models.UniqueConstraint(fields=["user_id"], name="EcstaStreamUserConstraint")
         ]
@@ -218,6 +229,7 @@ class EcstaStreamPlaylist(models.Model):
 
     class Meta:
         unique_together = (('created_by', 'title'))
+        verbose_name_plural = "Ecstastream Playlists"
         ordering = ['-created_on']
 
 
@@ -230,18 +242,20 @@ class EcstaStream_Playlists_Following(models.Model):
 
     class Meta:
         unique_together = (('user_following', 'playlist_id'))
+        verbose_name_plural = "Ecstastream Playlist Followers"
         constraints = [
             models.UniqueConstraint(fields=["user_following", "playlist_id"], name='user_playlist_following')    
         ]
         ordering = ['date_added']
 
 
-class EcstaStream_User_Steaming_List(models.Model):
+class EcstaStream_User_Streaming_List(models.Model):
     id = models.BigAutoField(primary_key=True)
     user_streaming = models.ForeignKey(EcstaStreamProfile, related_name="user_streaming", on_delete=models.CASCADE)
     streaming_id = models.ForeignKey(StreamingServices, related_name="streaming", on_delete=models.CASCADE)
 
     class Meta:
+        unique_together = (('user_streaming'), ('streaming_id'))
         constraints = [
             models.UniqueConstraint(fields=["user_streaming", "streaming_id"], name='user_streaming')    
         ]
@@ -249,8 +263,32 @@ class EcstaStream_User_Steaming_List(models.Model):
 
 
 
+MEDIA_CHOICES = (
+    ('Movie', 0),
+    ('TV', 1)
+)
 
+class Ecstastream_Playlist_Data(models.Model):
+    pl_data_id = models.BigAutoField(primary_key=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="pl_user")
+    user_playlist_id = models.ForeignKey(EcstaStreamPlaylist, on_delete=models.CASCADE, related_name="pl_id")
+    pl_mov_show_id = models.IntegerField()
+    pl_date_added = models.DateTimeField(auto_now=True)
+    media_type = models.IntegerField(null=True, blank=True, choices=MEDIA_CHOICES)
 
+    def __str__(self):
+        return self.user.username
+
+    def playlist_id(self):
+        return self.user_playlist_id.ec_playlist_id
+
+    class Meta:
+        unique_together = (('user'), ('user_playlist_id'), ('pl_mov_show_id'), ('media_type'))
+        verbose_name_plural = "Ecstastream Playlist Data"
+        constraints = [
+            models.UniqueConstraint(fields=["user", "user_playlist_id", "pl_mov_show_id", "media_type"], name='user_data_playlist_constraint')    
+        ]
+        ordering = ['-pl_date_added']
 
 
 

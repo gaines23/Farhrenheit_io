@@ -16,12 +16,13 @@ let apps_user_following = process.env.REACT_APP_FAHRENHEIT_USER_APP_FOLLOWING;
 const AppOptions = ({app, following}) => {
     const history = useHistory();
 
-    // following = POST , unfollow = DELETE
+    // following = POST , unfollow = DELETE, 
     // mute = PUT
 
     let token = localStorage.getItem('token'); 
     const appId = app.id;
     const appUrl = app.app_base_link;
+    const ref = useRef();
     
     const [isLoading, setIsLoading] = useState(false);
 
@@ -43,12 +44,13 @@ const AppOptions = ({app, following}) => {
                 }
             }
         ).then(async res => {
-            setIsLoading(false)
+            setIsLoading(false);
             if (res.ok) {
                 return res.json();
             }
-        }).then(() => { 
-            //history.replace(`/fahrenheit${appUrl}`);
+        }).then(() => {
+            localStorage.setItem('newFollower', true);
+            history.replace(`/fahrenheit${appUrl}`);
         });
     }
 
@@ -76,7 +78,7 @@ const AppOptions = ({app, following}) => {
                 return res.json();
             }
         }).then(() => {
-            //history.replace(`/fahrenheit${appUrl}`);
+            history.replace(`/fahrenheit/`);
         }); 
 
     }
@@ -87,7 +89,7 @@ const AppOptions = ({app, following}) => {
             <div 
                 className="absolute z-10 left-full bottom-0 w-full h-auto py-2 mt-1 bg-far-navy rounded-lg shadow-sm shadow shadow-bg-fill/50"
             >
-                <ul className="h-full w-5/6 mx-auto">
+                <ul className="h-full w-5/6 mx-auto ">
                     <li className={OpenNavListClass} >
                         <div className={OpenLinkClassName}>
                             {following ? (

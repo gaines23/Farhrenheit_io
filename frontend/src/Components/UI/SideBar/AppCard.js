@@ -52,7 +52,7 @@ const AppCard = ({app, following}) => {
                 </NavLink>
                 <div className="h-full w-1/4 rounded-r-lg hover:bg-bg-fill/20" onClick={handleDropdown}>
                     <button 
-                        className="h-full w-full flex my-auto float-right" 
+                        className="h-full w-full flex my-auto float-right focus:outline-none" 
                         ref={ref}
                     >                           
                         {!appOptionsIsOpen ? 

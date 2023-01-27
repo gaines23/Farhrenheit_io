@@ -146,7 +146,7 @@ const SideBarOpen = () => {
 
                                         <div className="h-full w-1/4" onClick={handleDropdown}>
                                             <button 
-                                                className="h-full w-full flex my-auto float-right rounded-r-lg hover:border-far-teal hover:text-far-teal/80 hover:bg-bg-fill/20" 
+                                                className="h-full w-full flex my-auto float-right rounded-r-lg focus:outline-none hover:border-far-teal hover:text-far-teal/80 hover:bg-bg-fill/20" 
                                                 ref={ref}
                                             >
                                                 

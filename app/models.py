@@ -195,6 +195,7 @@ class EcstaStreamProfile(models.Model):
     status = models.IntegerField(choices=STATUS, default=0) 
     profile_status = models.IntegerField(choices=PROFILE_STATUS, default=0)## internal
     date_created = models.DateTimeField(auto_now_add=True)
+    streaming_services = models.ManyToManyField(StreamingServices, related_name="user_streaming_services")
 
     def __str__(self):
         return '{}'.format(self.user_id)

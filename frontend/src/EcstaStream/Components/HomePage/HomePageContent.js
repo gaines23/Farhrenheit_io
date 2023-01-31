@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import useHttp from '../../../hooks/use-http';
 import { getServicesDetails } from "../../lib/ec-api";
@@ -6,9 +6,9 @@ import { getServicesDetails } from "../../lib/ec-api";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import SecondaryFilter from "./SecondaryFilter";
 import StreamingListButton from "../UI/Button/StreamingListButton";
-import StreamingListUsers from "../UI/StreamingListUsers";
 import Trending from "./Trending";
 import EcstaStream from '../../assets/EcstaStream.png';
+import StreamingServiceCard from "../UI/Card/StreamingServiceCard";
 
 const HomePageContent = () => {
     const { sendRequest, status, data: loadedServices, error } = useHttp(getServicesDetails, true);
@@ -62,7 +62,7 @@ const HomePageContent = () => {
                             <ul className="px-3 h-12 inline-block w-auto gap-3">
                                 {loadedServices.map((service) => {
                                     return (
-                                        <StreamingListUsers key={service.provider_id} service={service} />
+                                        <StreamingServiceCard key={service.provider_id} service={service} />
                                     );
                                 }).slice(0,25)}
                             </ul>        
@@ -73,7 +73,7 @@ const HomePageContent = () => {
     
             <SecondaryFilter />
 
-            <Trending />
+            {/* <Trending /> */}
             
         </Fragment>
     );

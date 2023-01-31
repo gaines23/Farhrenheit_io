@@ -3,7 +3,6 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Layout from './Components/Layout/Layout';
 import LoadingSpinner from '../Components/UI/LoadingSpinner';
-import useHttp from '../hooks/use-http';
 
 const Home = React.lazy(() => import ('./Pages/Home'));
 const SearchResults = React.lazy(() => import ('./Pages/SearchResults'));

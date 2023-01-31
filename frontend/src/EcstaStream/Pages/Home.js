@@ -1,8 +1,12 @@
+import { Fragment } from "react";
 import HomePageContent from "../Components/HomePage/HomePageContent.js";
 
 const Home = () => {
     return (
-        <HomePageContent />
+        <Fragment>
+            <HomePageContent />
+        </Fragment>
+        
     );
 };
 

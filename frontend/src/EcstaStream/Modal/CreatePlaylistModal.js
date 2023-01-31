@@ -26,7 +26,7 @@ const CreatePlaylistModal = (props) => {
 
         props.onAddPlaylist( { title: enteredTitle, description: enteredDesc, private: enteredPrivate } );
         
-        props.setIsOpen(false)
+        props.setIsOpen(false);
     }
 
     // useOutsideClick(ref, () => {

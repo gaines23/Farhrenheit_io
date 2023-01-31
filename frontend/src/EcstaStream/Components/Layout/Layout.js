@@ -1,19 +1,24 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 
 import SideMenu from './SideMenu';
 import Header from './Header';
+import StreamingListModal from "../../Modal/StreamingListModal";
 
 const Layout = (props) => {
+    let newFollower = localStorage.getItem('newFollower');
+
+    const [isOpen, setIsOpen] = useState(true);
+
     return (
         <Fragment>
-            <div className="h-full w-full mx-auto flex bg-ec-black/80 rounded-xl">
+            <div className="h-full w-full px-2 mx-auto flex bg-ec-black/80 rounded-xl">
                 <div className="w-fit h-full flex flex-col ease-in">
                     <div className="w-11/12 h-full mx-auto flex flex-col">
                         <SideMenu />
                     </div>
                 </div>
 
-                <div className="w-full h-full flex flex-col py-1">
+                <div className="w-11/12 h-full mx-auto flex flex-col py-1">
                     <div className="h-16 w-11/12 flex mx-auto relative">
                         <Header />
                     </div>
@@ -22,8 +27,16 @@ const Layout = (props) => {
                             <div className="inline w-11/12 h-full mx-auto py-2">
                                 {props.children}
                             </div>
-                        </div> 
-                    </main>               
+                        </div>
+
+                        { newFollower === 'true' && 
+                            <div className="w-full px-2 mx-auto h-5/6 absolute flex flex-col" >
+                                { isOpen &&
+                                    <StreamingListModal setIsOpen={setIsOpen} newFollower={true} />
+                                }
+                            </div>
+                        }
+                    </main>
                 </div>
 
             </div>

@@ -163,12 +163,22 @@ class FahrenheitAppSerializer(serializers.ModelSerializer):
 
 
 ### EcstaStream ###
+class StreamingServicesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StreamingServices
+        fields = ('provider_id', 'logo_path', 'provider_name')
+
+class GenreSerlializer(serializers.ModelSerializer):
+    class Meta:
+        model = Genre
+        fields = ('id', 'genre')
+
 class EcUserProfileSerializer(serializers.ModelSerializer):
     date_created = serializers.DateTimeField(read_only=True)
 
     user_playlists = serializers.SerializerMethodField()
     playlist_following = serializers.SerializerMethodField()
-    streaming_list = serializers.SerializerMethodField()
+    streaming_list = StreamingServicesSerializer()
 
     class Meta:
         model = EcstaStreamProfile
@@ -192,21 +202,12 @@ class EcUserProfileSerializer(serializers.ModelSerializer):
         except Exception:
             return 
 
-    def get_streaming_list(self, obj):
-        try:
-            return EcUserStreamingListSerializer(obj.user_streaming.all(), many=True).data
-        except Exception:
-            return 
+    # def get_streaming_list(self, obj):
+    #     try:
+    #         return EcUserStreamingListSerializer(obj.user_streaming.all(), many=True).data
+    #     except Exception:
+    #         return 
 
-class StreamingServicesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = StreamingServices
-        fields = ('provider_id', 'logo_path', 'provider_name')
-
-class GenreSerlializer(serializers.ModelSerializer):
-    class Meta:
-        model = Genre
-        fields = ('id', 'genre')
 
 
 class EcstaStreamUsersListSerializer(serializers.ModelSerializer):

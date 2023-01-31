@@ -4,6 +4,7 @@ let user_profile = process.env.REACT_APP_EC_PROFILE;
 let streaming_services = process.env.REACT_APP_EC_SERVICES;
 let user_playlists_url = process.env.REACT_APP_EC_USER_PLAYLISTS;
 let all_playlists_url = process.env.REACT_APP_EC_ALL_PLAYLISTS;
+let use_streaming_services = process.env.REACT_APP_EC_USER_STREAMING;
 
 let user_token = localStorage.getItem('token');
 
@@ -25,6 +26,29 @@ export async function getUserProfile() {
   return userProfile;
 }
 
+export async function createEcProfile() {
+  const response = await fetch(user_profile, {
+    method: 'POST',
+    body: JSON.stringify(
+      // status:0,
+      // "profile_status"=0
+
+    ),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${user_token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+
+  return null;  
+}
+
 // EC-Service Details
 export async function getServicesDetails() {
   const response = await fetch(streaming_services);
@@ -34,7 +58,7 @@ export async function getServicesDetails() {
     throw new Error(data.message || 'Could not fetch services.');
   }
 
-  const transformedServices = [];
+  const loadedServices = [];
 
   for (const key in data) {
     const serviceObj = {
@@ -42,10 +66,10 @@ export async function getServicesDetails() {
       ...data[key],
     };
 
-    transformedServices.push(serviceObj);
+    loadedServices.push(serviceObj);
   }
 
-  return transformedServices;
+  return loadedServices;
 }
 
 export async function getGenres() {
@@ -143,3 +167,26 @@ export async function getAllPlaylists() {
 
   return allPlaylists;
 }
+
+export async function sendUserStreamingList(streamingList) {
+  const response = await fetch(use_streaming_services, {
+    method: 'POST',
+    body: JSON.stringify(streamingList),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${user_token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+
+  return null;
+
+}
+
+
+

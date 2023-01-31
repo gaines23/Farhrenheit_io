@@ -16,7 +16,8 @@ from app.views import (
     UserFollowing,
     UserFollowers,
     EcstaStreamUserList,
-    AllEcstaStreamPlaylists
+    AllEcstaStreamPlaylists,
+    EcstaUserStreamingList
 )
 #CreatePlaylist,
 
@@ -45,6 +46,7 @@ urlpatterns = [
     ### EcstaStream ###
     path('ecstastream/user-list/', EcstaStreamUserList.as_view()),
     path('ecstastream/profile/', EcstaStreamUserProfile.as_view()),
+    path('ecstastream/user-streaming-services', EcstaUserStreamingList.as_view()),
     path('ecstastream/streamingservices/', StreamingList.as_view()),
     path('ecstastream/genres/', AllGenreList.as_view()),
     path('ecstastream/all-playlists/', AllEcstaStreamPlaylists.as_view()),

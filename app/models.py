@@ -167,6 +167,7 @@ class StreamingServices(models.Model):
         managed = False
         db_table = 'app_streamingservices'
         verbose_name_plural = 'Ecstastream Streaming Services'
+        ordering = ["display_priority"]
 
 class Streamingurls(models.Model):
     provider_id = models.IntegerField(primary_key=True)

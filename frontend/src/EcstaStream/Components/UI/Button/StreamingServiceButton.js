@@ -3,7 +3,7 @@ import useHttp from "../../../../hooks/use-http";
 import { getServicesDetails } from "../../../lib/ec-api";
 import LoadingSpinner from "../LoadingSpinner";
 
-const StreamingServiceButton = ({service}) => {
+const StreamingServiceButton = () => {
     const { sendRequest, status, data:loadedServices } = useHttp(getServicesDetails, true);
 
     const [getServices, setServices] = useState([]);
@@ -21,12 +21,13 @@ const StreamingServiceButton = ({service}) => {
             getServices.splice(x, 1);
         }
 
-        setServices([...getServices]);
+        setServices(getServices => [...getServices]);
     };
 
     useEffect(() => {
-        localStorage.setItem('services', JSON.stringify(getServices));
+        localStorage.setItem('services', getServices);
     }, [getServices]);
+
 
     return (
         <Fragment>
@@ -36,7 +37,7 @@ const StreamingServiceButton = ({service}) => {
                                 
             {status === 'completed' && loadedServices.map((service) => {
                 return (
-                    <li className="inline-flex h-10 w-12 my-1 mx-auto" key={service.provider_id}>
+                    <li className="inline-flex h-10 w-12 my-1 mx-auto space-x-0.5 " key={service.provider_id}>
                         <button 
                             onClick={() => handleClick(service.provider_id)}
                                 key={service.provider_id}
@@ -46,9 +47,9 @@ const StreamingServiceButton = ({service}) => {
                                 id={"service_img_" + service.provider_name} 
                                 //src={TMBD_POSTER_w45 + service.logo_path}
                                 src={'/ServicesImages/' + service.provider_id + '.jpg'} 
-                                alt={service.provider_name}
+                                alt={service.provider_id}
                                 className={getServices.includes(service.provider_id) ? 
-                                    "transition w-10 h-10 mx-auto rounded-xl outline outline-1 outline-input-fill shadow-sm shadow-input-fill" : 
+                                    "transition w-10 h-10 mx-auto rounded-xl outline outline-2 outline-ec-purple-text shadow-sm shadow-ec-purple-text" : 
                                     "transition w-10 h-10 mx-auto rounded-xl outline-none opacity-60 foucs:outline-none hover:outline hover:outline-1 hover:outline-input-fill hover:opacity-100"
                                 }
                                 title={service.provider_name}
@@ -56,7 +57,7 @@ const StreamingServiceButton = ({service}) => {
                         </button>
                     </li>
                 )
-            }).slice(0,40)}
+            })}
         </Fragment>
     );
 }

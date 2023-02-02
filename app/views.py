@@ -336,8 +336,8 @@ class EcstaStreamUserProfile(APIView):
         
         data = {
             "user_id": uuid.UUID(str(user.id)),
-            "status": request.data['status'],
-            "profile_status": request.data['profile_status'],
+            "status": 0,
+            "profile_status": 0,
             "streaming_services": request.data['streaming_services']
         }
         

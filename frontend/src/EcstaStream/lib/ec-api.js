@@ -26,19 +26,17 @@ export async function getUserProfile() {
   return userProfile;
 }
 
-export async function postEcProfile({userInfo}) {
+export async function postEcProfile(streaming_services) {
   const response = await fetch(user_profile, {
     method: 'POST',
-    body: JSON.stringify(
-      // status:0,
-      // "profile_status"=0
-
-    ),
+    body: [streaming_services],
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${user_token}`,
     },
   });
+
+  console.log(streaming_services)
 
   const data = await response.json();
 

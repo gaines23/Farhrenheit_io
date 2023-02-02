@@ -11,7 +11,7 @@ const SideMenu = () => {
     const iconClassName = "w-1/3 h-6";
     const itemClassName = "font-light text-sm text-ec-purple/70 group-hover:text-ec-purple-text w-2/3 border-solid group-hover:border-b-2 group-hover:border-input-fill/30";
     const activeLinkName = "text-ec-purple-text";
-
+    
     return (
         <Fragment> 
             <ul className="w-fit mx-auto h-auto flex flex-col">

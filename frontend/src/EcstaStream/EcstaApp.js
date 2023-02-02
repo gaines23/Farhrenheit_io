@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Fragment, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Layout from './Components/Layout/Layout';
@@ -41,12 +41,12 @@ function EcstaApp() {
           <Route path='/fahrenheit/ecstastream/credit-details/:tmdbId/:imdbId'>
             <CreditDetails />
           </Route>
-          <Route path='/fahrenheit/ecstastream/playlists'>
-            <Playlist />
-          </Route>
-          <Route path='/fahrenheit/ecstastream/playlist-details/:title/:user_id'>
-            <Playlist />
-          </Route>
+            <Route path='/fahrenheit/ecstastream/playlists'>
+              <Playlist />
+            </Route>
+            <Route path='/fahrenheit/ecstastream/playlist-details/:title/:user_id'>
+              <Playlist />
+            </Route>          
       {/*
           <Route path='/ecstastream/news'>
             <News />

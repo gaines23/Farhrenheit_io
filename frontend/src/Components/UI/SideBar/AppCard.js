@@ -28,12 +28,23 @@ const AppCard = ({app, following}) => {
         setAppOptionsIsOpen(false);
     });
 
+    const onClickFollowing = (e) => {
+        e.preventDefault();
+
+        if (following) {
+            localStorage.setItem('following', 0); //true
+        } else {
+            localStorage.setItem('following', 1);
+        }
+
+    }
+
     const linkClassName = "flex group px-1 h-full w-full items-center rounded-l-lg hover:bg-bg-fill/10 outline-none";
     const itemClassName = "text-input-fill/70 w-5/6 text-left pr-1 mx-auto h-auto my-auto group-hover:text-input-fill/80";    
 
     return (
         <Fragment>
-            <li className={OpenNavListClass}>
+            <li className={OpenNavListClass} onClick={onClickFollowing}>
                 <NavLink 
                     to={following ? `/fahrenheit${app.app_info.app_base_link}` : `/fahrenheit${app.app_base_link}`} 
                     className={linkClassName}
@@ -43,7 +54,7 @@ const AppCard = ({app, following}) => {
                         src={following ? app.app_info.app_icon : app.app_icon}
                         className={AppIconClassName} 
                         alt={following ? `${app.app_info.app_name}_img` : `${app.app_name}_img`}
-                    />                    
+                    />
                     <div className={OpenPDivClassName}>
                         <p className={itemClassName}>
                             {following ? app.app_info.app_name : app.app_name}

@@ -2,34 +2,28 @@ import { Fragment, useEffect, useState } from "react";
 import useHttp from "../../hooks/use-http";
 import StreamingServiceButton from "../Components/UI/Button/StreamingServiceButton";
 import LoadingSpinner from "../Components/UI/LoadingSpinner";
-import { getServicesDetails } from "../lib/ec-api";
+import { postEcProfile } from "../lib/ec-api";
 
 let user_id = localStorage.getItem('token');
 let user_profile = process.env.REACT_APP_EC_PROFILE;
 
 const StreamingListModal = ({setIsOpen, newFollower}) => {
-    const { sendRequest, status, data:loadedServices } = useHttp(getServicesDetails, true);
-
-    const [getService, setService] = useState([]);
-    const [checked, setChecked] = useState(false);
+    const { sendRequest, status, error } = useHttp(postEcProfile, true);
 
     useEffect(() => {
-        sendRequest();
-    }, [sendRequest]);
+        if(status === 'completed' && !error){
+            setIsOpen(false);
+        };
+    }, [status, error, setIsOpen]);
 
-    const handleClick = (id) => {
-        if(!getService.includes(id)) {
-            getService.push(id);
-//            setChecked(checked);
-        } else {
-            const x = getService.indexOf(id);
-            getService.splice(x, 1);
+    const submitProfile = (e) => {
+        e.preventDefault();
 
-//            setChecked(!checked);
-        }
-
-        console.log(getService)
+        const services = localStorage.getItem('services');
+        sendRequest({ user_id: user_id, status: 0, profile_status: 0,  });
     };
+
+    // place toggle for profile_staus
 
     return (
         <Fragment>
@@ -44,22 +38,7 @@ const StreamingListModal = ({setIsOpen, newFollower}) => {
 
                     <div className="h-2/3 w-full grid p-5 overflow-x-hidden">
                         <ul className="w-11/12 h-full mx-auto grid-flow-colitems-center justify-center auto-cols-max grid-rows-auto my-4 text-slate-500 text-lg leading-relaxed">
-                            { status === 'pending' && 
-                                <LoadingSpinner />
-                            }
-                                
-                            {status === 'completed' && loadedServices.map((service) => {
-                                return (
-                                    <li className="inline-flex h-10 w-12 my-1 m-auto">
-                                        <button 
-                                            onClick={() => handleClick(service.provider_id)}
-                                            key={service.provider_id}
-                                        >
-                                            <StreamingServiceButton key={service.provider_id} service={service} />                                        
-                                        </button>
-                                    </li>
-                                )
-                            }).slice(0,40)}
+                            <StreamingServiceButton />
                         </ul>
                     </div>
 
@@ -67,7 +46,7 @@ const StreamingListModal = ({setIsOpen, newFollower}) => {
                         <button
                             className="w-28 h-7 text-input-fill background-transparent font-bold lowercase text-sm outline-none focus:outline-none hover:bg-input-fill/10 rounded-lg mr-1 mb-1"
                             type="button"
-                            onClick={() => setIsOpen(false)}
+                            //onClick={() => setIsOpen(false)}
                         >
                             {newFollower ? 'Skip' : 'Close'}
                         </button>

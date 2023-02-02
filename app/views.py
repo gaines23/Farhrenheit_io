@@ -336,8 +336,9 @@ class EcstaStreamUserProfile(APIView):
         
         data = {
             "user_id": uuid.UUID(str(user.id)),
-            "status": 0,
-            "profile_status": 0
+            "status": request.data['status'],
+            "profile_status": request.data['profile_status'],
+            "streaming_services": request.data['streaming_services']
         }
         
         serializer = EcstaStreamUsersListSerializer(data=data)

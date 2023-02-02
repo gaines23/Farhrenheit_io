@@ -15,7 +15,7 @@ const NewPlaylistButton = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     const { sendRequest, status } = useHttp(addPlaylist);
-    const history = useHistory();    
+    const history = useHistory();
 
     useEffect(() => {
         if (status === 'completed') {

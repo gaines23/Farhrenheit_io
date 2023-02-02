@@ -26,7 +26,7 @@ export async function getUserProfile() {
   return userProfile;
 }
 
-export async function createEcProfile() {
+export async function postEcProfile({userInfo}) {
   const response = await fetch(user_profile, {
     method: 'POST',
     body: JSON.stringify(

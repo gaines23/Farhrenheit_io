@@ -16,7 +16,8 @@ const AppListOpen = () => {
 
     useEffect(() => {
         async function getNotFollowingApps() {
-            const response = await fetch(`${apps_user_not_following}`, { 
+            try {
+                const response = await fetch(`${apps_user_not_following}`, { 
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -25,27 +26,33 @@ const AppListOpen = () => {
             });
 
             const data = await response.json();
-
+            
             setNotUserApps(data);
+            } catch { 
+                return;
+            }
         }
 
         getNotFollowingApps();
-
+    
     }, [token]);
 
     useEffect(() => {
         async function getUserAppFollowing() {
-            const response = await fetch(`${apps_user_following}`, { 
+            try { 
+                const response = await fetch(`${apps_user_following}`, { 
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 }
             });
+                const data = await response.json();
 
-            const data = await response.json();
-
-            setUserApps(data);
+                setUserApps(data);
+            } catch {
+                return;
+            }
         }
 
         getUserAppFollowing();

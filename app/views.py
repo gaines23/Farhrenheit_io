@@ -166,7 +166,7 @@ class UserFahrenheitApps(APIView):
 
 
 class AppList(APIView):
-    def get(self, *args):
+    def get(self, request, *args, **kwargs):
         try:
             app = Fahrenheit_App_List.objects.all()
             serializer = AllAppsListSerializer(app, many=True)

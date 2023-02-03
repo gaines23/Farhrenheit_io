@@ -22,6 +22,7 @@ import { HiOutlineSearch } from 'react-icons/hi';
 import { BsCaretDown, BsCaretUp } from 'react-icons/bs';
 import { HiOutlineHome } from 'react-icons/hi';
 import Options from '../../UI/SideBar/Options';
+import AppListNotLoggedIn from './AppListNotLoggedIn';
 
 
 const SideBarOpen = () => {
@@ -94,6 +95,13 @@ const SideBarOpen = () => {
                                         </NavLink>
                                     </li>
                                 </ul>
+                            </div>
+                        </div>
+
+                        <div className="h-3/4 w-11/12 mx-auto flex flex-col">
+                            
+                            <div className="h-3/5 w-full flex flex-col">
+                                <AppListNotLoggedIn />
                             </div>
                         </div>
 

@@ -83,7 +83,6 @@ const AppOptions = ({app, following}) => {
 
     }
 
-
     return (
         <Fragment>
             <div 
@@ -92,21 +91,34 @@ const AppOptions = ({app, following}) => {
                 <ul className="h-full w-5/6 mx-auto ">
                     <li className={OpenNavListClass} >
                         <div className={OpenLinkClassName}>
-                            {following ? (
-                                <button className={OpenPDivClassName} type="submit" onClick={submitUnFollowHandler}>
-                                    <p className={OptionsParaClassName}>
-                                        Unfollow
-                                    </p>
-                                    { isLoading && <LoadingSpinner /> }
-                                </button>
-                            ):(
-                                <button className={OpenPDivClassName} type="submit" onClick={submitFollowHandler}>
-                                    <p className={OptionsParaClassName}>
-                                        Follow
-                                    </p>
-                                    { isLoading && <LoadingSpinner /> }
-                                </button>
-                            )}
+                            {token !== null ? (
+                                <Fragment>
+                                    {following ? (
+                                        <button className={OpenPDivClassName} type="submit" onClick={submitUnFollowHandler}>
+                                            <p className={OptionsParaClassName}>
+                                                Unfollow
+                                            </p>
+                                            { isLoading && <LoadingSpinner /> }
+                                        </button>
+                                    ):(
+                                        <button className={OpenPDivClassName} type="submit" onClick={submitFollowHandler}>
+                                            <p className={OptionsParaClassName}>
+                                                Follow
+                                            </p>
+                                            { isLoading && <LoadingSpinner /> }
+                                        </button>
+                                    )}
+                                </Fragment>
+                            ) : 
+                                <Link to='/fahrenheit/user/login/' className='h-full w-full'>
+                                    <button className={OpenPDivClassName}>
+                                        <p className={OptionsParaClassName}>
+                                            Follow
+                                        </p>   
+                                        { isLoading && <LoadingSpinner /> }
+                                    </button>
+                                </Link>
+                            }
                         </div>
                     </li>
 

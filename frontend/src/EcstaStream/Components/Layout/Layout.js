@@ -14,7 +14,7 @@ const Layout = (props) => {
             <div className="h-full w-full px-2 mx-auto flex bg-ec-black/80 rounded-xl">
                 <div className="w-fit h-full flex flex-col ease-in">
                     <div className="w-11/12 h-full mx-auto flex flex-col">
-                        <SideMenu />
+                        <SideMenu following={newFollower} />
                     </div>
                 </div>
 

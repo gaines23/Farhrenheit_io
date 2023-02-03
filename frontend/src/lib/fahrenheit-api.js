@@ -74,22 +74,16 @@ export async function getAllApps() {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user_token}`
         }
     });
 
-    const data = await response.json();
+    const allAppDetails = await response.json();
     
     if (!response.ok) {
         throw new Error(response.status_message);
     }
 
-    const allAppDetails = {
-        ...data,
-    }
-
     return allAppDetails;
-
 }
 
 

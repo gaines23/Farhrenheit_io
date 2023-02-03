@@ -25,7 +25,7 @@ const StreamingServiceButton = () => {
     };
 
     useEffect(() => {
-        localStorage.setItem('services', getServices);
+        localStorage.setItem('services', [getServices]);
     }, [getServices]);
 
 

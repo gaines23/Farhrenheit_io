@@ -1,4 +1,3 @@
-import { type } from "@testing-library/user-event/dist/type";
 import { Fragment, useEffect, useState } from "react";
 import useHttp from "../../hooks/use-http";
 import StreamingServiceButton from "../Components/UI/Button/StreamingServiceButton";

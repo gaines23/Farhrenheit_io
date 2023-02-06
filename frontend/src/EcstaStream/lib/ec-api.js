@@ -46,7 +46,7 @@ export async function postEcProfile(streaming_services) {
 }
 
 // EC-Service Details
-export async function getServicesDetails() {
+export async function getAllServices() {
   const response = await fetch(streaming_services);
   const data = await response.json();
 

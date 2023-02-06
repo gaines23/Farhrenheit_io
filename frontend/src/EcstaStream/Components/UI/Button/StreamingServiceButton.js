@@ -1,10 +1,10 @@
 import { Fragment, useEffect, useState } from "react";
 import useHttp from "../../../../hooks/use-http";
-import { getServicesDetails } from "../../../lib/ec-api";
+import { getAllServices } from "../../../lib/ec-api";
 import LoadingSpinner from "../LoadingSpinner";
 
 const StreamingServiceButton = ({setServiceList}) => {
-    const { sendRequest, status, data:loadedServices } = useHttp(getServicesDetails, true);
+    const { sendRequest, status, data:loadedServices } = useHttp(getAllServices, true);
 
     const [getServices, setServices] = useState([]);
 

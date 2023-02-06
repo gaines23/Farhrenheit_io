@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 
 import useHttp from '../../../hooks/use-http';
-import { getServicesDetails } from "../../lib/ec-api";
+import { getAllServices } from "../../lib/ec-api";
 
 import LoadingSpinner from "../UI/LoadingSpinner";
 import SecondaryFilter from "./SecondaryFilter";
@@ -11,7 +11,7 @@ import EcstaStream from '../../assets/EcstaStream.png';
 import StreamingServiceCard from "../UI/Card/StreamingServiceCard";
 
 const HomePageContent = () => {
-    const { sendRequest, status, data: loadedServices, error } = useHttp(getServicesDetails, true);
+    const { sendRequest, status, data: loadedServices, error } = useHttp(getAllServices, true);
 
     useEffect(() => {
         sendRequest();

@@ -4,12 +4,10 @@ import StreamingServiceButton from "../Components/UI/Button/StreamingServiceButt
 import LoadingSpinner from "../Components/UI/LoadingSpinner";
 import { postEcProfile } from "../lib/ec-api";
 
-let user_id = localStorage.getItem('token');
-
 const StreamingListModal = ({setIsOpen, newFollower}) => {
     const { sendRequest, status, error } = useHttp(postEcProfile, true);
 
-    const [getServices, setServices] = useState([]);
+    const [getServices, setServiceList] = useState([]);
     
     useEffect(() => {
         if(status === 'completed' && !error) {
@@ -18,25 +16,22 @@ const StreamingListModal = ({setIsOpen, newFollower}) => {
     }, [status, error, setIsOpen]);
 
     const [isLoading, setIsLoading] = useState(false);
-    const streaming_services = localStorage.getItem('services');
 
     const submitProfile = (e) => {
         e.preventDefault();
-
+        const services = getServices.map(y => parseInt(y));
         setIsLoading(true);
-        //setServices([streaming_services])
+
         sendRequest({ 
-            streaming_services
+            streaming_services: services
         });
     };
-
-    console.log(streaming_services)
 
     return (
         <Fragment>
             <div id="modalWrapper" className="text-input-fill flex h-5/6 sm:w-96 md:w-[32rem] mx-auto z-50 justify-center items-center overflow-hidden outline-none focus:outline-none">
                 <div className="relative h-5/6 w-4/5 m-auto border-0 rounded-lg shadow-lg bg-gradient-to-br from-ec-purple to-ec-orange rounded-lg bg-white outline-none focus:outline-none">
-                    <div className="h-1/6 flex items-start justify-center text-left p-5 border-b border-solid border-slate-200 rounded-t">
+                    <div className="h-1/6 flex items-start justify-center text-left px-5 py-2 border-b border-solid border-slate-200 rounded-t">
                         <h3 className="w-full text-xl font-semibold text-input-fill">
                             Select your streaming services for the best experience
                         </h3>
@@ -45,7 +40,7 @@ const StreamingListModal = ({setIsOpen, newFollower}) => {
                     <div className="h-2/3 w-full grid p-5 overflow-x-hidden">
                         {isLoading && <LoadingSpinner />}
                         <ul className="w-11/12 h-full mx-auto grid-flow-colitems-center justify-center auto-cols-max grid-rows-auto my-4">
-                            <StreamingServiceButton />
+                            <StreamingServiceButton setServiceList={setServiceList} />
                         </ul>
                     </div>
 

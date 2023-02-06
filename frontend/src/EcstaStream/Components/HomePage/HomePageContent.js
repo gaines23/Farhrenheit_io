@@ -54,26 +54,32 @@ const HomePageContent = () => {
                         </li>
                     </ul>
                 </div>
-            
-                <div id="streamingServicesList" className="flex justify-center items-center">
-                    <div id="services" className="w-full p-2 h-full rounded-lg border border-input-fill/10 bg-bg-fill/10 backdrop-brightness-125 backdrop-opacity-10 rounded-md">
-                        <StreamingListButton />
-                        <div className="w-full h-16 overflow-x-auto space-x-3 scroll-smooth scrollbar scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
-                            <ul className="px-3 h-12 inline-block w-auto gap-3">
-                                {loadedServices.map((service) => {
-                                    return (
-                                        <StreamingServiceCard key={service.provider_id} service={service} />
-                                    );
-                                }).slice(0,25)}
-                            </ul>        
+
+                { localStorage.getItem('newFollower') === 'true' && (
+                    <Fragment>
+                        <div id="streamingServicesList" className="flex justify-center items-center">
+                            <div id="services" className="w-full p-2 h-full rounded-lg border border-input-fill/10 bg-bg-fill/10 backdrop-brightness-125 backdrop-opacity-10 rounded-md">
+                                <StreamingListButton />
+                                <div className="w-full h-16 overflow-x-auto space-x-3 scroll-smooth scrollbar scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
+                                    <ul className="px-3 h-12 inline-block w-auto gap-3">
+                                        {loadedServices.map((service) => {
+                                            return (
+                                                <StreamingServiceCard key={service.provider_id} service={service} />
+                                            );
+                                        })}
+                                    </ul>        
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </Fragment>
+                )}
+            
+                
             </div> 
     
             <SecondaryFilter />
 
-            {/* <Trending /> */}
+            <Trending />
             
         </Fragment>
     );

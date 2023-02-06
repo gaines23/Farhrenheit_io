@@ -3,11 +3,10 @@ import useHttp from "../../../../hooks/use-http";
 import { getServicesDetails } from "../../../lib/ec-api";
 import LoadingSpinner from "../LoadingSpinner";
 
-const StreamingServiceButton = () => {
+const StreamingServiceButton = ({setServiceList}) => {
     const { sendRequest, status, data:loadedServices } = useHttp(getServicesDetails, true);
 
     const [getServices, setServices] = useState([]);
-    localStorage.getItem('services');
 
     useEffect(() => {
         sendRequest();
@@ -15,19 +14,20 @@ const StreamingServiceButton = () => {
 
     const handleClick = (id) => {
         if(!getServices.includes(id)) {
-            getServices.push(id);
+            getServices.push(parseInt(id));
         } else {
             const x = getServices.indexOf(id);
             getServices.splice(x, 1);
+            setServices(getServices => [...getServices]);
         }
 
         setServices(getServices => [...getServices]);
     };
 
     useEffect(() => {
-        localStorage.setItem('services', [getServices]);
+        const x = getServices.map(y => parseInt(y));
+        setServiceList(x);
     }, [getServices]);
-
 
     return (
         <Fragment>

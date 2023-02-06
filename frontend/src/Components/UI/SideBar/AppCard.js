@@ -12,7 +12,6 @@ import { BsCaretDown, BsCaretUp } from 'react-icons/bs';
 import AppOptions from "./AppOptions";
 
 const AppCard = ({app, following}) => {
-   
     const [appOptionsIsOpen, setAppOptionsIsOpen] = useState(false);
     const ref = useRef();
 
@@ -30,14 +29,19 @@ const AppCard = ({app, following}) => {
 
     const onClickFollowing = (e) => {
         e.preventDefault();
+        
 
-        if (following) {
-            localStorage.setItem('following', 0); //true
+        if (following === true) {
+            localStorage.removeItem('following');
+            localStorage.setItem('following', true); //true
         } else {
-            localStorage.setItem('following', 1);
+            localStorage.removeItem('following');
+            localStorage.setItem('following', false);
         }
 
     }
+
+    console.log(following)
 
     const linkClassName = "flex group px-1 h-full w-full items-center rounded-l-lg hover:bg-bg-fill/10 outline-none";
     const itemClassName = "text-input-fill/70 w-5/6 text-left pr-1 mx-auto h-auto my-auto group-hover:text-input-fill/80";    

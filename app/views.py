@@ -333,7 +333,7 @@ class EcstaStreamUserProfile(APIView):
 
     def post(self, request, *args, **kwargs):
         user = CustomUser.objects.get(id=self.request.user.id)
-        
+       
         data = {
             "user_id": uuid.UUID(str(user.id)),
             "status": 0,

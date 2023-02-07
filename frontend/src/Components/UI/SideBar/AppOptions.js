@@ -49,13 +49,13 @@ const AppOptions = ({app, following}) => {
                 return res.json();
             }
         }).then(() => {
+            localStorage.setItem('following', true);
             localStorage.setItem('newFollower', true);
             history.replace(`/fahrenheit${appUrl}`);
         });
     }
 
     const submitUnFollowHandler = async (e) => {
-        console.log(appId)
         e.preventDefault();
 
         setIsLoading(true);
@@ -79,6 +79,8 @@ const AppOptions = ({app, following}) => {
             }
         }).then(() => {
             history.replace(`/fahrenheit/`);
+            localStorage.setItem('following', false);
+            localStorage.removeItem('newFollower');
         }); 
 
     }

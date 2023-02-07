@@ -11,10 +11,6 @@ const UserServices = () => {
         sendRequest();
     }, [sendRequest]);
 
-    if (status === 'completed') {
-        console.log(userProfile.streaming_services)
-        
-    }
 
     if (error) {
         return (
@@ -24,11 +20,10 @@ const UserServices = () => {
 
     return (
         <Fragment>
-            <div className="w-5/6 h-full mx-auto">
                 <div className="w-max mx-auto">
                     { status === 'pending' && <LoadingSpinner /> }
 
-                    { status === 'completed' && (
+                    {( status === 'completed' && userProfile !== null) && (
                         <Fragment>
                             {userProfile.streaming_list_info.map((service) => {
                                 return (
@@ -38,7 +33,6 @@ const UserServices = () => {
                         </Fragment>
                     )}
                 </div>
-            </div>
         </Fragment>
     );
 }

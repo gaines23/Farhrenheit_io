@@ -116,6 +116,7 @@ class UserLogout(APIView):
 
 
 ### User Creates, updates, deletes personal Apps
+### Doesn't handle following/unfollowing apps
 class UserFahrenheitApps(APIView):
     def post(self, request, *args, **kwargs):
         user = CustomUser.objects.get(id=self.request.user.id)
@@ -175,9 +176,9 @@ class AppList(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+### Lists all apps user not following ###
 class UserNotFollowingApps(APIView):
     def get(self, request, *args, **kwargs):
-        
         try:
             all_apps = Fahrenheit_App_List.objects.all()
             following = User_App_Following.objects.filter(user=self.request.user)
@@ -192,6 +193,8 @@ class UserNotFollowingApps(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+
+### Lists all apps user is following ### 
 class UserAppFollowing(APIView):
     ### All apps user follows
     def get(self, request, *args, **kwargs):
@@ -221,7 +224,8 @@ class UserAppFollowing(APIView):
     ### User deletes app following
     def delete(self, request):
         id = request.data['id']
-        app = User_App_Following.objects.get(id=id).delete()
+        user = self.request.user.id
+        app = User_App_Following.objects.get(id=id, user=user).delete()
         return Response(app, status=status.HTTP_200_OK)
 
     ### Edits mute notificaions -> on/off

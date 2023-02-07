@@ -43,7 +43,7 @@ const HomePageContent = () => {
 
             <div id="filterSection" className="flex flex-col w-full h-auto mt-5">
                 <div id="streamingServicesList" className="flex justify-center items-center">
-                    <div id="services" className="w-full p-2 h-full rounded-lg border border-input-fill/10 bg-bg-fill/10 backdrop-brightness-125 backdrop-opacity-10 rounded-md">
+                    <div id="services" className="w-5/6 mx-auto p-2 h-full rounded-lg border border-input-fill/10 bg-bg-fill/10 backdrop-brightness-125 backdrop-opacity-10 rounded-md">
                         <StreamingListButton />
 
                         <div id="filterTabs" className="flex h-10 w-full justify-center">
@@ -59,14 +59,18 @@ const HomePageContent = () => {
                                 </li>
                             </ul>
                         </div>
-
-                        <UserServices />
-
+                        
+                        <div id="streamingServices" className="w-full h-full mx-auto">
+                            {localStorage.getItem('following') === 'true' ?
+                                <UserServices />
+                                : ''
+                            }   
+                        </div>
                     </div>
                 </div>                   
             </div> 
 
-            { localStorage.getItem('newFollower') === 'true' && (
+            { (localStorage.getItem('newFollower') === 'true') && (
                     <Fragment>
                         <div id="streamingServicesList" className="flex justify-center items-center">
                             <div id="services" className="w-full p-2 h-full rounded-lg border border-input-fill/10 bg-bg-fill/10 backdrop-brightness-125 backdrop-opacity-10 rounded-md">

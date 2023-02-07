@@ -12,6 +12,7 @@ const StreamingListModal = ({setIsOpen, newFollower}) => {
     useEffect(() => {
         if(status === 'completed' && !error) {
             setIsOpen(false);
+            localStorage.getItem('newFollower', false);
         };
     }, [status, error, setIsOpen]);
 
@@ -25,6 +26,8 @@ const StreamingListModal = ({setIsOpen, newFollower}) => {
         sendRequest({ 
             streaming_services: services
         });
+
+        localStorage.removeItem('newFollower');
     };
 
     return (
@@ -48,7 +51,7 @@ const StreamingListModal = ({setIsOpen, newFollower}) => {
                         <button
                             className="w-28 h-7 text-input-fill background-transparent font-bold lowercase text-sm outline-none focus:outline-none hover:bg-input-fill/10 rounded-lg mr-1 mb-1"
                             type="button"
-                            //onClick={() => setIsOpen(false)}
+                            onClick={() => setIsOpen(false)}
                         >
                             {newFollower ? 'Skip' : 'Close'}
                         </button>

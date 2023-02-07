@@ -12,6 +12,12 @@ const AppListNotLoggedIn = () => {
         sendRequest();
     }, [sendRequest]);
 
+    useEffect(() => {
+        setAllApps(allAppDetails);
+    }, [setAllApps, allAppDetails]);
+
+    console.log(getApps)
+
     return (
         <Fragment>
             <div className="w-5/6 my-3 mx-auto border-t border-bg-fill/20 flex">

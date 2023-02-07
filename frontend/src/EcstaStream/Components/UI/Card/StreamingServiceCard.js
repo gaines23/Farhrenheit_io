@@ -1,11 +1,20 @@
 //import { TMBD_POSTER_w45 } from "../../lib/constants";
 
+import { useEffect } from "react";
+import useHttp from "../../../../hooks/use-http";
+import { getAllServices } from "../../../lib/ec-api";
 import LoadingSpinner from "../LoadingSpinner";
 
-const StreamingListUsers = ({service, isLoading}) => {
+const StreamingServiceCard = ({service}) => {
+    const { sendRequest, status, data: loadedServices, error } = useHttp(getAllServices, true);
+
+    useEffect(() => {
+        sendRequest(service);
+    }, [sendRequest]);
+    
     return (
         <li className="inline-flex h-10 w-12 my-1 m-auto">
-            {isLoading && <LoadingSpinner />}
+            {/* {isLoading && <LoadingSpinner />} */}
             <img 
                 id={"service_img_" + service.provider_name} 
                 //src={TMBD_POSTER_w45 + service.logo_path}
@@ -18,4 +27,4 @@ const StreamingListUsers = ({service, isLoading}) => {
     );
 };
 
-export default StreamingListUsers;
+export default StreamingServiceCard;

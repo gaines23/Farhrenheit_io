@@ -173,12 +173,15 @@ class GenreSerlializer(serializers.ModelSerializer):
         model = Genre
         fields = ('id', 'genre')
 
+
+
+### Ec User Profile Details ###
 class EcUserProfileSerializer(serializers.ModelSerializer):
     date_created = serializers.DateTimeField(read_only=True)
 
     user_playlists = serializers.SerializerMethodField()
     playlist_following = serializers.SerializerMethodField()
-    streaming_list = StreamingServicesSerializer()
+    streaming_list_info = serializers.SerializerMethodField()
 
     class Meta:
         model = EcstaStreamProfile
@@ -192,7 +195,7 @@ class EcUserProfileSerializer(serializers.ModelSerializer):
 
     def get_user_playlists(self, obj):
         try:
-            return EcstaStreamPlaylistSerializer(obj.playlists.all(), many=True).data
+            return AllEcPlaylistsSerializer(obj.playlists.all(), many=True).data
         except Exception:
             return 
 
@@ -202,11 +205,11 @@ class EcUserProfileSerializer(serializers.ModelSerializer):
         except Exception:
             return 
 
-    # def get_streaming_list(self, obj):
-    #     try:
-    #         return EcUserStreamingListSerializer(obj.user_streaming.all(), many=True).data
-    #     except Exception:
-    #         return 
+    def get_streaming_list_info(self, obj):
+        try:
+            return StreamingServicesSerializer(obj.streaming_services.all(), many=True).data
+        except Exception:
+            return 
 
 
 
@@ -216,8 +219,16 @@ class EcstaStreamUsersListSerializer(serializers.ModelSerializer):
         fields = ('__all__')
 
 
+### All Playlists (without details) ###
+class AllEcPlaylistsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EcstaStreamPlaylist
+        fields = ('__all__')
+        read_only_fields = ('ec_playlist_id',)
 
 
+
+### Playlist Details ###
 class EcstaStreamPlaylistSerializer(serializers.ModelSerializer):
     created_on = serializers.DateTimeField(read_only=True)
 

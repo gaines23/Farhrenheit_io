@@ -52,12 +52,7 @@ const UserCreatedList = () => {
             console.log('problem saving playlist');
         }
 
-
-
-
     }
-
-
 
     if (status === 'pending') {
         <LoadingSpinner />
@@ -81,7 +76,7 @@ const UserCreatedList = () => {
             </Fragment>
         );           
     }
-
+        else
     {
         return (
             <Fragment>

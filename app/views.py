@@ -323,11 +323,11 @@ class EcstaStreamUserList(APIView):
 
 
 class EcstaStreamUserProfile(APIView):
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         try:
             profile = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
-            serializer = EcUserProfileSerializer(profile).data
-            return JsonResponse(serializer, status=status.HTTP_200_OK)
+            serializer = EcUserProfileSerializer(profile)
+            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
         except Exception:
             return Response(status=status.HTTP_204_NO_CONTENT)
 

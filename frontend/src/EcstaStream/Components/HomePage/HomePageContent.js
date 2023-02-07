@@ -9,6 +9,7 @@ import StreamingListButton from "../UI/Button/StreamingListButton";
 import Trending from "./Trending";
 import EcstaStream from '../../assets/EcstaStream.png';
 import StreamingServiceCard from "../UI/Card/StreamingServiceCard";
+import UserServices from "./UI/UserServices";
 
 const HomePageContent = () => {
     const { sendRequest, status, data: loadedServices, error } = useHttp(getAllServices, true);
@@ -41,25 +42,34 @@ const HomePageContent = () => {
             </div>
 
             <div id="filterSection" className="flex flex-col w-full h-auto mt-5">
-                <div id="filterTabs" className="flex h-10 w-full justify-center">
-                    <ul className="flex w-2/3 text-center h-full rounded-lg">
-                        <li className={mainListClassName}>
-                            <p className={mainListParagraph}>Top 20 Services in US</p>
-                        </li>
-                        <li className={mainListClassName}>
-                            <p className={mainListParagraph}>My Services</p>
-                        </li>
-                        <li className={mainListClassName}>
-                            <p className={mainListParagraph}>Custom</p>
-                        </li>
-                    </ul>
-                </div>
+                <div id="streamingServicesList" className="flex justify-center items-center">
+                    <div id="services" className="w-full p-2 h-full rounded-lg border border-input-fill/10 bg-bg-fill/10 backdrop-brightness-125 backdrop-opacity-10 rounded-md">
+                        <StreamingListButton />
 
-                { localStorage.getItem('newFollower') === 'true' && (
+                        <div id="filterTabs" className="flex h-10 w-full justify-center">
+                            <ul className="flex w-2/3 text-center h-full rounded-lg">
+                                <li className={mainListClassName}>
+                                    <p className={mainListParagraph}>Top 20 Services in US</p>
+                                </li>
+                                <li className={mainListClassName}>
+                                    <p className={mainListParagraph}>My Services</p>
+                                </li>
+                                <li className={mainListClassName}>
+                                    <p className={mainListParagraph}>Custom</p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <UserServices />
+
+                    </div>
+                </div>                   
+            </div> 
+
+            { localStorage.getItem('newFollower') === 'true' && (
                     <Fragment>
                         <div id="streamingServicesList" className="flex justify-center items-center">
                             <div id="services" className="w-full p-2 h-full rounded-lg border border-input-fill/10 bg-bg-fill/10 backdrop-brightness-125 backdrop-opacity-10 rounded-md">
-                                <StreamingListButton />
                                 <div className="w-full h-16 overflow-x-auto space-x-3 scroll-smooth scrollbar scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
                                     <ul className="px-3 h-12 inline-block w-auto gap-3">
                                         {loadedServices.map((service) => {
@@ -73,9 +83,6 @@ const HomePageContent = () => {
                         </div>
                     </Fragment>
                 )}
-            
-                
-            </div> 
     
             <SecondaryFilter />
 

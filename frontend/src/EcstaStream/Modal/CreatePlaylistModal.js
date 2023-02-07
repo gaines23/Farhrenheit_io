@@ -24,7 +24,7 @@ const CreatePlaylistModal = (props) => {
         const enteredDesc = descRef.current.value;
         const enteredPrivate = privateRef.current;
 
-        props.onAddPlaylist( { title: enteredTitle, description: enteredDesc, private: enteredPrivate } );
+        props.onAddPlaylist({ title: enteredTitle, description: enteredDesc, private: enteredPrivate });
         
         props.setIsOpen(false);
     }

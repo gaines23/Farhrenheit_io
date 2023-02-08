@@ -60,12 +60,10 @@ const HomePageContent = () => {
                             </ul>
                         </div>
                         
-                        <div id="streamingServices" className="w-full h-full mx-auto">
-                            {localStorage.getItem('following') === 'true' ?
-                                <UserServices />
-                                : ''
-                            }   
-                        </div>
+                        {localStorage.getItem('following') === 'true' ?
+                            <UserServices />
+                            : ''
+                        }   
                     </div>
                 </div>                   
             </div> 

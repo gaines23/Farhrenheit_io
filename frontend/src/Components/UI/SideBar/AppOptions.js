@@ -78,9 +78,9 @@ const AppOptions = ({app, following}) => {
                 return res.json();
             }
         }).then(() => {
-            history.replace(`/fahrenheit/`);
             localStorage.setItem('following', false);
             localStorage.removeItem('newFollower');
+            history.replace(`/fahrenheit/`);
         }); 
 
     }

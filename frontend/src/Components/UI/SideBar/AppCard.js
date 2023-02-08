@@ -27,26 +27,24 @@ const AppCard = ({app, following}) => {
         setAppOptionsIsOpen(false);
     });
 
-    // const onClickFollowing = (e) => {
-    //     e.preventDefault();
-    //    // localStorage.removeItem('following');
+    const onClickFollowing = (e) => {
+        e.preventDefault();
+       // localStorage.removeItem('following');
 
-    //     if (following === true) {
-    //         localStorage.setItem('following', true); //true
-    //     } else {
-    //         localStorage.setItem('following', false);
-    //     }
+        if (following === true) {
+            localStorage.setItem('following', true); //true
+        } else {
+            localStorage.setItem('following', false);
+        }
 
-    // }
-
-    console.log(following)
+    }
 
     const linkClassName = "flex group px-1 h-full w-full items-center rounded-l-lg hover:bg-bg-fill/10 outline-none";
     const itemClassName = "text-input-fill/70 w-5/6 text-left pr-1 mx-auto h-auto my-auto group-hover:text-input-fill/80";    
 
     return (
         <Fragment>
-            <li className={OpenNavListClass}>
+            <li className={OpenNavListClass} onClick={onClickFollowing}>
                 <NavLink 
                     to={following ? `/fahrenheit${app.app_info.app_base_link}` : `/fahrenheit${app.app_base_link}`} 
                     className={linkClassName}

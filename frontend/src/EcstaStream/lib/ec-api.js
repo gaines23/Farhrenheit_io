@@ -4,7 +4,9 @@ let user_profile = process.env.REACT_APP_EC_PROFILE;
 let streaming_services = process.env.REACT_APP_EC_SERVICES;
 let user_playlists_url = process.env.REACT_APP_EC_USER_PLAYLISTS;
 let all_playlists_url = process.env.REACT_APP_EC_ALL_PLAYLISTS;
+let playlist_details_url = process.env.REACT_APP_EC_PLAYLIST_DETAILS;
 let use_streaming_services = process.env.REACT_APP_EC_USER_STREAMING;
+let genres_url = process.env.REACT_APP_EC_GENRES;
 
 let user_token = localStorage.getItem('token');
 
@@ -45,7 +47,7 @@ export async function postEcProfile(streaming_services) {
   return null;  
 }
 
-// EC-Service Details
+// Gets EC-Service Details
 export async function getAllServices() {
   const response = await fetch(streaming_services);
   const data = await response.json();
@@ -68,8 +70,33 @@ export async function getAllServices() {
   return loadedServices;
 }
 
+
+// Posts new services chosen by user
+export async function sendUserStreamingList(streamingList) {
+  const response = await fetch(use_streaming_services, {
+    method: 'POST',
+    body: JSON.stringify(streamingList),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${user_token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+
+  return null;
+
+}
+
+
+
+
 export async function getGenres() {
-  const response = await fetch(process.env.REACT_APP_EC_GENRES);
+  const response = await fetch(genres_url);
   const data = await response.json();
 
   if (!response.ok) {
@@ -94,26 +121,8 @@ export async function getGenres() {
 }
 
 
-export async function addPlaylist(newPlayist) {
-  const response = await fetch(user_playlists_url, {
-    method: 'POST',
-    body: JSON.stringify(newPlayist),
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${user_token}`,
-    },
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message);
-  }
-
-  return null;
-
-}
-
+// All User's playlists
+// User is logged in
 export async function getAllUserPlaylists() {
   const response = await fetch(user_playlists_url, {
     headers: {
@@ -142,6 +151,8 @@ export async function getAllUserPlaylists() {
 }
 
 
+// All Playlists
+// User doesn't have to be logged in
 export async function getAllPlaylists() {
   const response = await fetch(all_playlists_url);
   const data = await response.json();
@@ -164,10 +175,12 @@ export async function getAllPlaylists() {
   return allPlaylists;
 }
 
-export async function sendUserStreamingList(streamingList) {
-  const response = await fetch(use_streaming_services, {
+
+// Adds new user created playlist 
+export async function addPlaylist(newPlayist) {
+  const response = await fetch(playlist_details_url, {
     method: 'POST',
-    body: JSON.stringify(streamingList),
+    body: JSON.stringify(newPlayist),
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${user_token}`,
@@ -185,4 +198,26 @@ export async function sendUserStreamingList(streamingList) {
 }
 
 
+// Gets Playlist details
+export async function getPlaylistDetails() {
+  const response = await fetch(playlist_details_url);
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Could not fetch playlists.');
+  }
+
+  const allPlaylists = [];
+
+  for (const key in data) {
+    const playlistObj = {
+      id: key,
+      ...data[key],
+    };
+
+    allPlaylists.push(playlistObj);
+  }
+
+  return allPlaylists;
+}
 

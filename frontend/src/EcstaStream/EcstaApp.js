@@ -10,7 +10,7 @@ const SearchResults = React.lazy(() => import ('./Pages/SearchResults'));
 const MovieDetails = React.lazy(() => import ('./Pages/MovieDetails'));
 const TvDetails = React.lazy(() => import ('./Pages/TvDetails'));
 const CreditDetails = React.lazy(() => import ('./Pages/CreditDetails'));
-const Playlist = React.lazy(() => import ('./Pages/Playlists'));
+const Playlists = React.lazy(() => import ('./Pages/Playlists'));
 const PlaylistDetails = React.lazy(() => import ('./Pages/PlaylistDetails'));
 // const News = React.lazy(() => ('./Pages/News'));
 
@@ -41,11 +41,11 @@ function EcstaApp() {
           <Route path='/fahrenheit/ecstastream/credit-details/:tmdbId/:imdbId'>
             <CreditDetails />
           </Route>
-            <Route path='/fahrenheit/ecstastream/playlists'>
-              <Playlist />
+            <Route path='/fahrenheit/ecstastream/user-playlists'>
+              <Playlists />
             </Route>
-            <Route path='/fahrenheit/ecstastream/playlist-details/:title/:user_id'>
-              <Playlist />
+            <Route path='/fahrenheit/ecstastream/playlist/details/:id/:title/:user'>
+              <PlaylistDetails />
             </Route>          
       {/*
           <Route path='/ecstastream/news'>

@@ -51,7 +51,7 @@ const SideMenu = () => {
                             </NavLink>
                         </li>
                         <li className="h-14 mb-2">
-                            <NavLink to={'/fahrenheit/ecstastream/playlists'} className={linkClassName} activeClassName={activeLinkName}>
+                            <NavLink to={'/fahrenheit/ecstastream/user-playlists'} className={linkClassName} activeClassName={activeLinkName}>
                                 <AiOutlineUnorderedList className={iconClassName} />
                                 <p className={itemClassName}>
                                     Playlists

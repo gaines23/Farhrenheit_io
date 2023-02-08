@@ -20,19 +20,19 @@ const UserServices = () => {
 
     return (
         <Fragment>
-                <div className="w-max mx-auto">
-                    { status === 'pending' && <LoadingSpinner /> }
-
-                    {( status === 'completed' && userProfile !== null) && (
-                        <Fragment>
-                            {userProfile.streaming_list_info.map((service) => {
-                                return (
-                                    <StreamingServiceCard key={service.provider_id} service={service}/>
-                                );
-                            })}
-                        </Fragment>
-                    )}
-                </div>
+            <div className="w-max mx-auto px-2">
+                { status === 'pending' && <LoadingSpinner /> }
+                
+                {( status === 'completed' && userProfile !== null) && (
+                    <Fragment>
+                        {userProfile.streaming_list_info.map((service) => {
+                            return (
+                                <StreamingServiceCard key={service.provider_id} service={service}/>
+                            );
+                        })}
+                    </Fragment>
+                )}
+            </div>
         </Fragment>
     );
 }

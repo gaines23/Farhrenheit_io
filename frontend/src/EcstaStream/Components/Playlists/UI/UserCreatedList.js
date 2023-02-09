@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState} from "react";
 import { useHistory } from "react-router-dom";
 import LoadingSpinner from "../../../../Components/UI/LoadingSpinner";
 import useHttp from "../../../../hooks/use-http";
@@ -10,6 +10,7 @@ let user_token = localStorage.getItem('token');
 
 const UserCreatedList = () => {
     const { sendRequest, status, data: userProfile } = useHttp(getUserProfile, true);
+    const [getUserPlaylists, setUserPlaylists] = useState([]);
 
     const history = useHistory();
 
@@ -43,7 +44,7 @@ const UserCreatedList = () => {
             }
 
             if (response.ok) {
-                history.push('/fahrenheit/ecstastream/playlist-details/:title/:user_id');
+                history.push('/fahrenheit/ecstastream/playlist/details/:id/:title/:user_id');
                 // build this out -> single playlist page
             }
             
@@ -58,7 +59,12 @@ const UserCreatedList = () => {
         <LoadingSpinner />
     }
 
-    if (status === 'completed' && userProfile !== null) {
+    if (status === 'completed' ) {
+        console.log(userProfile.user_playlists)
+    }
+    
+   
+    if (status === 'completed' && userProfile.user_playlists !== '') {
         return (
             <Fragment>
                 <div className="mt-5 mb-5">
@@ -74,11 +80,12 @@ const UserCreatedList = () => {
                     </div>
                 </div>
             </Fragment>
-        );           
+        );
     }
         else
     {
-        return (
+       return (
+
             <Fragment>
                 <div className="mt-5 mb-5">
                     <p className="w-full text-lg">{`My Playlists (1)`}</p>
@@ -96,7 +103,7 @@ const UserCreatedList = () => {
                     </div>
                 </div>
             </Fragment>
-        );           
+        );   
     }
      
 }

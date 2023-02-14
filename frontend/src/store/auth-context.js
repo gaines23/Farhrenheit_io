@@ -1,5 +1,9 @@
 import React, { useState, useCallback } from "react";
 
+// session storage => token
+// cookies => refresh
+// local => everything else
+
 const AuthContext = React.createContext({
     token: '',
     refresh: '',

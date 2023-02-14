@@ -2,14 +2,14 @@ import { Fragment, useEffect, useState} from "react";
 import { useHistory } from "react-router-dom";
 import LoadingSpinner from "../../../../Components/UI/LoadingSpinner";
 import useHttp from "../../../../hooks/use-http";
-import { getUserProfile } from "../../../lib/ec-api";
+import { getAllUserPlaylists } from "../../../lib/ec-api";
 
 import PlaylistCard from "../UI/PlaylistCard";
 
 let user_token = localStorage.getItem('token'); 
 
 const UserCreatedList = () => {
-    const { sendRequest, status, data: userProfile } = useHttp(getUserProfile, true);
+    const { sendRequest, status, data: userPlaylists } = useHttp(getAllUserPlaylists, true);
     const [getUserPlaylists, setUserPlaylists] = useState([]);
 
     const history = useHistory();
@@ -58,21 +58,16 @@ const UserCreatedList = () => {
     if (status === 'pending') {
         <LoadingSpinner />
     }
-
-    if (status === 'completed' ) {
-        console.log(userProfile.user_playlists)
-    }
-    
    
-    if (status === 'completed' && userProfile.user_playlists !== '') {
+    if (status === 'completed' && userPlaylists !== '') {
         return (
             <Fragment>
                 <div className="mt-5 mb-5">
-                    <p className="w-full text-lg">My Playlists ({userProfile.user_playlists.length})</p>
+                    <p className="w-full text-lg">My Playlists ({userPlaylists.length})</p>
                     <div
                         className="h-full flex items-center px-5 py-1 overflow-x-auto space-x-3 scroll-smooth scrollbar scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent"
                     >
-                    {userProfile.user_playlists.map(playlist => { 
+                    {userPlaylists.map(playlist => { 
                         return (
                             <PlaylistCard key={playlist.ec_playlist_id} playlist={playlist} />
                         );

@@ -6,6 +6,8 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from .forms import *
 import environ
+import logging
+
 from .models import (
     CustomUser,
     User_Following,
@@ -18,7 +20,7 @@ from .models import (
     EcstaStream_Playlists_Following,
     EcstaStream_User_Streaming_List,
     Ecstastream_Playlist_Data,
-
+    
 )
 from .serializers import (
     NewTokenObtainPairSerializer,
@@ -40,6 +42,7 @@ from .serializers import (
     EcstaStreamUsersListSerializer,
     AppNotFollowingSerializer,
     EcPlaylistDataSerializer,
+    AllEcPlaylistsSerializer,
 )
 from rest_framework.views import APIView
 from django.http.response import JsonResponse
@@ -371,18 +374,6 @@ class EcstaStreamUserProfile(APIView):
 
 
 
-### All playlists user created ###
-class AllUserEcstaStreamPlaylists(APIView):
-    def get(self, request, *args, **kwargs):
-        try:
-            id = CustomUser.objects.get(id=self.request.user.id)
-            ec_id = EcstaStreamProfile.objects.get(user_id=id)
-            user_playlists = EcstaStreamPlaylist.objects.filter(created_by=ec_id)
-            serializer = EcstaStreamPlaylistSerializer(user_playlists, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except Exception:
-            return Response('No Playlists Found', status=status.HTTP_204_NO_CONTENT)
-
 
 
 ### All EC Playlists ###
@@ -390,28 +381,27 @@ class AllEcstaStreamPlaylists(APIView):
     def get(self, request, *args, **kwargs):
         try:
             playlists = EcstaStreamPlaylist.objects.all()
-            serializer = EcstaStreamPlaylistSerializer(playlists, many=True)
+            serializer = AllEcPlaylistsSerializer(playlists, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception:
-            return Response('No Playlists Found', status=status.HTTP_204_NO_CONTENT)
-
+            return Response('No playlists found', status=status.HTTP_204_NO_CONTENT)
 
 ### Singular Playlist Actions ###
-class EcstaStreamPlaylist(APIView):
-    ### Filters for specific playlist chosen ###
-    def get(self, request, *args, **kwargs):
+class EcstaStreamPlaylstDetails(APIView):
+    ## Filters for specific playlist chosen ###
+    def get(self, request, id, *args, **kwargs):
         try:
-            id = request.data('id')
-            playlist = EcstaStreamPlaylist.objects.filter(ec_playlist_id=id)
+            #id = self.request.get(id)
+            playlist = EcstaStreamPlaylist.objects.get(ec_playlist_id=id)
             serializer = EcstaStreamPlaylistSerializer(playlist)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
         except Exception:
-            return Response('Playlist Not Found', status=status.HTTP_204_NO_CONTENT)
+            return Response('Playlist details not found', status=status.HTTP_204_NO_CONTENT)
 
     ### Adds new playlist by user ###
     def post(self, request, *args, **kwargs):
         id = CustomUser.objects.get(id=self.request.user.id)
-        
+
         try:
             EcstaStreamProfile.objects.get_or_create(user_id=id)
             ec_id = EcstaStreamProfile.objects.get(user_id=id)
@@ -434,7 +424,6 @@ class EcstaStreamPlaylist(APIView):
 
         except Exception:
             return Response('Playlist could not save')
-
 
     ### Edits User Playlist
     def put(self, request, *args, **kwargs):

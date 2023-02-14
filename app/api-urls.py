@@ -11,14 +11,13 @@ from app.views import (
     UserProfile,
     UserLogout,
     EcstaStreamUserProfile,
-    EcstaStreamPlaylist,
     NewTokenObtainPairView,
     UserFollowing,
     UserFollowers,
     EcstaStreamUserList,
     AllEcstaStreamPlaylists,
     EcstaUserStreamingList,
-    AllUserEcstaStreamPlaylists
+    EcstaStreamPlaylstDetails, 
 )
 #CreatePlaylist,
 
@@ -51,6 +50,5 @@ urlpatterns = [
     path('ecstastream/streamingservices/', StreamingList.as_view()),
     path('ecstastream/genres/', AllGenreList.as_view()),
     path('ecstastream/all-playlists/', AllEcstaStreamPlaylists.as_view()),
-    path('ecstastream/playlist/details/', EcstaStreamPlaylist.as_view()),
-    path('ecstastream/all-user-playlists/', AllUserEcstaStreamPlaylists.as_view()),
+    path('ecstastream/playlist/details/<int:id>/', EcstaStreamPlaylstDetails.as_view()),
 ]

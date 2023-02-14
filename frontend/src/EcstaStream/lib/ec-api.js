@@ -2,7 +2,6 @@
 
 let user_profile = process.env.REACT_APP_EC_PROFILE;
 let streaming_services = process.env.REACT_APP_EC_SERVICES;
-let user_playlists_url = process.env.REACT_APP_EC_USER_PLAYLISTS;
 let all_playlists_url = process.env.REACT_APP_EC_ALL_PLAYLISTS;
 let playlist_details_url = process.env.REACT_APP_EC_PLAYLIST_DETAILS;
 let use_streaming_services = process.env.REACT_APP_EC_USER_STREAMING;
@@ -121,16 +120,18 @@ export async function getGenres() {
 }
 
 
-// All User's playlists
+// All User's playlists they created
 // User is logged in
 export async function getAllUserPlaylists() {
-  const response = await fetch(user_playlists_url, {
+  const response = await fetch(user_profile, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${user_token}`,
     },
   });
+  
   const data = await response.json();
+  const playlists = data.user_playlists;
 
   if (!response.ok) {
     throw new Error(data.message || 'Could not fetch playlists.');
@@ -138,12 +139,11 @@ export async function getAllUserPlaylists() {
 
   const userPlaylists = [];
 
-  for (const key in data) {
+  for (const key in playlists) {
     const playlistObj = {
       id: key,
-      ...data[key],
+      ...playlists[key],
     };
-
     userPlaylists.push(playlistObj);
   }
 
@@ -199,25 +199,21 @@ export async function addPlaylist(newPlayist) {
 
 
 // Gets Playlist details
-export async function getPlaylistDetails() {
-  const response = await fetch(playlist_details_url);
+export async function getPlaylistDetails({id}) {
+  const response = await fetch(`${playlist_details_url}/${id}/`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      //'Authorization': `Bearer ${user_token}`,
+    },
+  });
+
   const data = await response.json();
 
-  if (!response.ok) {
-    throw new Error(data.message || 'Could not fetch playlists.');
+  const playlistDetails = {
+      ...data,
   }
 
-  const allPlaylists = [];
-
-  for (const key in data) {
-    const playlistObj = {
-      id: key,
-      ...data[key],
-    };
-
-    allPlaylists.push(playlistObj);
-  }
-
-  return allPlaylists;
+  return playlistDetails;
 }
 

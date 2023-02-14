@@ -232,13 +232,13 @@ class AllEcPlaylistsSerializer(serializers.ModelSerializer):
 class EcstaStreamPlaylistSerializer(serializers.ModelSerializer):
     created_on = serializers.DateTimeField(read_only=True)
 
-    followers = serializers.SerializerMethodField()
-    movies_shows = serializers.SerializerMethodField()
+    # followers = serializers.SerializerMethodField()
+    # movies_shows = serializers.SerializerMethodField()
 
     class Meta:
         model = EcstaStreamPlaylist
         fields = ('__all__')
-        read_only_fields = ('ec_playlist_id',)
+        #read_only_fields = ('ec_playlist_id',)
     
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
@@ -250,11 +250,11 @@ class EcstaStreamPlaylistSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-    def get_followers(self, obj):
-        return AllEcPlaylistFollowingSerializer(obj.playlist).data
+    # def get_followers(self, obj):
+    #     return AllEcPlaylistFollowingSerializer(obj.playlist).data
 
-    def get_movies_shows(self, obj):
-        return EcPlaylistDataSerializer(obj.pl_id).data
+    # def get_movies_shows(self, obj):
+    #     return EcPlaylistDataSerializer(obj.pl_id).data
 
 class AllEcPlaylistFollowingSerializer(serializers.ModelSerializer):
     class Meta:

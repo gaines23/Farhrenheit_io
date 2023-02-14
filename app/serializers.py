@@ -55,6 +55,12 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 
 
+class UsernameSerializer(serializers.Serializer):
+    class Meta:
+        model = CustomUser
+        fields = ('id', 'username')
+
+
 class UserUpdatePassword(serializers.Serializer):
     model = CustomUser
 
@@ -234,6 +240,7 @@ class EcstaStreamPlaylistSerializer(serializers.ModelSerializer):
 
     # followers = serializers.SerializerMethodField()
     # movies_shows = serializers.SerializerMethodField()
+    username = serializers.ReadOnlyField(source='created_by.user_id.username')
 
     class Meta:
         model = EcstaStreamPlaylist

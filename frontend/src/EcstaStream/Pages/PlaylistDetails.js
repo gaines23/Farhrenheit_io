@@ -31,7 +31,7 @@ const PlaylistDetails = () => {
     if (status === 'completed') {
         return (
             <Fragment>
-                <div className="w-full h-full mx-auto pt-5">
+                <div className="w-full h-full mx-auto pt-5 overflow-hidden">
                     <div id="topSection" className="w-full h-48 grid grid-cols-2 border-solid border-white mb-8">
                         <div className="w-full h-full py-3 col-span-1">
                             <div className="h-1/4">
@@ -39,7 +39,7 @@ const PlaylistDetails = () => {
                                     {playlistDetails.title} 
                                 </div>
                                 <div className="h-10 text-xs my-auto float-left py-3 ml-2">
-                                    | {playlistDetails.created_by} | # Following
+                                    | {playlistDetails.username} | # Following
                                 </div>
                             </div>
 
@@ -47,7 +47,7 @@ const PlaylistDetails = () => {
                                 {playlistDetails.description}
                             </div>
                             
-                            <div id="options" className="w-2/3 h-1/4 flex justify-between">
+                            <div id="options" className="w-1/3 h-1/4 flex pl-2 justify-between">
                                 <button className={optionsButton}>Edit</button>
                                 <button className={optionsButton}>Share</button>
                                 <button className={optionsButton}>Options</button>
@@ -59,18 +59,18 @@ const PlaylistDetails = () => {
                         </div>
                     </div>
 
-                    <div id="info" className="w-full h-full grid grid-cols-3 gap-2">
+                    <div id="info" className="w-full h-full flex">
 
-                        <div id="search" className="col-span-1">
+                        <div id="search" className="w-1/3 h-36">
                             <h1 className="text-center my-3">Add To List:</h1>
                             <SearchBar />
                         </div>
 
-                        <div id="infoSection" className="grid col-span-2">
-                            <div id="filter" className="w-full h-40 row-span-1">
+                        <div id="infoSection" className="w-2/3">
+                            <div id="filter" className="w-full h-16 row-span-1">
 
                             </div>
-                            <div id="list" className="grid grid-col-4 row-span-auto">
+                            <div id="list" className="grid grid-col-4 row-span-auto relative overflow-y-scroll overflow-hidden space-y-3 scroll-smooth scrollbar scrollbar-height:6 scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
 
                             </div>
                         </div>

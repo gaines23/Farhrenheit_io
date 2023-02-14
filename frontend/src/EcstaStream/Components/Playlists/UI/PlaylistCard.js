@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 
 const PlaylistCard = ({playlist}) => {
     const title = playlist.title;
+    const slug = playlist.slug;
     const user = playlist.created_by;
     const id = playlist.ec_playlist_id;
+    console.log(slug)
 
     return (
         <Fragment>
@@ -14,10 +16,10 @@ const PlaylistCard = ({playlist}) => {
             >
                 <Link 
                     to={{
-                        pathname: `/fahrenheit/ecstastream/playlist/details/${id}/${title}/${user}`,
+                        pathname: `/fahrenheit/ecstastream/playlist/details/${id}/${slug}/${user}`,
                         state: {
                             id: id,
-                            title: title,
+                            slug: slug,
                             user: user,
                         }
                     }}

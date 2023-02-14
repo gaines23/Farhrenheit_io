@@ -391,7 +391,6 @@ class EcstaStreamPlaylstDetails(APIView):
     ## Filters for specific playlist chosen ###
     def get(self, request, id, *args, **kwargs):
         try:
-            #id = self.request.get(id)
             playlist = EcstaStreamPlaylist.objects.get(ec_playlist_id=id)
             serializer = EcstaStreamPlaylistSerializer(playlist)
             return JsonResponse(serializer.data, status=status.HTTP_200_OK)

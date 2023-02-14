@@ -7,6 +7,8 @@ from django.contrib.postgres.fields import ArrayField
 import uuid
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.template.defaultfilters import slugify
+
 
 try:
     from django.db.models import JSONField
@@ -210,7 +212,7 @@ class EcstaStreamProfile(models.Model):
 
 class EcstaStreamPlaylist(models.Model):
     ec_playlist_id = models.BigAutoField(primary_key=True)
-    created_by = models.ForeignKey(EcstaStreamProfile, related_name="playlists", on_delete=models.CASCADE)
+    created_by = models.ForeignKey(EcstaStreamProfile, related_name="creator", on_delete=models.CASCADE)
     title = models.CharField(max_length=50, null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -221,6 +223,7 @@ class EcstaStreamPlaylist(models.Model):
     comments_on = models.BooleanField(default=False) #on
     #share_list = models.ManyToManyField(CustomUser, related_name="sharing", default=None)
     status = models.BooleanField(choices=STATUS, default=0)
+    slug = models.SlugField(max_length=30, null=True, blank=True)
 
     def __str__(self):
         return '{} by {}'.format(self.title, self.created_by.user_id)
@@ -233,6 +236,11 @@ class EcstaStreamPlaylist(models.Model):
         unique_together = (('created_by', 'title'))
         verbose_name_plural = "Ecstastream Playlists"
         ordering = ['-created_on']
+
+    def save(self, *args, **kwargs):  # new
+        if not self.slug:
+            self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
 
 
 

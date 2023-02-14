@@ -50,5 +50,6 @@ urlpatterns = [
     path('ecstastream/streamingservices/', StreamingList.as_view()),
     path('ecstastream/genres/', AllGenreList.as_view()),
     path('ecstastream/all-playlists/', AllEcstaStreamPlaylists.as_view()),
+    path('ecstastream/playlist/details/actions/', EcstaStreamPlaylstDetails.as_view()),
     path('ecstastream/playlist/details/<int:id>/', EcstaStreamPlaylstDetails.as_view()),
 ]

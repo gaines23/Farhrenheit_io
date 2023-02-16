@@ -9,8 +9,10 @@ const PosterCard = ({item}) => {
     //     setIsActive(current => !current);
     // }
 
-    const id = item.id;
+    const id = item.pl_mov_show_id;
     const media_type = item.media_type;
+
+    console.log(item)
 
     return (
         <Fragment>

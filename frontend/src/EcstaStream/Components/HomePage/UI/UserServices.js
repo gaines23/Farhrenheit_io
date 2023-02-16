@@ -11,13 +11,6 @@ const UserServices = () => {
         sendRequest();
     }, [sendRequest]);
 
-
-    if (error) {
-        return (
-            <p className='centered focused'>{error}</p>
-        );
-    }
-
     return (
         <Fragment>
             <div className="w-max mx-auto px-2">

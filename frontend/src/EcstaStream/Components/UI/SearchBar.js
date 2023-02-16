@@ -2,11 +2,11 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 import { SEARCH_RESULTS_TMDB } from '../../lib/constants';
 
 import useSearchDebounce from '../../hooks/useSearchDebounce';
-import SearchCard from '../Playlists/UI/SearchCard';
+import SearchCard from '../Playlists/Cards/SearchCard';
 import { HiOutlineSearch } from 'react-icons/hi';
 import LoadingSpinner from './LoadingSpinner';
 
-const SearchBar = () => {
+const SearchBar = (listID) => {
     const [search, setSearch] = useState('');
     const [results, setResults] = useState([]);
 
@@ -21,7 +21,7 @@ const SearchBar = () => {
             
             const data = await fetch(url);
             const items = await data.json();
-            setResults(items.results);
+            setResults(items.results.slice(0,10));
 
             setLoading(false);
         };
@@ -59,8 +59,14 @@ const SearchBar = () => {
                 <div className="h-auto w-full flex">
                     <ul className="h-full w-full grid grid-cols-2 gap-2 relative">
                         {results.map(item => {
-                            return <SearchCard key={item.id} item={item} />
-                        }).slice(0,4)}
+                            return (
+                            <li 
+                                className="h-12 w-full flex bg-bg-fill/10 hover:bg-bg-fill/20 hover:backdrop-blur-lg hover:bg-opacity-10 hover:border rounded-md text-input-fill/60 hover:border-input-fill/30"
+                                key={item.id} 
+                            >
+                                <SearchCard key={item.id} item={item} listID={listID} />
+                            </li>
+                        )}).slice(0,2)}
                     </ul>
                 </div>
                 

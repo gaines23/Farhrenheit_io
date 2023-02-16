@@ -201,7 +201,7 @@ class EcUserProfileSerializer(serializers.ModelSerializer):
 
     def get_user_playlists(self, obj):
         try:
-            return AllEcPlaylistsSerializer(obj.playlists.all(), many=True).data
+            return AllEcPlaylistsSerializer(obj.creator.all(), many=True).data
         except Exception:
             return 
 
@@ -239,7 +239,7 @@ class EcstaStreamPlaylistSerializer(serializers.ModelSerializer):
     created_on = serializers.DateTimeField(read_only=True)
 
     # followers = serializers.SerializerMethodField()
-    # movies_shows = serializers.SerializerMethodField()
+    movies_shows = serializers.SerializerMethodField()
     username = serializers.ReadOnlyField(source='created_by.user_id.username')
 
     class Meta:
@@ -260,8 +260,8 @@ class EcstaStreamPlaylistSerializer(serializers.ModelSerializer):
     # def get_followers(self, obj):
     #     return AllEcPlaylistFollowingSerializer(obj.playlist).data
 
-    # def get_movies_shows(self, obj):
-    #     return EcPlaylistDataSerializer(obj.pl_id).data
+    def get_movies_shows(self, obj):
+        return EcPlaylistDataSerializer(obj.pl_id.all(), many=True).data
 
 class AllEcPlaylistFollowingSerializer(serializers.ModelSerializer):
     class Meta:
@@ -274,7 +274,7 @@ class EcPlaylistDataSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ecstastream_Playlist_Data
-        fields = '__all__'
+        fields = ('__all__')
 
 
 class EcUserPlaylistFollowingSerializer(serializers.ModelSerializer):

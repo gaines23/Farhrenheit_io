@@ -270,33 +270,24 @@ class EcstaStream_User_Streaming_List(models.Model):
             models.UniqueConstraint(fields=["user_streaming", "streaming_id"], name='user_streaming')    
         ]
 
-
-
-
 MEDIA_CHOICES = (
-    ('Movie', 0),
-    ('TV', 1)
+    (0, 'movie'),
+    (1, 'tv')
 )
 
 class Ecstastream_Playlist_Data(models.Model):
     pl_data_id = models.BigAutoField(primary_key=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="pl_user")
-    user_playlist_id = models.ForeignKey(EcstaStreamPlaylist, on_delete=models.CASCADE, related_name="pl_id")
+    added_by = models.ForeignKey(EcstaStreamProfile, related_name="user_added", on_delete=models.CASCADE)
+    playlist_id = models.ForeignKey(EcstaStreamPlaylist, on_delete=models.CASCADE, related_name="pl_id")
     pl_mov_show_id = models.IntegerField()
     pl_date_added = models.DateTimeField(auto_now=True)
     media_type = models.IntegerField(null=True, blank=True, choices=MEDIA_CHOICES)
 
-    def __str__(self):
-        return self.user.username
-
-    def playlist_id(self):
-        return self.user_playlist_id.ec_playlist_id
-
     class Meta:
-        unique_together = (('user'), ('user_playlist_id'), ('pl_mov_show_id'), ('media_type'))
+        unique_together = (('playlist_id'), ('pl_mov_show_id'), ('media_type'))
         verbose_name_plural = "Ecstastream Playlist Data"
         constraints = [
-            models.UniqueConstraint(fields=["user", "user_playlist_id", "pl_mov_show_id", "media_type"], name='user_data_playlist_constraint')    
+            models.UniqueConstraint(fields=["playlist_id", "pl_mov_show_id", "media_type"], name='playlist_data_constraint')    
         ]
         ordering = ['-pl_date_added']
 

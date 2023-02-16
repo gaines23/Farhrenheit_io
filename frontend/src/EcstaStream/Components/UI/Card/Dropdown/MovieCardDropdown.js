@@ -154,7 +154,6 @@ const MovieCardDropdown = ({setShowDetails, id}) => {
                         <iframe
                             className="w-full h-full rounded-lg pointer-events-none"
                             src={`https://www.youtube.com/embed/${trailer}`}
-                            frameBorder="0"
                             allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                             title={loadedDetails.name}

@@ -18,6 +18,7 @@ from app.views import (
     AllEcstaStreamPlaylists,
     EcstaUserStreamingList,
     EcstaStreamPlaylstDetails, 
+    EcPlaylistData,
 )
 #CreatePlaylist,
 
@@ -52,4 +53,5 @@ urlpatterns = [
     path('ecstastream/all-playlists/', AllEcstaStreamPlaylists.as_view()),
     path('ecstastream/playlist/details/actions/', EcstaStreamPlaylstDetails.as_view()),
     path('ecstastream/playlist/details/<int:id>/', EcstaStreamPlaylstDetails.as_view()),
+    path('ecstastream/playlist/data/actions/', EcPlaylistData.as_view()),
 ]

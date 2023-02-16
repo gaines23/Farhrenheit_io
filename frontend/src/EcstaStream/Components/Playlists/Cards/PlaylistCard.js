@@ -6,7 +6,6 @@ const PlaylistCard = ({playlist}) => {
     const slug = playlist.slug;
     const user = playlist.created_by;
     const id = playlist.ec_playlist_id;
-    console.log(slug)
 
     return (
         <Fragment>

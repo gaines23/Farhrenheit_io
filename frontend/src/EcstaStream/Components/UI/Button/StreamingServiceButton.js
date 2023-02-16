@@ -13,7 +13,7 @@ const StreamingServiceButton = ({setServiceList}) => {
     }, [sendRequest]);
 
     const handleClick = (id) => {
-        if(!getServices.includes(id)) {
+        if (!getServices.includes(id)) {
             getServices.push(parseInt(id));
         } else {
             const x = getServices.indexOf(id);

@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import useHttp from "../../../../hooks/use-http";
 import { getAllUserPlaylists } from "../../../lib/ec-api";
 
-import PlaylistCard from "../UI/PlaylistCard";
+import PlaylistCard from "../Cards/PlaylistCard";
 import LoadingSpinner from "../../../../Components/UI/LoadingSpinner";
 
 let user_token = localStorage.getItem('token'); 
@@ -21,8 +21,6 @@ const UserCreatedList = () => {
     const submitNewPlaylist = async (e) => {
         e.preventDefault();
 
-        
-        console.log(new_pl_url)
         try {
             const response = await fetch(`${new_pl_url}actions/`, {
                 method: 'POST',
@@ -57,9 +55,9 @@ const UserCreatedList = () => {
     if (status === 'pending') {
         <LoadingSpinner />
     }
-    console.log(userPlaylists)
+    
     if (status === 'completed') {
-       
+       console.log(userPlaylists)
         return (
             <Fragment>
                 <div className="mt-5 mb-5">

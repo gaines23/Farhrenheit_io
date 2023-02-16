@@ -1,14 +1,17 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useHttp from "../../hooks/use-http";
 import LoadingSpinner from "../Components/UI/LoadingSpinner";
 import { getPlaylistDetails } from "../lib/ec-api";
 import NotFound from "./NotFound";
 import SearchBar from "../Components/UI/SearchBar";
+import PosterCard from "../Components/UI/Card/PosterCard";
 
 const PlaylistDetails = () => {
     const params = useParams();
     const {id} = params;
+
+    const [getData, setData] = useState([]); // just needs to send id and type
 
     const { sendRequest, status, data: playlistDetails, error } = useHttp(getPlaylistDetails, true);
 
@@ -63,15 +66,20 @@ const PlaylistDetails = () => {
 
                         <div id="search" className="w-1/3 h-36">
                             <h1 className="text-center my-3">Add To List:</h1>
-                            <SearchBar />
+                            <SearchBar listID={playlistDetails.ec_playlist_id} />
                         </div>
 
                         <div id="infoSection" className="w-2/3">
-                            <div id="filter" className="w-full h-16 row-span-1">
-
+                            <div id="filter" className="w-1/3 h-16 float-right flex mx-2 justify-between">
+                                <button>Movies</button>
+                                <button>TV</button>
+                                <button>Genres</button>
+                                <button>My Services</button>
                             </div>
                             <div id="list" className="grid grid-col-4 row-span-auto relative overflow-y-scroll overflow-hidden space-y-3 scroll-smooth scrollbar scrollbar-height:6 scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
-
+                                {playlistDetails.movies_shows.map(item => {
+                                    return <PosterCard key={item.id} item={item}  />
+                                })}
                             </div>
                         </div>
 
@@ -79,7 +87,8 @@ const PlaylistDetails = () => {
                     
                 </div>
             </Fragment>
-        );}
+        );
+    }
 }
 
 export default PlaylistDetails;

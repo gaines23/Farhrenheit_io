@@ -87,9 +87,9 @@ admin.site.register(EcstaStream_Playlists_Following, EcstastreamPlaylistFollowin
 
 class EC_UserPlaylsitDataAdmin(admin.ModelAdmin):
     model = Ecstastream_Playlist_Data
-    list_display = ['user', 'user_playlist_id', 'pl_date_added', 'media_type']
+    list_display = ['added_by', 'playlist_id', 'pl_date_added', 'media_type']
     order = ['pl_date_added']
-    list_filter = ['user', 'user_playlist_id']
+    list_filter = ['added_by', 'playlist_id']
 admin.site.register(Ecstastream_Playlist_Data, EC_UserPlaylsitDataAdmin)
 
 # admin.site.register(FavoriteListData)

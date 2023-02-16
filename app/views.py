@@ -448,6 +448,34 @@ class EcstaStreamPlaylstDetails(APIView):
         return Response(playlist, status=status.HTTP_200_OK)
 
 
+### Adds or Deletes movie,show on playlist ###
+class EcPlaylistData(APIView):
+    def post(self, request, *args, **kwargs):
+        user = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
+        data = {
+            "added_by": user.ec_id,
+            "playlist_id": request.data['playlist_id'],
+            "pl_mov_show_id": request.data['id'],
+            "media_type": 0 if request.data['type'] == 'movie' else 1,
+        }
+
+        serializer = EcPlaylistDataSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+        return Response('Could not add movie/show', status=status.HTTP_400_BAD_REQUEST)
+
+
+
+    def delete(self, request):
+        data_id = request.data['pl_data_id']
+        try:
+            delete = Ecstastream_Playlist_Data.objects.get(pl_data_id=data_id).delete()
+            return Response(delete, status=status.HTTP_200_OK)
+        except Exception:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
 class EcstaPlaylistFollowing(APIView):
     ### All playlists user follows
     def get(self, request, *args, **kwargs):

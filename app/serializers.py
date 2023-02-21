@@ -263,6 +263,7 @@ class EcstaStreamPlaylistSerializer(serializers.ModelSerializer):
     def get_movies_shows(self, obj):
         return EcPlaylistDataSerializer(obj.pl_id.all(), many=True).data
 
+
 class AllEcPlaylistFollowingSerializer(serializers.ModelSerializer):
     class Meta:
         model = EcstaStream_Playlists_Following

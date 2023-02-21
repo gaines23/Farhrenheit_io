@@ -92,28 +92,3 @@ class EC_UserPlaylsitDataAdmin(admin.ModelAdmin):
     list_filter = ['added_by', 'playlist_id']
 admin.site.register(Ecstastream_Playlist_Data, EC_UserPlaylsitDataAdmin)
 
-# admin.site.register(FavoriteListData)
-# admin.site.register(UserFavoritesList)
-# admin.site.register(WatchListData)
-# admin.site.register(UserWatchList)
-# admin.site.register(MoviesList)
-
-# admin.site.register(StreamingRegion)
-# admin.site.register(Collection)
-# admin.site.register(UsCerts)
-
-# admin.site.register(UserReviewPost)
-# admin.site.register(UserPlaylist)
-# admin.site.register(UserPlaylistData)
-# admin.site.register(FollowRequest)
-# admin.site.register(Comment)
-
-# @admin.register(Profile)
-# class ProfileAdmin(admin.ModelAdmin):
-#     list_display = ['id','user']
-
-#     def test_method(self, request, obj):
-#         x = super().get_queryset(request)
-#         if request.user.is_superuser:
-#             return x
-        

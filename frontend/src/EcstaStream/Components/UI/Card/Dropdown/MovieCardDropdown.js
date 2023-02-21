@@ -13,26 +13,29 @@ import { AiOutlineCheckCircle, AiOutlineHeart, AiOutlineEllipsis } from 'react-i
 import { RiComputerLine } from 'react-icons/ri';
 import { Tooltip } from "react-bootstrap";
 
+const MovieCardDropdown = ({setShowDetails, id, media_type}) => {
+    const { sendRequest, status, data: loadedDetails } = useHttp(getMovieCardDetails, true);
 
+    const mediaId = id;
 
-const MovieCardDropdown = ({setShowDetails, id}) => {
-    const { sendRequest, status, data: loadedDetails, error } = useHttp(getMovieCardDetails, true);
+    var type;
+    if (media_type === 0) {
+        type = 'movie';
+    } else {
+       type = 'tv';
+    }
+    
+    const info = `${type}/${mediaId}`;
 
     useEffect(() => {
-        sendRequest(id);
-    }, [sendRequest, id]);
+        sendRequest(info);
+    }, [sendRequest]);
 
     if (status === 'pending') {
         return (
             <div>
                 <LoadingSpinner />
             </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <p>{error}</p>
         );
     }
 
@@ -46,7 +49,7 @@ const MovieCardDropdown = ({setShowDetails, id}) => {
 
     return (
         <Fragment>
-            <div className="flex h-auto mr-2 mb-2 rounded-lg bg-bg-fill/70 backdrop-blur-md backdrop-contrast-150 mx-1">
+            <div className="flex fixed w-fit h-auto mr-2 mb-2 rounded-lg bg-bg-fill/70 backdrop-blur-md backdrop-contrast-150 mx-1">
                 <div className="h-auto md:h-92 lg:h-100 w-full grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 bg-gradient-to-br from-ec-purple/50 to-ec-orange/50 rounded-lg bg-bg-fill/70">
                     <div className="w-full col-span-1 lg:col-span-2 flex text-input-fill px-2 py-1">
                         
@@ -68,7 +71,14 @@ const MovieCardDropdown = ({setShowDetails, id}) => {
                                 </p>
                             </div>
                             <div className="text-center">
-                                <p className="w-full text-xs font-thin text-input-fill">{release_date.slice(0,4)} | {loadedDetails.genres.map(x => x.name + ' | ')}</p>                            
+                                { type === 'movie' ? 
+                                    <p className="w-full text-xs font-thin text-input-fill">{release_date.slice(0,4)} | {loadedDetails.genres.map(x => x.name + ' | ')}</p>                            
+                                :  
+                                <>
+                                    <p className="w-auto text-xs font-thin">{loadedDetails.first_air_date.slice(0,4)}</p>
+                                    <p className="w-full text-xs font-thin text-input-fill"> {loadedDetails.number_of_seasons} Season(s) | {loadedDetails.genres.map(x => x.name + ' | ')}</p>   
+                                </>
+                                }
                             </div>
 
                             <div className="mt-1">

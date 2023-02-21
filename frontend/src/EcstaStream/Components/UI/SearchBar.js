@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { SEARCH_RESULTS_TMDB } from '../../lib/constants';
 
 import useSearchDebounce from '../../hooks/useSearchDebounce';
@@ -21,7 +21,10 @@ const SearchBar = (listID) => {
             
             const data = await fetch(url);
             const items = await data.json();
-            setResults(items.results.slice(0,10));
+            setResults(
+                items.results.slice(0,10)
+                .sort((a, b) => (a.popularity < b.popularity))
+            );
 
             setLoading(false);
         };
@@ -30,12 +33,28 @@ const SearchBar = (listID) => {
 
     }, [debounceSearch]);
 
+    const handleClick = (e) => {
+        e.preventDefault();
+        localStorage.setItem('reload', true);
+        setSearch('');
+        setResults([]);
+    }
+
+
+/*
+    sm - 640
+    md - 768
+    lg - 1024
+    xl - 1280
+    2xl - 1536
+*/
+
     return (
         <Fragment>
-            <div className="w-full h-full inline-grid">
-                <div className="h-8 w-full px-5 flex justify-center items-center mx-auto mb-5">
+            <div className="w-full h-full inline-table">
+                <div className="h-8 w-full md:px-5  flex justify-center items-center mx-auto mb-5">
                     <div className="
-                            relative w-5/6 h-7 m-auto border-ec-purple/50 border-2 rounded-lg 
+                            relative w-5/6 sm:w-full h-7 m-auto border-ec-purple/50 border-2 rounded-lg 
                             hover:border-t-ec-purple/60 hover:border-r-ec-orange/40 
                             hover:border-l-ec-purple-text/60 hover:border-b-ec-orange/60"
                         >
@@ -56,28 +75,21 @@ const SearchBar = (listID) => {
                 </div>
 
                 { loading && <LoadingSpinner /> }
-                <div className="h-auto w-full flex">
-                    <ul className="h-full w-full grid grid-cols-2 gap-2 relative">
+                <div className="h-full w-full inline-flex overflow-y-scroll scroll-smooth scrollbar overflow-y scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
+                    <ul className="h-5/6 w-full grid xl:grid-cols-2 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-y-3 gap-x-1">
                         {results.map(item => {
                             return (
                             <li 
-                                className="h-12 w-full flex bg-bg-fill/10 hover:bg-bg-fill/20 hover:backdrop-blur-lg hover:bg-opacity-10 hover:border rounded-md text-input-fill/60 hover:border-input-fill/30"
+                                className="h-14 w-full lg:w-5/6 mx-auto flex bg-bg-fill/10 hover:bg-bg-fill/20 hover:backdrop-blur-lg hover:bg-opacity-10 hover:border rounded-md text-input-fill/60 hover:border-input-fill/30"
                                 key={item.id} 
+                                onClick={handleClick}
                             >
                                 <SearchCard key={item.id} item={item} listID={listID} />
                             </li>
-                        )}).slice(0,2)}
+                        )}).slice(0,10)}
                     </ul>
                 </div>
                 
-                
-
-                {/* <div>
-                    {results.map(item => {
-                        return <PosterCard key={item.id} item={item} />
-                    })}
-                </div> */}
-
             </div>
 
         </Fragment>

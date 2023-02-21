@@ -420,7 +420,6 @@ class EcstaStreamPlaylstDetails(APIView):
                 serializer.save()
                 return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
         except Exception:
             return Response('Playlist could not save')
 
@@ -464,8 +463,6 @@ class EcPlaylistData(APIView):
             serializer.save()
             return JsonResponse(serializer.data, status=status.HTTP_200_OK)
         return Response('Could not add movie/show', status=status.HTTP_400_BAD_REQUEST)
-
-
 
     def delete(self, request):
         data_id = request.data['pl_data_id']

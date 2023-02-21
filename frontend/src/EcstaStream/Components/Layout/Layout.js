@@ -4,6 +4,14 @@ import SideMenu from './SideMenu';
 import Header from './Header';
 import StreamingListModal from "../../Modal/StreamingListModal";
 
+/*
+    sm - 640
+    md - 768
+    lg - 1024
+    xl - 1280
+    2xl - 1536
+*/
+
 const Layout = (props) => {
     let newFollower = localStorage.getItem('newFollower');
 

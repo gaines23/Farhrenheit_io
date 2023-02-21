@@ -58,20 +58,22 @@ export async function getMultiSearchResults(search) {
         searchResults.push(listObj);
     }
     
-    return searchResults;
+    return searchResults.sort(results.popularity);
 }
 
 // Gets movie details for movie card modal
-export async function getMovieCardDetails(movieId) {
-    const response = await fetch(`${url}/movie/${movieId}${DETAIL_DROPDOWN_CARD_TMDB}`);
+export async function getMovieCardDetails(info) {
+    const response = await fetch(`${url}/${info}${DETAIL_DROPDOWN_CARD_TMDB}`);
     const data = await response.json();
+
+    const id = data.id;
 
     if(!response.ok) {
         throw new Error(response.status_message);
     }
 
     const loadedDetails = {
-        id: movieId,
+        id: id,
         ...data,
     };
 

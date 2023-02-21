@@ -147,7 +147,6 @@ export async function getAllUserPlaylists() {
     };
     userPlaylists.push(playlistObj);
   }
-  console.log(data)
 
   return userPlaylists;
 }
@@ -237,4 +236,24 @@ export async function addItemToPlaylist(info) {
   }
 
   return null;
+}
+
+export async function deleteItemFromPlaylist(info) {
+  const response = await fetch(`${playlist_data}`, {
+    method: 'DELETE',
+    body: JSON.stringify(info),
+    headers: {
+      'Content-Type': 'application/json',
+    }
+
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+
+  return null;
+  
 }

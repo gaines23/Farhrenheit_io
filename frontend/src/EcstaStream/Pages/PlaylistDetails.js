@@ -18,22 +18,14 @@ const PlaylistDetails = () => {
     
     const [showDetails, setShowDetails] = useState(false);
     const [getData, setData] = useState([]); 
+    const [getReload, setReload] = useState(false);
 
     useEffect(() => {
         sendRequest(params);
     }, [sendRequest, params]);
 
-    useEffect(() => {
-        window.addEventListener('storage', () => {
-            const reload = localStorage.getItem('reload');
-            // if (reload === 'true') {
-            //     localStorage.removeItem('reload');
-            // }
-            console.log(reload)
-        });
-    }, []);
 
-
+console.log(localStorage.getItem('reload'))
 
     const handleClick = (e, id, media_type) => {
         e.preventDefault();

@@ -80,7 +80,7 @@ const SearchBar = (listID) => {
                         {results.map(item => {
                             return (
                             <li 
-                                className="h-14 w-full lg:w-5/6 mx-auto flex bg-bg-fill/10 hover:bg-bg-fill/20 hover:backdrop-blur-lg hover:bg-opacity-10 hover:border rounded-md text-input-fill/60 hover:border-input-fill/30"
+                                className="h-16 w-full lg:w-5/6 mx-auto flex bg-bg-fill/10 rounded-md text-input-fill/60"
                                 key={item.id} 
                                 onClick={handleClick}
                             >

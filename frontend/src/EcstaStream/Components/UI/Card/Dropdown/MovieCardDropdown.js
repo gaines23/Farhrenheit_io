@@ -139,8 +139,6 @@ const MovieCardDropdown = ({setShowDetails, id, media_type}) => {
                                 <p className="w-full h-auto items-center justify-center text-xs float-left p-3 text-input-fill leading-relaxed">
                                     {loadedDetails.overview.substring(0, 150)} {loadedDetails.overview.length > 150 && '...'}
                                 </p>
-
-                                
                             </div>
                             <div className="w-full h-10">
                                 <Link 

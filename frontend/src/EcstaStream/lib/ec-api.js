@@ -245,7 +245,6 @@ export async function deleteItemFromPlaylist(info) {
     headers: {
       'Content-Type': 'application/json',
     }
-
   });
 
   const data = await response.json();

@@ -54,7 +54,8 @@ const Trending = () => {
                     {(showDetails && cardInfo.media === 'movie') && (
                         <MovieCardDropdown key={cardInfo.id} setShowDetails={setShowDetails} id={cardInfo.id} />
                     )}
-            </div> 
+            </div>
+                    
         </Fragment>
     );
 };

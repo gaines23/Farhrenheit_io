@@ -33,7 +33,7 @@ const MoviePosterCard = ({item}) => {
             <Fragment>                   
                     {loadedDetails.poster_path ?
                         <img
-                            src={TMBD_POSTER_w500+ loadedDetails.poster_path}
+                            src={TMBD_POSTER_w500 + loadedDetails.poster_path}
                             alt= {loadedDetails.name ? loadedDetails.name : loadedDetails.title}
                             className={isActive ? 
                                 "w-24 h-32 rounded-md object-cover m-auto relative top-4 scale-150 shadow-lg shadow-input-fill/30" :

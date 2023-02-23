@@ -29,11 +29,11 @@ const PlaylistDetails = () => {
             // if (reload === 'true') {
             //     localStorage.removeItem('reload');
             // }
-            
+            console.log(reload)
         });
     }, []);
 
-console.log(localStorage.getItem('reload'))
+
 
     const handleClick = (e, id, media_type) => {
         e.preventDefault();

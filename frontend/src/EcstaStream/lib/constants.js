@@ -20,6 +20,7 @@ const CREDITS_DETAILS_URL = `?api_key=${key}&language=en-US&append_to_response=c
 const TMBD_POSTER_w500 = 'https://image.tmdb.org/t/p/w500';
 const TMBD_POSTER_w780 = 'https://image.tmdb.org/t/p/w780';
 const TMBD_POSTER_w45 = 'https://image.tmdb.org/t/p/w45';
+const TMDB_POSTER_w92 = 'https://image.tmdb.org/t/p/w92';
 
 
 export {
@@ -35,4 +36,5 @@ export {
     STREAMING_LIST_URL,
     CREDITS_DETAILS_URL,
     IMDB_TO_TMDB,
+    TMDB_POSTER_w92,
 }

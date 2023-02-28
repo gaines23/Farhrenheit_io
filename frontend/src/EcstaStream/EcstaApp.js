@@ -1,4 +1,4 @@
-import React, { Fragment, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Layout from './Components/Layout/Layout';
@@ -12,6 +12,8 @@ const TvDetails = React.lazy(() => import ('./Pages/TvDetails'));
 const CreditDetails = React.lazy(() => import ('./Pages/CreditDetails'));
 const Playlists = React.lazy(() => import ('./Pages/Playlists'));
 const PlaylistDetails = React.lazy(() => import ('./Pages/PlaylistDetails'));
+const WatchList = React.lazy(() => import ('./Pages/Watchlist'));
+const Favorites = React.lazy(() => import ('./Pages/Favorites'));
 // const News = React.lazy(() => ('./Pages/News'));
 
 function EcstaApp() {
@@ -41,12 +43,18 @@ function EcstaApp() {
           <Route path='/fahrenheit/ecstastream/credit-details/:tmdbId/:imdbId'>
             <CreditDetails />
           </Route>
-            <Route path='/fahrenheit/ecstastream/user-playlists'>
-              <Playlists />
-            </Route>
-            <Route path='/fahrenheit/ecstastream/playlist/details/:id/:title/:user'>
-              <PlaylistDetails />
-            </Route>          
+          <Route path='/fahrenheit/ecstastream/user-playlists'>
+            <Playlists />
+          </Route>
+          <Route path='/fahrenheit/ecstastream/playlist/details/:id/:title/:user'>
+            <PlaylistDetails />
+          </Route>
+          <Route path='/fahrenheit/ecstastream/playlist/watchlist/details'>
+            <WatchList />
+          </Route>   
+          <Route path='/fahrenheit/ecstastream/playlist/favorites/details'>
+            <Favorites />
+          </Route>   
       {/*
           <Route path='/ecstastream/news'>
             <News />

@@ -15,7 +15,10 @@ from .models import (
     EcstaStreamPlaylist,
     EcstaStream_Playlists_Following,
     Ecstastream_Playlist_Data,
-
+    EcstaStream_Watchlist,
+    EcstaStream_Favorites,
+    EC_Favorites_Data, 
+    EC_Watchlist_Data,
 )
 
 class FahrenheitAppListAdmin(admin.ModelAdmin):
@@ -92,3 +95,20 @@ class EC_UserPlaylsitDataAdmin(admin.ModelAdmin):
     list_filter = ['added_by', 'playlist_id']
 admin.site.register(Ecstastream_Playlist_Data, EC_UserPlaylsitDataAdmin)
 
+class EcUserWatchlistAdmin(admin.ModelAdmin):
+    model = EcstaStream_Watchlist
+    list_display = ['watchlist_id', 'wl_user_id', 'created_on', 'status']
+    order = ['created_on']
+    list_fiter = ['wl_user_id'] 
+admin.site.register(EcstaStream_Watchlist, EcUserWatchlistAdmin)
+
+class EcFavoritesAdmin(admin.ModelAdmin):
+    model = EcstaStream_Favorites
+    list_display = ['favorite_id', 'favs_user_id', 'created_on', 'status']
+    order = ['created_on']
+    list_filter = ['favs_user_id']
+admin.site.register(EcstaStream_Favorites, EcFavoritesAdmin)
+
+
+admin.site.register(EC_Favorites_Data)
+admin.site.register(EC_Watchlist_Data)

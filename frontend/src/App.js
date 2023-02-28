@@ -47,7 +47,7 @@ function App() {
             <Profile />
           </Route>}
           <Route path='/fahrenheit/ecstastream'>
-            <EcstaApp />
+              <EcstaApp />            
           </Route>
           <Route path='*'>
             <NotFound />

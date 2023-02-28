@@ -54,4 +54,5 @@ urlpatterns = [
     path('ecstastream/playlist/details/actions/', EcstaStreamPlaylstDetails.as_view()),
     path('ecstastream/playlist/details/<int:id>/', EcstaStreamPlaylstDetails.as_view()),
     path('ecstastream/playlist/data/actions/', EcPlaylistData.as_view()),
+    path('ecstastream/playlist/get-data/<int:playlist_id>/', EcPlaylistData.as_view()),
 ]

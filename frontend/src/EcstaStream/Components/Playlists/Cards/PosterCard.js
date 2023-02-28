@@ -5,7 +5,7 @@ import { getMovieCardDetails } from "../../../lib/tmdb-api";
 import LoadingSpinner from "../../UI/LoadingSpinner";
 import { TMBD_POSTER_w500 } from "../../../lib/constants";
 
-const MoviePosterCard = ({item}) => {
+const PosterCard = ({item}) => {
     const { sendRequest, status, data: loadedDetails } = useHttp(getMovieCardDetails, true);
 
     const [isActive, setIsActive] = useState(false);
@@ -60,4 +60,4 @@ const MoviePosterCard = ({item}) => {
     }
 }
 
-export default MoviePosterCard;
+export default PosterCard;

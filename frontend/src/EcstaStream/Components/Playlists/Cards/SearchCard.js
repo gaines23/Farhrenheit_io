@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import useHttp from "../../../../hooks/use-http";
 
-import { TMBD_POSTER_w45, TMDB_POSTER_w92 } from "../../../lib/constants";
+import { TMDB_POSTER_w92 } from "../../../lib/constants";
 import { addItemToPlaylist } from "../../../lib/ec-api";
 import LoadingSpinner from "../../UI/LoadingSpinner";
 

@@ -7,6 +7,7 @@ let playlist_details_url = process.env.REACT_APP_EC_PLAYLIST_DETAILS;
 let use_streaming_services = process.env.REACT_APP_EC_USER_STREAMING;
 let genres_url = process.env.REACT_APP_EC_GENRES;
 let playlist_data = process.env.REACT_APP_EC_PLAYLIST_DATA;
+let get_playlist_data = process.env.REACT_APP_EC_GET_PLAYLIST_DATA;
 
 let user_token = localStorage.getItem('token');
 
@@ -218,6 +219,25 @@ export async function getPlaylistDetails({id}) {
   return playlistDetails;
 }
 
+
+// Gets Playlist data
+export async function getPlaylistData(id) {
+  const response = await fetch(`${get_playlist_data}${id}/`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      //'Authorization': `Bearer ${user_token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  const playlistData = [
+      ...data,
+  
+]
+  return playlistData;
+}
 
 export async function addItemToPlaylist(info) {
   const response = await fetch(`${playlist_data}`, {

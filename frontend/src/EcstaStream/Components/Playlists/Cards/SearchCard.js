@@ -27,7 +27,8 @@ const SearchCard = ({item, listID}) => {
         <Fragment>
             <button 
                 className="group outline-none w-full h-full flex hover:bg-bg-fill/20 rounded-md"
-                onClick={(e) => addToList(e, listID, item.id, item.media_type)} key={item.id}  
+                onClick={(e) => addToList(e, listID, item.id, item.media_type)}
+                key={item.id}  
             >
                 <div className="w-1/3 h-16 my-auto flex">
                     { item.backdrop_path ? ( 

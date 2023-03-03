@@ -1,14 +1,16 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import { SEARCH_RESULTS_TMDB } from '../../../lib/constants';
 
 import useSearchDebounce from '../../../hooks/useSearchDebounce';
 import SearchCard from '../Cards/SearchCard';
 import { HiOutlineSearch } from 'react-icons/hi';
 import LoadingSpinner from '../../UI/LoadingSpinner';
+import { PlaylistContext, usePlaylistDispatch } from '../../../store/PlaylistContext';
 
-const SearchBar = (listID) => {
+const SearchBar = (listId) => {
     const [search, setSearch] = useState('');
     const [results, setResults] = useState([]);
+    const dispatch = usePlaylistDispatch();
 
     const debounceSearch = useSearchDebounce(search, 500);
 
@@ -33,9 +35,16 @@ const SearchBar = (listID) => {
 
     }, [debounceSearch]);
 
-    const handleClick = (e) => {
+    const handleClick = (e, id, media_type) => {
         e.preventDefault();
-        localStorage.setItem('reload', true);
+        const listid = listId;
+
+        dispatch({
+            type: 'added',
+            playlist_id: listid, 
+            id: id,
+            media_type: media_type,
+        });
         setSearch('');
         setResults([]);
     }
@@ -48,8 +57,9 @@ const SearchBar = (listID) => {
     xl - 1280
     2xl - 1536
 */
-
+console.log(results)
     return (
+        
         <Fragment>
             <div id="search" className="w-1/3 h-full px-4 flex flex-col">
             <h1 className="text-center my-3">Add To List:</h1>
@@ -84,9 +94,9 @@ const SearchBar = (listID) => {
                             <li 
                                 className="h-16 w-full lg:w-5/6 mx-auto flex bg-bg-fill/10 rounded-md text-input-fill/60"
                                 key={item.id} 
-                                onClick={handleClick}
+                                onClick={(e) => handleClick(e, item.id, item.media_type)}
                             >
-                                <SearchCard key={item.id} item={item} listID={listID} />
+                                <SearchCard key={item.id} item={item} listID={listId} />
                             </li>
                         )}).slice(0,10)}
                     </ul>

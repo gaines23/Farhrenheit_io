@@ -1,44 +1,30 @@
-import { createContext, useCallback, useContext, useEffect, useReducer, useState } from 'react';
-import useHttp from '../../hooks/use-http';
-import { getPlaylistData } from '../lib/ec-api';
+import { createContext, useContext, useReducer } from 'react';
 
 export const PlaylistContext = createContext(null);
 export const PlaylistDispatchContext = createContext(null);
 
-export function PlaylistProvider({children, id}) {
-    const {sendRequest, status, data: playlistData} = useHttp(getPlaylistData, true);
-    const [getData, setData] = useState([]);
+const initialData = [];
 
-    useEffect(() => {
-        sendRequest(id);
-    }, [sendRequest, id]);
-
-    useEffect(() => {
-        setData(playlistData); 
-    }, [playlistData]);
-    
+export function PlaylistProvider({children}) {   
     const [listData, dispatch] = useReducer(
         playlistReducer,
-        getData
+        initialData
     );
 
-    console.log(getData)
-    if (status === 'completed' && getData !== null) {
-        return (
-            <PlaylistContext.Provider value={listData}>
-                <PlaylistDispatchContext.Provider value={dispatch}>
-                    {children}
-                </PlaylistDispatchContext.Provider>
-            </PlaylistContext.Provider>
-        );
-    }
+    return (
+        <PlaylistContext.Provider value={listData}>
+            <PlaylistDispatchContext.Provider value={dispatch}>
+                {children}
+            </PlaylistDispatchContext.Provider>
+        </PlaylistContext.Provider>
+    );
 }
 
 export function usePlaylistData() {
     return useContext(PlaylistContext);
 }
 
-export function usePlaylistContext() {
+export function usePlaylistDispatch() {
     return useContext(PlaylistDispatchContext);
 }
 
@@ -46,11 +32,18 @@ function playlistReducer(listData, action) {
     console.log(listData)
     switch(action.type) {
         case 'added': {
-            return [...listData]
+            return [...listData, {
+                playlist_id: action.playlist_id,
+                id: action.id,
+                media_type: action.media_type
+            }];
         }
-        // case 'deleted': {
-            
-        // }
+        case 'deleted': {
+            return listData.filter(x => x.id !== action.id);       
+        }
+        default: {
+            throw Error('Error: ' + action.type);
+        }
     }
 }
 

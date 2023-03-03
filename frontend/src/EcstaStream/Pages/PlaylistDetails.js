@@ -1,24 +1,33 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useHttp from "../../hooks/use-http";
 import { getPlaylistDetails } from "../lib/ec-api";
-
-import NotFound from "./NotFound";
-import SearchBar from "../Components/Playlists/UI/SearchBar";
-import LoadingSpinner from "../Components/UI/LoadingSpinner";
-import PlaylistList from "../Components/Playlists/PlaylistList";
 import { PlaylistProvider } from "../store/PlaylistContext";
 
+import SearchBar from "../Components/Playlists/UI/SearchBar";
+import PlaylistList from "../Components/Playlists/PlaylistList";
+
+import NotFound from "./NotFound";
+import LoadingSpinner from "../Components/UI/LoadingSpinner";
 
 const PlaylistDetails = () => {
-    const { sendRequest, status, data: playlistDetails, error } = useHttp(getPlaylistDetails, true);
-
     const params = useParams();
     const {id} = params;
+    const [getData, setData] = useState([]);
+
+    const { sendRequest, status, data: playlistDetails, error } = useHttp(getPlaylistDetails, true);
 
     useEffect(() => {
         sendRequest(params);
     }, [sendRequest, params]);
+
+
+    useEffect(() => {
+        if (status === 'completed') {
+            setData(playlistDetails.movies_shows);
+        }
+       
+    }, [setData, playlistDetails]);
 
     if (status === 'pending') {
         <LoadingSpinner />
@@ -31,6 +40,8 @@ const PlaylistDetails = () => {
     const optionsButton = "h-full w-1/3 text-sm mx-2 hover:text-ec-purple-text";
 
     if (status === 'completed') {
+        const listId = playlistDetails.ec_playlist_id;
+
         return (
             <Fragment>
                 <div className="w-full h-full mx-auto pt-5 overflow-hidden">
@@ -38,7 +49,7 @@ const PlaylistDetails = () => {
                         <div className="w-full h-full py-3 col-span-1">
                             <div className="h-1/4">
                                 <div className="text-2xl my-auto mr-2 float-left font-bold">
-                                    {playlistDetails.title} 
+                                    {playlistDetails.title}
                                 </div>
                                 <div className="h-10 text-xs my-auto float-left py-3 ml-2">
                                     | {playlistDetails.username} | # Following
@@ -48,7 +59,7 @@ const PlaylistDetails = () => {
                             <div className="h-1/2 p-2">
                                 {playlistDetails.description}
                             </div>
-                            
+
                             <div id="options" className="w-1/3 h-1/4 flex pl-2 justify-between">
                                 <button className={optionsButton}>Edit</button>
                                 <button className={optionsButton}>Share</button>
@@ -60,14 +71,14 @@ const PlaylistDetails = () => {
 
                         </div>
                     </div>
-                    
+
                     <div id="info" className="w-full h-full mx-auto flex">
-                        <PlaylistProvider id={playlistDetails.ec_playlist_id}>
-                            <SearchBar />
-                            <PlaylistList />
+                        <PlaylistProvider value={{getData, setData}}>
+                            <SearchBar listId={listId} setData={setData} />
+                            <PlaylistList media={getData}/>
                         </PlaylistProvider>
                     </div>
-                    
+
                 </div>
             </Fragment>
         );

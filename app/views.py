@@ -20,6 +20,10 @@ from .models import (
     EcstaStream_Playlists_Following,
     EcstaStream_User_Streaming_List,
     Ecstastream_Playlist_Data,
+    EcstaStream_Watchlist,
+    EcstaStream_Favorites,
+    EC_Favorites_Data,
+    EC_Watchlist_Data,
     
 )
 from .serializers import (
@@ -43,6 +47,11 @@ from .serializers import (
     AppNotFollowingSerializer,
     EcPlaylistDataSerializer,
     AllEcPlaylistsSerializer,
+    EcWatchlistSerializer,
+    EcFavoritesSerializer,
+    EcWatchlistDataSerializer,
+    EcFavoritesDataSerializer,
+
 )
 from rest_framework.views import APIView
 from django.http.response import JsonResponse
@@ -447,6 +456,65 @@ class EcstaStreamPlaylstDetails(APIView):
         return Response(playlist, status=status.HTTP_200_OK)
 
 
+
+class EcstaStreamWatchList(APIView):
+    ## Filters for specific playlist chosen ###
+    def get(self, request, *args, **kwargs):
+        profile = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
+        EcstaStream_Watchlist.objects.get_or_create(wl_user_id=profile)
+        
+        try:
+            playlist = EcstaStream_Watchlist.objects.get(wl_user_id=profile)
+            serializer = EcWatchlistSerializer(playlist)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception:
+            return Response('Playlist details not found', status=status.HTTP_204_NO_CONTENT)
+
+    ### Edits User Playlist
+    def put(self, request, *args, **kwargs):
+        watchlist_id = EcstaStream_Watchlist.objects.get(watchlist_id=request.data['watchlist_id'])
+        data = {
+            "private": request.data['private'],
+        }
+
+        serializer = EcWatchlistSerializer(instance=watchlist_id, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+class EcstaStreamFavorites(APIView):
+    ## Filters for specific playlist chosen ###
+    def get(self, request, *args, **kwargs):
+        profile = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
+        EcstaStream_Favorites.objects.get_or_create(favs_user_id=profile)
+        
+        try:
+            playlist = EcstaStream_Favorites.objects.get(favs_user_id=profile)
+            serializer = EcFavoritesSerializer(playlist)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception:
+            return Response('Playlist details not found', status=status.HTTP_204_NO_CONTENT)
+
+    ### Edits User Playlist
+    def put(self, request, *args, **kwargs):
+        favorite_id = EcstaStream_Favorites.objects.get(favorite_id=request.data['favorite_id'])
+        data = {
+            "private": request.data['private'],
+        }
+
+        serializer = EcFavoritesSerializer(instance=favorite_id, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 ### Adds or Deletes movie,show on playlist ###
 class EcPlaylistData(APIView):
     def get(self, request, playlist_id, *args, **kwargs):
@@ -479,6 +547,64 @@ class EcPlaylistData(APIView):
             return Response(delete, status=status.HTTP_200_OK)
         except Exception:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+
+
+### Adds or Deletes movie,show on playlist ###
+class EcWatchlisttData(APIView):
+    def post(self, request, *args, **kwargs):
+        user = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
+        data = {
+            "wl_user_id": user.ec_id,
+            "watchlist_id": request.data['watchlist_id'],
+            "wl_mov_show_id": request.data['id'],
+            "media_type": 0 if request.data['type'] == 'movie' else 1,
+        }
+
+        serializer = EcWatchlistDataSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+        return Response('Could not add movie/show', status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        data_id = request.data['wl_data_id']
+        try:
+            delete = EC_Watchlist_Data.objects.get(wl_data_id=data_id).delete()
+            return Response(delete, status=status.HTTP_200_OK)
+        except Exception:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+
+
+
+### Adds or Deletes movie,show on playlist ###
+class EcFavoritesData(APIView):
+    def post(self, request, *args, **kwargs):
+        user = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
+        data = {
+            "fav_user_id": user.ec_id,
+            "favorites_id": request.data['favorites_id'],
+            "fav_mov_show_id": request.data['id'],
+            "media_type": 0 if request.data['type'] == 'movie' else 1,
+        }
+
+        serializer = EcFavoritesDataSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+        return Response('Could not add movie/show', status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        data_id = request.data['fav_data_id']
+        try:
+            delete = EC_Favorites_Data.objects.get(fav_data_id=data_id).delete()
+            return Response(delete, status=status.HTTP_200_OK)
+        except Exception:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+
 
 
 class EcstaPlaylistFollowing(APIView):

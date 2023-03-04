@@ -19,6 +19,11 @@ from app.views import (
     EcstaUserStreamingList,
     EcstaStreamPlaylstDetails, 
     EcPlaylistData,
+    EcstaStreamWatchList,
+    EcstaStreamFavorites,
+    EcWatchlisttData,
+    EcFavoritesData,
+
 )
 #CreatePlaylist,
 
@@ -55,4 +60,9 @@ urlpatterns = [
     path('ecstastream/playlist/details/<int:id>/', EcstaStreamPlaylstDetails.as_view()),
     path('ecstastream/playlist/data/actions/', EcPlaylistData.as_view()),
     path('ecstastream/playlist/get-data/<int:playlist_id>/', EcPlaylistData.as_view()),
+    path('ecstastream/playlist/watchlist/details/', EcstaStreamWatchList.as_view()),
+    path('ecstastream/playlist/favorites/details/', EcstaStreamFavorites.as_view()),
+    path('ecstasream/playlist/watchlist/data/', EcWatchlisttData.as_view()),
+    path('ecstasream/playlist/favorites/data/', EcFavoritesData.as_view()),
+    
 ]

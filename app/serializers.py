@@ -14,6 +14,10 @@ from .models import (
     EcstaStream_Playlists_Following,
     EcstaStream_User_Streaming_List,
     Ecstastream_Playlist_Data,
+    EcstaStream_Watchlist,
+    EcstaStream_Favorites,
+    EC_Watchlist_Data,
+    EC_Favorites_Data,
 
 )
 from django.contrib.auth.hashers import make_password
@@ -298,3 +302,57 @@ class EcUserStreamingListSerializer(serializers.ModelSerializer):
     
     def get_app_info(self, obj):
         return EcstaStreamPlaylistSerializer(obj.streaming_id).data
+
+
+class EcWatchlistSerializer(serializers.ModelSerializer):
+    created_on = serializers.DateTimeField(read_only=True)
+    username = serializers.ReadOnlyField(source='wl_user_id.user_id.username')
+
+
+    watchlist_data = serializers.SerializerMethodField()
+
+    class Meta:
+        model = EcstaStream_Watchlist
+        fields = '__all__'
+
+    def update(self, instance, validated_data):
+        instance.private = validated_data.get('private', instance.private)
+
+        instance.save()
+        return instance
+
+    def get_watchlist_data(self, obj):
+        return EcWatchlistDataSerializer(obj.wc_id.all(), many=True).data
+
+
+class EcFavoritesSerializer(serializers.ModelSerializer):
+    created_on = serializers.DateTimeField(read_only=True)
+    username = serializers.ReadOnlyField(source='fav_user_id.user_id.username')
+
+    favs_data = serializers.SerializerMethodField()
+
+    class Meta:
+        model = EcstaStream_Favorites
+        fields = '__all__'
+
+    def update(self, instance, validated_data):
+        instance.private = validated_data.get('private', instance.private)
+
+    def get_favs_data(self, obj):
+        return EcFavoritesDataSerializer(obj.fav_id.all(), many=True).data
+
+
+class EcWatchlistDataSerializer(serializers.ModelSerializer):
+    wl_date_added = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = EC_Watchlist_Data
+        fields = ('__all__')
+
+
+class EcFavoritesDataSerializer(serializers.ModelSerializer):
+    pl_date_added = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = EC_Favorites_Data
+        fields = ('__all__')

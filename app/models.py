@@ -210,6 +210,18 @@ class EcstaStreamProfile(models.Model):
             models.UniqueConstraint(fields=["user_id"], name="EcstaStreamUserConstraint")
         ]
 
+
+class EcstaStream_User_Streaming_List(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    user_streaming = models.ForeignKey(EcstaStreamProfile, related_name="user_streaming", on_delete=models.CASCADE)
+    streaming_id = models.ForeignKey(StreamingServices, related_name="streaming", on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = (('user_streaming'), ('streaming_id'))
+        constraints = [
+            models.UniqueConstraint(fields=["user_streaming", "streaming_id"], name='user_streaming')    
+        ]
+
 class EcstaStreamPlaylist(models.Model):
     ec_playlist_id = models.BigAutoField(primary_key=True)
     created_by = models.ForeignKey(EcstaStreamProfile, related_name="creator", on_delete=models.CASCADE)
@@ -243,32 +255,40 @@ class EcstaStreamPlaylist(models.Model):
         return super().save(*args, **kwargs)
 
 
+class EcstaStream_Watchlist(models.Model):
+    watchlist_id = models.BigAutoField(primary_key=True)
+    wl_user_id = models.ForeignKey(EcstaStreamProfile, related_name="user_watchlist", on_delete=models.CASCADE)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    private = models.BooleanField(default=True)
+    status = models.BooleanField(choices=STATUS, default=0)
 
-class EcstaStream_Playlists_Following(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    user_following = models.ForeignKey(EcstaStreamProfile, related_name="user_pl", on_delete=models.CASCADE)
-    playlist_id = models.ForeignKey(EcstaStreamPlaylist, related_name="playlist", on_delete=models.CASCADE)
-    date_added = models.DateTimeField(auto_now_add=True)
-
+    def __str__(self):
+        return '{}'.format(self.wl_user_id)
+    
     class Meta:
-        unique_together = (('user_following', 'playlist_id'))
-        verbose_name_plural = "Ecstastream Playlist Followers"
-        constraints = [
-            models.UniqueConstraint(fields=["user_following", "playlist_id"], name='user_playlist_following')    
-        ]
-        ordering = ['date_added']
+        unique_together = (('wl_user_id', ))
+        verbose_name_plural = "Watchlists"
+        ordering = ['-created_on']
 
 
-class EcstaStream_User_Streaming_List(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    user_streaming = models.ForeignKey(EcstaStreamProfile, related_name="user_streaming", on_delete=models.CASCADE)
-    streaming_id = models.ForeignKey(StreamingServices, related_name="streaming", on_delete=models.CASCADE)
+class EcstaStream_Favorites(models.Model):
+    favorite_id = models.BigAutoField(primary_key=True)
+    favs_user_id = models.ForeignKey(EcstaStreamProfile, related_name="user_favs", on_delete=models.CASCADE)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+    private = models.BooleanField(default=True)
+    status = models.BooleanField(choices=STATUS, default=0)
 
+    def __str__(self):
+        return '{} - {}'.format(self.favs_user_id)
+    
     class Meta:
-        unique_together = (('user_streaming'), ('streaming_id'))
-        constraints = [
-            models.UniqueConstraint(fields=["user_streaming", "streaming_id"], name='user_streaming')    
-        ]
+        unique_together = (('favs_user_id', ))
+        verbose_name_plural = "Favorites"
+        ordering = ['-created_on']
+
+
 
 MEDIA_CHOICES = (
     (0, 'movie'),
@@ -293,6 +313,57 @@ class Ecstastream_Playlist_Data(models.Model):
 
 
 
+class EC_Favorites_Data(models.Model):
+    fav_data_id = models.BigAutoField(primary_key=True)
+    fav_user_id = models.ForeignKey(EcstaStreamProfile, related_name="favs_user", on_delete=models.CASCADE)
+    favorites_id = models.ForeignKey(EcstaStream_Favorites, on_delete=models.CASCADE, related_name="fav_id")
+    fav_mov_show_id = models.IntegerField()
+    fav_date_added = models.DateTimeField(auto_now=True)
+    media_type = models.IntegerField(null=True, blank=True, choices=MEDIA_CHOICES)
+
+    class Meta:
+        unique_together = (('favorites_id'), ('fav_mov_show_id'), ('media_type'))
+        verbose_name_plural = "Ecstastream Favorites Data"
+        constraints = [
+            models.UniqueConstraint(fields=["favorites_id", "fav_mov_show_id", "media_type"], name='favs_data_constraint')    
+        ]
+        ordering = ['-fav_date_added']
+
+
+
+class EC_Watchlist_Data(models.Model):
+    wl_data_id = models.BigAutoField(primary_key=True)
+    wl_user_id = models.ForeignKey(EcstaStreamProfile, related_name="watchlist_user", on_delete=models.CASCADE)
+    watchlist_id = models.ForeignKey(EcstaStream_Watchlist, on_delete=models.CASCADE, related_name="wc_id")
+    wl_mov_show_id = models.IntegerField()
+    wl_date_added = models.DateTimeField(auto_now=True)
+    media_type = models.IntegerField(null=True, blank=True, choices=MEDIA_CHOICES)
+
+    class Meta:
+        unique_together = (('watchlist_id'), ('wl_mov_show_id'), ('media_type'))
+        verbose_name_plural = "Ecstastream Watchlist Data"
+        constraints = [
+            models.UniqueConstraint(fields=["watchlist_id", "wl_mov_show_id", "media_type"], name='watchlist_data_constraint')    
+        ]
+        ordering = ['-wl_date_added']
+
+
+
+
+
+class EcstaStream_Playlists_Following(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    user_following = models.ForeignKey(EcstaStreamProfile, related_name="user_pl", on_delete=models.CASCADE)
+    playlist_id = models.ForeignKey(EcstaStreamPlaylist, related_name="playlist", on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = (('user_following', 'playlist_id'))
+        verbose_name_plural = "Ecstastream Playlist Followers"
+        constraints = [
+            models.UniqueConstraint(fields=["user_following", "playlist_id"], name='user_playlist_following')    
+        ]
+        ordering = ['date_added']
 
 
 # ## needs to be cleaned up!

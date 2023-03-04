@@ -1,19 +1,18 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
+import { usePlaylistData } from "../../store/PlaylistContext";
 
-import { usePlaylistData, PlaylistDispatchContext } from "../../store/PlaylistContext";
-
-import NotFound from "../../Pages/NotFound";
 import MovieCardDropdown from "../UI/Card/Dropdown/MovieCardDropdown";
-import LoadingSpinner from "../UI/LoadingSpinner";
 import PosterCard from "./Cards/PosterCard";
 
-const PlaylistList = ({media}) => {
+const PlaylistList = () => {
+    const getList = usePlaylistData();
 
-    // const data = usePlaylistData();
-    
+    console.log(getList)
+
     const [showDetails, setShowDetails] = useState(false);
     const [getData, setData] = useState([]); 
-    
+
+    // Handles poster card dropdown by id and media
     const handleClick = (e, id, media_type) => {
         e.preventDefault();
         const info={id, media_type}
@@ -32,12 +31,12 @@ const PlaylistList = ({media}) => {
                     <button>My Services</button>
                 </div>
 
-                <div className="w-full relative overflow-y-scroll scroll-smooth scrollbar overflow-y scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
+                <div className="w-full h-2/3 relative overflow-y-scroll scroll-smooth scrollbar overflow-y scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
                     <ul 
                         id="list" 
-                        className="w-full h-2/3 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 p-1 gap-2"
+                        className="w-full h-full grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 p-1 gap-2"
                     >
-                        { media !== null && media.map(item => { 
+                        { getList !== null && getList.map(item => { 
                             return (
                                 <li 
                                     className="group flex-shrink-0 w-36 mt-2 h-42 rounded-md" 
@@ -47,8 +46,8 @@ const PlaylistList = ({media}) => {
                                     <br/>
                                     <PosterCard key={item.pl_mov_show_id} item={item} />
                                 </li>
-                            )}
-                        )}
+                            );
+                        })}
                     </ul>
                 </div>
             </div>

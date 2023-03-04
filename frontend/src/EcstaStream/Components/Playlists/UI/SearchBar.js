@@ -7,10 +7,10 @@ import { HiOutlineSearch } from 'react-icons/hi';
 import LoadingSpinner from '../../UI/LoadingSpinner';
 import { PlaylistContext, usePlaylistDispatch } from '../../../store/PlaylistContext';
 
-const SearchBar = (listId) => {
+const SearchBar = ({listId}) => {
     const [search, setSearch] = useState('');
     const [results, setResults] = useState([]);
-    const dispatch = usePlaylistDispatch();
+    //const dispatch = usePlaylistDispatch();
 
     const debounceSearch = useSearchDebounce(search, 500);
 
@@ -37,14 +37,14 @@ const SearchBar = (listId) => {
 
     const handleClick = (e, id, media_type) => {
         e.preventDefault();
-        const listid = listId;
 
-        dispatch({
-            type: 'added',
-            playlist_id: listid, 
-            id: id,
-            media_type: media_type,
-        });
+        // dispatch({
+        //     type: 'added',
+        //     playlist_id: listId, 
+        //     id: id,
+        //     media_type: media_type,
+        // });
+
         setSearch('');
         setResults([]);
     }
@@ -57,8 +57,8 @@ const SearchBar = (listId) => {
     xl - 1280
     2xl - 1536
 */
-console.log(results)
-    return (
+
+return (
         
         <Fragment>
             <div id="search" className="w-1/3 h-full px-4 flex flex-col">
@@ -96,7 +96,7 @@ console.log(results)
                                 key={item.id} 
                                 onClick={(e) => handleClick(e, item.id, item.media_type)}
                             >
-                                <SearchCard key={item.id} item={item} listID={listId} />
+                                <SearchCard key={item.id} item={item} listId={listId} />
                             </li>
                         )}).slice(0,10)}
                     </ul>

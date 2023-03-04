@@ -28,7 +28,7 @@ const PosterCard = ({item}) => {
         <LoadingSpinner />
     }
 
-    if (status === 'completed') {
+    if (status === 'completed' && loadedDetails !== null) {
         return (
             <Fragment>                   
                     {loadedDetails.poster_path ?

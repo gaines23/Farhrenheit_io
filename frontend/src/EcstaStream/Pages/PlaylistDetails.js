@@ -21,14 +21,12 @@ const PlaylistDetails = () => {
         sendRequest(params);
     }, [sendRequest, params]);
 
-
     useEffect(() => {
         if (status === 'completed') {
             setData(playlistDetails.movies_shows);
         }
-       
-    }, [setData, playlistDetails]);
-
+    }, [playlistDetails]);
+        
     if (status === 'pending') {
         <LoadingSpinner />
     }
@@ -39,9 +37,10 @@ const PlaylistDetails = () => {
 
     const optionsButton = "h-full w-1/3 text-sm mx-2 hover:text-ec-purple-text";
 
-    if (status === 'completed') {
+    if (status === 'completed' && getData.length !== 0) {
         const listId = playlistDetails.ec_playlist_id;
-
+        console.log(getData)
+        
         return (
             <Fragment>
                 <div className="w-full h-full mx-auto pt-5 overflow-hidden">
@@ -73,9 +72,9 @@ const PlaylistDetails = () => {
                     </div>
 
                     <div id="info" className="w-full h-full mx-auto flex">
-                        <PlaylistProvider value={{getData, setData}}>
-                            <SearchBar listId={listId} setData={setData} />
-                            <PlaylistList media={getData}/>
+                        <PlaylistProvider getData={{getData}}>
+                            <SearchBar listId={listId} />
+                            <PlaylistList />
                         </PlaylistProvider>
                     </div>
 

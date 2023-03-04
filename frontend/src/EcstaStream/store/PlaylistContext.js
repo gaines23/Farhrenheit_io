@@ -1,15 +1,14 @@
 import { createContext, useContext, useReducer } from 'react';
 
-export const PlaylistContext = createContext(null);
+export const PlaylistContext = createContext([]);
 export const PlaylistDispatchContext = createContext(null);
 
-const initialData = [];
-
-export function PlaylistProvider({children}) {   
+export function PlaylistProvider({children, getData}) {   
     const [listData, dispatch] = useReducer(
         playlistReducer,
-        initialData
+        getData.getData
     );
+    console.log(getData.getData)
 
     return (
         <PlaylistContext.Provider value={listData}>
@@ -29,14 +28,17 @@ export function usePlaylistDispatch() {
 }
 
 function playlistReducer(listData, action) {
-    console.log(listData)
+    
     switch(action.type) {
         case 'added': {
-            return [...listData, {
+            const newId = listData.length + 1;
+            return [{
                 playlist_id: action.playlist_id,
-                id: action.id,
-                media_type: action.media_type
-            }];
+                pl_data_id: newId,
+                pl_mov_show_id: action.pl_mov_show_id,
+                media_type: action.media_type,
+            }, ...listData, ];
+            
         }
         case 'deleted': {
             return listData.filter(x => x.id !== action.id);       
@@ -46,4 +48,3 @@ function playlistReducer(listData, action) {
         }
     }
 }
-

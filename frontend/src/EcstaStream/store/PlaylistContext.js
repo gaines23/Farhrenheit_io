@@ -8,7 +8,6 @@ export function PlaylistProvider({children, getData}) {
         playlistReducer,
         getData.getData
     );
-    console.log(getData.getData)
 
     return (
         <PlaylistContext.Provider value={listData}>

@@ -34,7 +34,7 @@ const PlaylistList = () => {
                 <div className="w-full h-2/3 relative overflow-y-scroll scroll-smooth scrollbar overflow-y scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
                     <ul 
                         id="list" 
-                        className="w-full h-full grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 p-1 gap-2"
+                        className="w-5/6 h-full grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 p-1 gap-2"
                     >
                         { getList !== null && getList.map(item => { 
                             return (

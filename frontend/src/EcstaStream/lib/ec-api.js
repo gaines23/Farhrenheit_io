@@ -7,12 +7,9 @@ let playlist_details_url = process.env.REACT_APP_EC_PLAYLIST_DETAILS;
 let use_streaming_services = process.env.REACT_APP_EC_USER_STREAMING;
 let genres_url = process.env.REACT_APP_EC_GENRES;
 let playlist_data = process.env.REACT_APP_EC_PLAYLIST_DATA;
-<<<<<<< HEAD
 let get_playlist_data = process.env.REACT_APP_EC_GET_PLAYLIST_DATA;
-=======
 let watchlist_details_url = process.env.REACT_APP_EC_WATCHLIST_DETAILS;
 let favorites_details_url = process.env.REACT_APP_EC_FAVORITES_DETAILS;
->>>>>>> main
 
 let user_token = localStorage.getItem('token');
 
@@ -234,11 +231,11 @@ export async function getWatchlilstDetails() {
 
   const data = await response.json()
 
-  const watchlistDetials = {
+  const watchlistDetails = {
     ...data
   }
 
-  return watchlistDetials;
+  return watchlistDetails;
 }
 
 

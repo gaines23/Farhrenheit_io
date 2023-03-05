@@ -5,12 +5,10 @@ import useSearchDebounce from '../../../hooks/useSearchDebounce';
 import SearchCard from '../Cards/SearchCard';
 import { HiOutlineSearch } from 'react-icons/hi';
 import LoadingSpinner from '../../UI/LoadingSpinner';
-import { PlaylistContext, usePlaylistDispatch } from '../../../store/PlaylistContext';
 
 const SearchBar = ({listId}) => {
     const [search, setSearch] = useState('');
     const [results, setResults] = useState([]);
-    //const dispatch = usePlaylistDispatch();
 
     const debounceSearch = useSearchDebounce(search, 500);
 
@@ -35,16 +33,8 @@ const SearchBar = ({listId}) => {
 
     }, [debounceSearch]);
 
-    const handleClick = (e, id, media_type) => {
+    const handleClick = (e) => {
         e.preventDefault();
-
-        // dispatch({
-        //     type: 'added',
-        //     playlist_id: listId, 
-        //     id: id,
-        //     media_type: media_type,
-        // });
-
         setSearch('');
         setResults([]);
     }
@@ -94,7 +84,7 @@ return (
                             <li 
                                 className="h-16 w-full lg:w-5/6 mx-auto flex bg-bg-fill/10 rounded-md text-input-fill/60"
                                 key={item.id} 
-                                onClick={(e) => handleClick(e, item.id, item.media_type)}
+                                onClick={handleClick}
                             >
                                 <SearchCard key={item.id} item={item} listId={listId} />
                             </li>

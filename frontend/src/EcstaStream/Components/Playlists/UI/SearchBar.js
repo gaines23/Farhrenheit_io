@@ -1,12 +1,12 @@
-import { Fragment, useEffect, useState } from 'react';
-import { SEARCH_RESULTS_TMDB } from '../../lib/constants';
+import { Fragment, useContext, useEffect, useState } from 'react';
+import { SEARCH_RESULTS_TMDB } from '../../../lib/constants';
 
-import useSearchDebounce from '../../hooks/useSearchDebounce';
-import SearchCard from '../Playlists/Cards/SearchCard';
+import useSearchDebounce from '../../../hooks/useSearchDebounce';
+import SearchCard from '../Cards/SearchCard';
 import { HiOutlineSearch } from 'react-icons/hi';
-import LoadingSpinner from './LoadingSpinner';
+import LoadingSpinner from '../../UI/LoadingSpinner';
 
-const SearchBar = (listID) => {
+const SearchBar = ({listId}) => {
     const [search, setSearch] = useState('');
     const [results, setResults] = useState([]);
 
@@ -35,7 +35,6 @@ const SearchBar = (listID) => {
 
     const handleClick = (e) => {
         e.preventDefault();
-        localStorage.setItem('reload', true);
         setSearch('');
         setResults([]);
     }
@@ -49,8 +48,11 @@ const SearchBar = (listID) => {
     2xl - 1536
 */
 
-    return (
+return (
+        
         <Fragment>
+            <div id="search" className="w-1/3 h-full px-4 flex flex-col">
+            <h1 className="text-center my-3">Add To List:</h1>
             <div className="w-full h-full inline-table">
                 <div className="h-8 w-full md:px-5  flex justify-center items-center mx-auto mb-5">
                     <div className="
@@ -84,14 +86,14 @@ const SearchBar = (listID) => {
                                 key={item.id} 
                                 onClick={handleClick}
                             >
-                                <SearchCard key={item.id} item={item} listID={listID} />
+                                <SearchCard key={item.id} item={item} listId={listId} />
                             </li>
                         )}).slice(0,10)}
                     </ul>
                 </div>
                 
             </div>
-
+        </div>
         </Fragment>
     );
 };

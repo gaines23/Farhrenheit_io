@@ -2,38 +2,31 @@ import { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useHttp from "../../hooks/use-http";
 import { getPlaylistDetails } from "../lib/ec-api";
+import { PlaylistProvider } from "../store/PlaylistContext";
+
+import SearchBar from "../Components/Playlists/UI/SearchBar";
+import PlaylistList from "../Components/Playlists/PlaylistList";
 
 import NotFound from "./NotFound";
-import SearchBar from "../Components/UI/SearchBar";
-import MoviePosterCard from "../Components/Playlists/Cards/MoviePosterCard";
 import LoadingSpinner from "../Components/UI/LoadingSpinner";
-import MovieCardDropdown from "../Components/UI/Card/Dropdown/MovieCardDropdown";
-import DeleteButton from "../Components/Playlists/UI/DeleteButton";
 
 const PlaylistDetails = () => {
-    const { sendRequest, status, data: playlistDetails, error } = useHttp(getPlaylistDetails, true);
-
     const params = useParams();
     const {id} = params;
-    
-    const [showDetails, setShowDetails] = useState(false);
-    const [getData, setData] = useState([]); 
-    const [getReload, setReload] = useState(false);
+    const [getData, setData] = useState([]);
+
+    const { sendRequest, status, data: playlistDetails, error } = useHttp(getPlaylistDetails, true);
 
     useEffect(() => {
         sendRequest(params);
     }, [sendRequest, params]);
 
-
-console.log(localStorage.getItem('reload'))
-
-    const handleClick = (e, id, media_type) => {
-        e.preventDefault();
-        const info={id, media_type}
-        setShowDetails(true);
-        setData(info);
-    }
-
+    useEffect(() => {
+        if (status === 'completed') {
+            setData(playlistDetails.movies_shows);
+        }
+    }, [playlistDetails]);
+        
     if (status === 'pending') {
         <LoadingSpinner />
     }
@@ -44,9 +37,10 @@ console.log(localStorage.getItem('reload'))
 
     const optionsButton = "h-full w-1/3 text-sm mx-2 hover:text-ec-purple-text";
 
-    if (status === 'completed') {
-        const media = playlistDetails.movies_shows;
-
+    if (status === 'completed' && getData.length !== 0) {
+        const listId = playlistDetails.ec_playlist_id;
+        console.log(getData)
+        
         return (
             <Fragment>
                 <div className="w-full h-full mx-auto pt-5 overflow-hidden">
@@ -54,7 +48,7 @@ console.log(localStorage.getItem('reload'))
                         <div className="w-full h-full py-3 col-span-1">
                             <div className="h-1/4">
                                 <div className="text-2xl my-auto mr-2 float-left font-bold">
-                                    {playlistDetails.title} 
+                                    {playlistDetails.title}
                                 </div>
                                 <div className="h-10 text-xs my-auto float-left py-3 ml-2">
                                     | {playlistDetails.username} | # Following
@@ -64,7 +58,7 @@ console.log(localStorage.getItem('reload'))
                             <div className="h-1/2 p-2">
                                 {playlistDetails.description}
                             </div>
-                            
+
                             <div id="options" className="w-1/3 h-1/4 flex pl-2 justify-between">
                                 <button className={optionsButton}>Edit</button>
                                 <button className={optionsButton}>Share</button>
@@ -77,51 +71,13 @@ console.log(localStorage.getItem('reload'))
                         </div>
                     </div>
 
-                    <div id="info" className="w-full h-full mx-auto flex">
-
-                        <div id="search" className="w-1/3 h-full px-4 flex flex-col">
-                            <h1 className="text-center my-3">Add To List:</h1>
-                            <SearchBar listID={playlistDetails.ec_playlist_id} />
-                        </div>
-
-                        <div id="infoSection" className="w-2/3 h-full">
-                            <div id="filter" className="w-2/3 h-16 float-right flex mx-2 justify-between">
-                                <button>Movies</button>
-                                <button>TV</button>
-                                <button>Genres</button>
-                                <button>My Services</button>
-                            </div>
-
-                            <div className="w-full relative overflow-y-scroll scroll-smooth scrollbar overflow-y scrollbar-width:thin scrollbar-thumb-ec-orange scrollbar-track-transparent">
-                                <ul 
-                                    id="list" 
-                                    className="w-full h-2/3 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-1 gap-1"
-                                >
-                                    { media !== null && media.map(item => { 
-                                        return (
-                                            <li 
-                                                className="group flex-shrink-0 w-36 mt-2 h-42 rounded-md" 
-                                                onClick={(e) => handleClick(e, item.pl_mov_show_id, item.media_type)} 
-                                                key={item.pl_mov_show_id} 
-                                            >
-                                                <br/>
-                                                <MoviePosterCard key={item.pl_mov_show_id} item={item} />
-                                            </li>
-                                        )}
-                                    )}
-                                </ul>
-                            </div>
-                        </div>
-
-                        { showDetails && (
-                            <MovieCardDropdown 
-                                key={getData.id}
-                                setShowDetails={setShowDetails}
-                                id={getData.id}
-                                media_type={getData.media_type}
-                            />
-                        )}
+                    <div id="info" className="w-full h-5/6 mx-auto flex">
+                        <PlaylistProvider getData={{getData}}>
+                            <SearchBar listId={listId} />
+                            <PlaylistList />
+                        </PlaylistProvider>
                     </div>
+
                 </div>
             </Fragment>
         );

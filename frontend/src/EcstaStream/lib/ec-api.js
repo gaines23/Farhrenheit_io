@@ -7,6 +7,7 @@ let playlist_details_url = process.env.REACT_APP_EC_PLAYLIST_DETAILS;
 let use_streaming_services = process.env.REACT_APP_EC_USER_STREAMING;
 let genres_url = process.env.REACT_APP_EC_GENRES;
 let playlist_data = process.env.REACT_APP_EC_PLAYLIST_DATA;
+let get_playlist_data = process.env.REACT_APP_EC_GET_PLAYLIST_DATA;
 let watchlist_details_url = process.env.REACT_APP_EC_WATCHLIST_DETAILS;
 let favorites_details_url = process.env.REACT_APP_EC_FAVORITES_DETAILS;
 
@@ -230,11 +231,11 @@ export async function getWatchlilstDetails() {
 
   const data = await response.json()
 
-  const watchlistDetials = {
+  const watchlistDetails = {
     ...data
   }
 
-  return watchlistDetials;
+  return watchlistDetails;
 }
 
 
@@ -278,6 +279,25 @@ export async function getFavoritesDetails() {
 
 
 
+// Gets Playlist data
+export async function getPlaylistData(id) {
+  const response = await fetch(`${get_playlist_data}${id}/`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      //'Authorization': `Bearer ${user_token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  const playlistData = [
+      ...data,
+  
+]
+  return playlistData;
+}
+
 export async function addItemToPlaylist(info) {
   const response = await fetch(`${playlist_data}`, {
     method: 'POST',
@@ -297,10 +317,10 @@ export async function addItemToPlaylist(info) {
   return null;
 }
 
-export async function deleteItemFromPlaylist(info) {
+export async function deleteItemFromPlaylist(pl_data_id) {
   const response = await fetch(`${playlist_data}`, {
     method: 'DELETE',
-    body: JSON.stringify(info),
+    body: JSON.stringify(pl_data_id),
     headers: {
       'Content-Type': 'application/json',
     }

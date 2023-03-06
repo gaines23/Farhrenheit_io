@@ -62,7 +62,7 @@ export async function getMultiSearchResults(search) {
 }
 
 // Gets movie details for movie card modal
-export async function getMovieCardDetails(info) {
+export async function getMediaCardDetails(info) {
     const response = await fetch(`${url}/${info}${DETAIL_DROPDOWN_CARD_TMDB}`);
     const data = await response.json();
 

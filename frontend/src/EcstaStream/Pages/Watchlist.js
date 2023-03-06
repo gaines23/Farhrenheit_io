@@ -4,11 +4,11 @@ import useHttp from "../../hooks/use-http";
 import { getWatchlistDetails } from "../lib/ec-api";
 
 import NotFound from "./NotFound";
-import SearchBar from "../Components/UI/SearchBar";
-import MoviePosterCard from "../Components/Playlists/Cards/MoviePosterCard";
+import PosterCard from "../Components/Playlists/Cards/PosterCard";
 import LoadingSpinner from "../Components/UI/LoadingSpinner";
-import MovieCardDropdown from "../Components/UI/Card/Dropdown/MovieCardDropdown";
-import DeleteButton from "../Components/Playlists/UI/DeleteButton";
+import MovieCardDropdown from "../Components/UI/Card/Dropdown/PosterCardDropdown";
+import DeleteButton from "../Components/Playlists/UI/Buttons/DeleteButton";
+import SearchBar from "../Components/Playlists/UI/SearchBar";
 
 const Watchlist = () => {
     const { sendRequest, status, data: playlistDetails, error } = useHttp(getWatchlistDetails, true);
@@ -102,7 +102,7 @@ const Watchlist = () => {
                                                 key={item.pl_mov_show_id} 
                                             >
                                                 <br/>
-                                                <MoviePosterCard key={item.pl_mov_show_id} item={item} />
+                                                <PosterCard key={item.pl_mov_show_id} item={item} />
                                             </li>
                                         )}
                                     )}

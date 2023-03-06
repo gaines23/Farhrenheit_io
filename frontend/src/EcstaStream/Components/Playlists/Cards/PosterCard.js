@@ -1,12 +1,13 @@
 import { Fragment, useEffect, useState } from "react";
 import useHttp from "../../../../hooks/use-http";
-import { getMovieCardDetails } from "../../../lib/tmdb-api";
+import { getMediaCardDetails } from "../../../lib/tmdb-api";
 
 import LoadingSpinner from "../../UI/LoadingSpinner";
 import { TMBD_POSTER_w500 } from "../../../lib/constants";
 
-const MoviePosterCard = ({item}) => {
-    const { sendRequest, status, data: loadedDetails } = useHttp(getMovieCardDetails, true);
+const PosterCard = ({item}) => {
+    const { sendRequest, status, data: loadedDetails } = useHttp(getMediaCardDetails, true);
+    
 
     const [isActive, setIsActive] = useState(false);
     const mediaId = item.pl_mov_show_id;
@@ -28,7 +29,7 @@ const MoviePosterCard = ({item}) => {
         <LoadingSpinner />
     }
 
-    if (status === 'completed') {
+    if (status === 'completed' && loadedDetails !== null) {
         return (
             <Fragment>                   
                     {loadedDetails.poster_path ?
@@ -60,4 +61,4 @@ const MoviePosterCard = ({item}) => {
     }
 }
 
-export default MoviePosterCard;
+export default PosterCard;

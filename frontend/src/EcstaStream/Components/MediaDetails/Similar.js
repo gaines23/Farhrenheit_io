@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 
 import PosterCard from "../UI/Card/PosterCard";
 import TvCardDropdown from "../UI/Card/Dropdown/TvCardDropdown";
-import MovieCardDropdown from "../UI/Card/Dropdown/MovieCardDropdown";
+import MovieCardDropdown from "../UI/Card/Dropdown/PosterCardDropdown";
 
 const Similar = ({similar}) => {
     const [showDetails, setShowDetails] = useState(false);

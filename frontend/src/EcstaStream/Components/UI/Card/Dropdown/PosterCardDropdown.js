@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import useHttp from '../../../../../hooks/use-http';
 
-import { getMovieCardDetails } from '../../../../lib/tmdb-api';
+import { getMediaCardDetails } from '../../../../lib/tmdb-api';
 import LoadingSpinner from '../../../../../Components/UI/LoadingSpinner';
 import { MdOutlineCancel } from 'react-icons/md';
 
@@ -12,9 +12,11 @@ import sleeping from '../../../../assets/sleeping.png';
 import { AiOutlineCheckCircle, AiOutlineHeart, AiOutlineEllipsis } from 'react-icons/ai';
 import { RiComputerLine } from 'react-icons/ri';
 import { Tooltip } from "react-bootstrap";
+import DeleteButton from "../../../Playlists/UI/Buttons/DeleteButton";
+import AddButton from "../../../Playlists/UI/Buttons/AddButton";
 
-const MovieCardDropdown = ({setShowDetails, id, media_type}) => {
-    const { sendRequest, status, data: loadedDetails } = useHttp(getMovieCardDetails, true);
+const PosterCardDropdown = ({setShowDetails, id, media_type, playlist, pl_data_id, playlist_id}) => {
+    const { sendRequest, status, data: loadedDetails } = useHttp(getMediaCardDetails, true);
 
     const mediaId = id;
 
@@ -49,7 +51,7 @@ const MovieCardDropdown = ({setShowDetails, id, media_type}) => {
 
     return (
         <Fragment>
-            <div className="flex fixed w-fit h-auto mr-2 mb-2 rounded-lg bg-bg-fill/70 backdrop-blur-md backdrop-contrast-150 mx-1">
+            <div className="flex fixed w-fit h-auto mx-4 rounded-lg bg-bg-fill/70 backdrop-blur-md backdrop-contrast-150 mx-1">
                 <div className="h-auto md:h-92 lg:h-100 w-full grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 bg-gradient-to-br from-ec-purple/50 to-ec-orange/50 rounded-lg bg-bg-fill/70">
                     <div className="w-full col-span-1 lg:col-span-2 flex text-input-fill px-2 py-1">
                         
@@ -66,17 +68,17 @@ const MovieCardDropdown = ({setShowDetails, id, media_type}) => {
                             </div>
 
                             <div className="text-center">
-                                <p className="w-auto text-3xl font-extrabold">
-                                    {loadedDetails.title}   
+                                <p className="w-auto text-3xl font-extrabold my-2">
+                                    { type === 'movie' ? loadedDetails.title : loadedDetails.name}   
                                 </p>
                             </div>
-                            <div className="text-center">
+                            <div className="text-center mb-2">
                                 { type === 'movie' ? 
-                                    <p className="w-full text-xs font-thin text-input-fill">{release_date.slice(0,4)} | {loadedDetails.genres.map(x => x.name + ' | ')}</p>                            
+                                    <p className="w-full text-xs font-thin text-input-fill my-1">{release_date.slice(0,4)} | {loadedDetails.genres.map(x => x.name + ' | ')}</p>                            
                                 :  
                                 <>
-                                    <p className="w-auto text-xs font-thin">{loadedDetails.first_air_date.slice(0,4)}</p>
-                                    <p className="w-full text-xs font-thin text-input-fill"> {loadedDetails.number_of_seasons} Season(s) | {loadedDetails.genres.map(x => x.name + ' | ')}</p>   
+                                    <p className="w-auto text-xs font-thin my-1">{loadedDetails.first_air_date.slice(0,4)} | {loadedDetails.number_of_seasons} Season {loadedDetails.number_of_seasons > 1 ? 's' : ''}</p>
+                                    <p className="w-full text-xs font-thin text-input-fill my-1">| {loadedDetails.genres.map(x => x.name + ' | ')}</p>   
                                 </>
                                 }
                             </div>
@@ -104,11 +106,6 @@ const MovieCardDropdown = ({setShowDetails, id, media_type}) => {
                                         <p className={optionNameClassName}>
                                             Future
                                         </p>
-                                    </li>
-                                    <li className="h-12 w-1/3 mb-2 float-right hover:text-input-fill">
-                                        <Tooltip title="More Options">
-                                            <AiOutlineEllipsis className="w-full h-6 float-right flex items-centered justify-center" />
-                                        </Tooltip>
                                     </li>
                                 </ul> 
                             </div>
@@ -140,19 +137,26 @@ const MovieCardDropdown = ({setShowDetails, id, media_type}) => {
                                     {loadedDetails.overview.substring(0, 150)} {loadedDetails.overview.length > 150 && '...'}
                                 </p>
                             </div>
-                            <div className="w-full h-10">
-                                <Link 
-                                    to={{
-                                        pathname: `/fahrenheit/ecstastream/details/${id}/movie`,
-                                        state:{
-                                            id: id, 
-                                        }
-                                    }}
-                                >
-                                    <button className="w-full text-sm h-10 shadow-md shadow-black/20 border-solid border border-input-fill/30 rounded-lg bg-input-fill/30 hover:bg-input-fill/10">
-                                        More...
-                                    </button> 
-                                </Link>
+                            <div className="w-full h-10 flex">
+                                { playlist ? 
+                                    <DeleteButton 
+                                        setShowDetails={setShowDetails} 
+                                        pl_data_id={pl_data_id}
+                                    /> : 
+                                    <AddButton /> }
+
+                                <button className="w-1/2 text-sm h-10 mx-1 shadow-md shadow-black/20 border-solid border border-input-fill/30 rounded-lg bg-input-fill/30 hover:bg-input-fill/10">
+                                    <Link 
+                                        to={{
+                                            pathname: `/fahrenheit/ecstastream/details/${id}/movie`,
+                                            state:{
+                                                id: id, 
+                                            }
+                                        }}
+                                    >
+                                            More...
+                                    </Link> 
+                                </button> 
                             </div>
                                 
                         </div>
@@ -173,4 +177,4 @@ const MovieCardDropdown = ({setShowDetails, id, media_type}) => {
     );
 }
 
-export default MovieCardDropdown;
+export default PosterCardDropdown;

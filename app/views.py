@@ -517,6 +517,14 @@ class EcstaStreamFavorites(APIView):
 
 ### Adds or Deletes movie,show on playlist ###
 class EcPlaylistData(APIView):
+    def get(self, request, playlist_id, *args, **kwargs):
+        try:
+            items = Ecstastream_Playlist_Data.objects.filter(playlist_id=playlist_id).all()
+            serializer = EcPlaylistDataSerializer(items, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception:
+            return Response('No items found', status=status.HTTP_204_NO_CONTENT)
+
     def post(self, request, *args, **kwargs):
         user = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
         data = {

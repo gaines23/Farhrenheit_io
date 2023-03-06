@@ -281,7 +281,7 @@ class EcstaStream_Favorites(models.Model):
     status = models.BooleanField(choices=STATUS, default=0)
 
     def __str__(self):
-        return '{} - {}'.format(self.favs_user_id)
+        return '{}'.format(self.favs_user_id)
     
     class Meta:
         unique_together = (('favs_user_id', ))
@@ -334,7 +334,7 @@ class EC_Favorites_Data(models.Model):
 class EC_Watchlist_Data(models.Model):
     wl_data_id = models.BigAutoField(primary_key=True)
     wl_user_id = models.ForeignKey(EcstaStreamProfile, related_name="watchlist_user", on_delete=models.CASCADE)
-    watchlist_id = models.ForeignKey(EcstaStream_Watchlist, on_delete=models.CASCADE, related_name="wc_id")
+    watchlist_id = models.ForeignKey(EcstaStream_Watchlist, on_delete=models.CASCADE, related_name="wl_id")
     wl_mov_show_id = models.IntegerField()
     wl_date_added = models.DateTimeField(auto_now=True)
     media_type = models.IntegerField(null=True, blank=True, choices=MEDIA_CHOICES)

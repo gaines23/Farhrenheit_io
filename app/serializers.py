@@ -322,8 +322,7 @@ class EcWatchlistSerializer(serializers.ModelSerializer):
     created_on = serializers.DateTimeField(read_only=True)
     username = serializers.ReadOnlyField(source='wl_user_id.user_id.username')
 
-
-    watchlist_data = serializers.SerializerMethodField()
+    watchlist_info = serializers.SerializerMethodField()
 
     class Meta:
         model = EcstaStream_Watchlist
@@ -335,8 +334,8 @@ class EcWatchlistSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-    def get_watchlist_data(self, obj):
-        return EcWatchlistDataSerializer(obj.wc_id.all(), many=True).data
+    def get_watchlist_info(self, obj):
+        return EcWatchlistDataSerializer(obj.wl_id.all(), many=True).data
 
 
 class EcFavoritesSerializer(serializers.ModelSerializer):

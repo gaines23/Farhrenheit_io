@@ -39,7 +39,6 @@ const PlaylistDetails = () => {
 
     if (status === 'completed' && getData.length !== 0) {
         const listId = playlistDetails.ec_playlist_id;
-        console.log(getData)
         
         return (
             <Fragment>

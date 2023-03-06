@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from 'react';
 
 import PosterCard from "../UI/Card/PosterCard";
 import TvCardDropdown from "../UI/Card/Dropdown/TvCardDropdown";
-import MovieCardDropdown from "../UI/Card/Dropdown/MovieCardDropdown";
+import MovieCardDropdown from "../UI/Card/Dropdown/PosterCardDropdown";
 
 import { TRENDING_TMBD } from "../../lib/constants";
 

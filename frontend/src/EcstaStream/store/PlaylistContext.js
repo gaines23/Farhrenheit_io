@@ -36,11 +36,11 @@ function playlistReducer(listData, action) {
                 pl_data_id: newId,
                 pl_mov_show_id: action.pl_mov_show_id,
                 media_type: action.media_type,
-            }, ...listData, ];
+            }, ...listData ];
             
         }
         case 'deleted': {
-            return listData.filter(x => x.id !== action.id);       
+            return [...listData.filter(item => item.pl_data_id !== action.pl_data_id)];
         }
         default: {
             throw Error('Error: ' + action.type);

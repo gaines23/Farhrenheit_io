@@ -317,10 +317,10 @@ export async function addItemToPlaylist(info) {
   return null;
 }
 
-export async function deleteItemFromPlaylist(info) {
+export async function deleteItemFromPlaylist(pl_data_id) {
   const response = await fetch(`${playlist_data}`, {
     method: 'DELETE',
-    body: JSON.stringify(info),
+    body: JSON.stringify(pl_data_id),
     headers: {
       'Content-Type': 'application/json',
     }

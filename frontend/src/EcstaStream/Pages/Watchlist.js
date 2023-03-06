@@ -6,8 +6,8 @@ import { getWatchlistDetails } from "../lib/ec-api";
 import NotFound from "./NotFound";
 import PosterCard from "../Components/Playlists/Cards/PosterCard";
 import LoadingSpinner from "../Components/UI/LoadingSpinner";
-import MovieCardDropdown from "../Components/UI/Card/Dropdown/MovieCardDropdown";
-import DeleteButton from "../Components/Playlists/UI/DeleteButton";
+import MovieCardDropdown from "../Components/UI/Card/Dropdown/PosterCardDropdown";
+import DeleteButton from "../Components/Playlists/UI/Buttons/DeleteButton";
 import SearchBar from "../Components/Playlists/UI/SearchBar";
 
 const Watchlist = () => {

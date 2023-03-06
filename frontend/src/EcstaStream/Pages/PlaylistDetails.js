@@ -71,7 +71,7 @@ const PlaylistDetails = () => {
                         </div>
                     </div>
 
-                    <div id="info" className="w-full h-full mx-auto flex">
+                    <div id="info" className="w-full h-5/6 mx-auto flex">
                         <PlaylistProvider getData={{getData}}>
                             <SearchBar listId={listId} />
                             <PlaylistList />

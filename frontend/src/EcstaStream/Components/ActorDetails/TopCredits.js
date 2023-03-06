@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 
 import TopCreditsCard from "../UI/Card/TopCreditsCard";
-import MovieCardDropdown from "../UI/Card/Dropdown/MovieCardDropdown";
+import MovieCardDropdown from "../UI/Card/Dropdown/PosterCardDropdown";
 import TvCardDropdown from "../UI/Card/Dropdown/TvCardDropdown";
 
 const TopCredits = ({credits, media}) => {

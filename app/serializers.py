@@ -192,6 +192,8 @@ class EcUserProfileSerializer(serializers.ModelSerializer):
     user_playlists = serializers.SerializerMethodField()
     playlist_following = serializers.SerializerMethodField()
     streaming_list_info = serializers.SerializerMethodField()
+    watchlist_playlist = serializers.SerializerMethodField()
+    favorites_playlist = serializers.SerializerMethodField()
 
     class Meta:
         model = EcstaStreamProfile
@@ -220,6 +222,18 @@ class EcUserProfileSerializer(serializers.ModelSerializer):
             return StreamingServicesSerializer(obj.streaming_services.all(), many=True).data
         except Exception:
             return 
+        
+    def get_watchlist_playlist(self, obj):
+        try:
+            return EcWatchlistDataSerializer(obj.watchlist_user.all(), many=True).data
+        except Exception:
+            return
+        
+    def get_favorites_playlist(self, obj):
+        try:
+            return EcFavoritesDataSerializer(obj.favs_user.all(), many=True).data
+        except Exception:
+            return
 
 
 

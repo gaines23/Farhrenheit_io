@@ -2,10 +2,10 @@ import { Fragment } from "react";
 
 import useHttp from "../../../../../hooks/use-http";
 import { deleteItemFromPlaylist } from "../../../../lib/ec-api";
-import { usePlaylistData, usePlaylistDispatch } from "../../../../store/PlaylistContext";
+import { usePlaylistDispatch } from "../../../../store/PlaylistContext";
 
 const DeleteButton = ({setShowDetails, pl_data_id}) => {
-    const { sendRequest, status, error} = useHttp(deleteItemFromPlaylist, true);
+    const { sendRequest} = useHttp(deleteItemFromPlaylist, true);
     const dispatch = usePlaylistDispatch();
 
     const handleClick = (e) => {

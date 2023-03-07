@@ -6,7 +6,6 @@ import LoadingSpinner from '../Components/UI/LoadingSpinner';
 
 const Home = React.lazy(() => import ('./Pages/Home'));
 const SearchResults = React.lazy(() => import ('./Pages/SearchResults'));
-// const Profile = React.lazy(() => import ('./Pages/Profile'));
 const MovieDetails = React.lazy(() => import ('./Pages/MovieDetails'));
 const TvDetails = React.lazy(() => import ('./Pages/TvDetails'));
 const CreditDetails = React.lazy(() => import ('./Pages/CreditDetails'));

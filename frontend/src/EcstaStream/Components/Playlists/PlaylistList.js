@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { usePlaylistData } from "../../store/PlaylistContext";
 
 import PosterCardDropdown from "../UI/Card/Dropdown/PosterCardDropdown";
@@ -6,8 +6,6 @@ import PosterCard from "./Cards/PosterCard";
 
 const PlaylistList = () => {
     const getList = usePlaylistData();
-
-    console.log(getList)
 
     const [showDetails, setShowDetails] = useState(false);
     const [getData, setData] = useState([]); 
@@ -44,7 +42,7 @@ const PlaylistList = () => {
                                     key={item.pl_mov_show_id} 
                                 >
                                     <br />
-                                    <PosterCard key={item.pl_mov_show_id} item={item} />
+                                    <PosterCard key={item.pl_mov_show_id} item={item} mediaId={item.pl_mov_show_id} />
                                 </li>
                             );
                         })}
@@ -58,7 +56,7 @@ const PlaylistList = () => {
                     setShowDetails={setShowDetails}
                     id={getData.id}
                     media_type={getData.media_type}
-                    playlist={true}
+                    playlist={"playlist"}
                     pl_data_id={getData.pl_data_id}
                     playlist_id={getData.playlist_id}
                 />

@@ -518,8 +518,9 @@ class EcstaStreamFavorites(APIView):
 ### Adds or Deletes movie,show on playlist ###
 class EcPlaylistData(APIView):
     def get(self, request, playlist_id, *args, **kwargs):
+        user = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
         try:
-            items = Ecstastream_Playlist_Data.objects.filter(playlist_id=playlist_id).all()
+            items = Ecstastream_Playlist_Data.objects.filter(wl_user_id=user).all()
             serializer = EcPlaylistDataSerializer(items, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception:
@@ -528,9 +529,9 @@ class EcPlaylistData(APIView):
     def post(self, request, *args, **kwargs):
         user = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
         data = {
-            "added_by": user.ec_id,
-            "playlist_id": request.data['playlist_id'],
-            "pl_mov_show_id": request.data['id'],
+            "wl_user_id": user.ec_id,
+            "watchlist_id": request.data['watchlist_id'],
+            "wl_mov_show_id": request.data['id'],
             "media_type": 0 if request.data['type'] == 'movie' else 1,
         }
 
@@ -580,6 +581,15 @@ class EcWatchlisttData(APIView):
 
 ### Adds or Deletes movie,show on playlist ###
 class EcFavoritesData(APIView):
+    def get(self, request, *args, **kwargs):
+        user = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
+        try:
+            items = EC_Favorites_Data.objects.filter(fav_user_id=user).all()
+            serializer = EcFavoritesDataSerializer(items, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception:
+            return Response('No items found', status=status.HTTP_204_NO_CONTENT)
+
     def post(self, request, *args, **kwargs):
         user = EcstaStreamProfile.objects.get(user_id=self.request.user.id)
         data = {

@@ -1,11 +1,11 @@
 import { Fragment, useState } from "react";
+import { useFavoritesData } from "../../store/FavoritesContext";
 
 import PosterCardDropdown from "../UI/Card/Dropdown/PosterCardDropdown";
 import PosterCard from "../Playlists/Cards/PosterCard";
-import { useFavoritesData } from "../../store/FavoritesContext";
 
 const FavoritesList = () => {
-    const getList = useFavoritesData;
+    const getList = useFavoritesData();
 
     const [showDetails, setShowDetails] = useState(false);
     const [getData, setData] = useState([]); 
@@ -34,12 +34,12 @@ const FavoritesList = () => {
                         id="list" 
                         className="w-full h-full px-2 gap-2 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
                     >
-                        { getList !== null && getList.map(item => { 
+                        { getList.length !== 0 && getList.map(item => { 
                             return (
                                 <li 
                                     className="group flex-shrink-0 w-36 h-42 rounded-md" 
                                     onClick={(e) => handleClick(e, item.fav_mov_show_id, item.media_type, item.fav_data_id, item.favorites_id)} 
-                                    key={item.wl_mov_show_id} 
+                                    key={item.fav_mov_show_id} 
                                 >
                                     <br />
                                     <PosterCard key={item.fav_mov_show_id} item={item} mediaId={item.fav_mov_show_id} />

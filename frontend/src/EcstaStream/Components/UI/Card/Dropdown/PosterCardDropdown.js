@@ -15,6 +15,7 @@ import { Tooltip } from "react-bootstrap";
 import DeleteButton from "../../../Playlists/UI/Buttons/DeleteButton";
 import AddButton from "../../../Playlists/UI/Buttons/AddButton";
 import WatchlistDeleteButton from "../../../WatchList/Buttons/WatchlistDeleteButton";
+import FavoritesDeleteButton from "../../../Favorites/Buttons/FavoritesDeleteButton";
 
 const PosterCardDropdown = ({setShowDetails, id, media_type, playlist, pl_data_id}) => {
     const { sendRequest, status, data: loadedDetails } = useHttp(getMediaCardDetails, true);
@@ -152,6 +153,12 @@ const PosterCardDropdown = ({setShowDetails, id, media_type, playlist, pl_data_i
                                     <WatchlistDeleteButton 
                                         setShowDetails={setShowDetails} 
                                         wl_data_id={pl_data_id}
+                                    /> : ''
+                                }
+                                { playlist === 'favorites' ? 
+                                    <FavoritesDeleteButton 
+                                        setShowDetails={setShowDetails} 
+                                        fav_data_id={pl_data_id}
                                     /> : ''
                                 }
 

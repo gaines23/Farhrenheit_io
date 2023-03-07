@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import useHttp from "../../hooks/use-http";
 import { getFavoritesDetails } from "../lib/ec-api";
-import { FavoritesContext } from "../store/FavoritesContext";
+import { FavoritesProvider } from "../store/FavoritesContext";
 
 import FavoritesSearch from "../Components/Favorites/FavoritesSearch";
 import FavoritesList from "../Components/Favorites/FavoritesList";
@@ -10,30 +10,32 @@ import LoadingSpinner from "../Components/UI/LoadingSpinner";
 
 const Favorites = () => {
     const [getData, setData] = useState([]);
-    const { sendRequest, status, data: favoritesDetails, error } = useHttp(getFavoritesDetails, true);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const { sendRequest, status, data: playlistDetails, error } = useHttp(getFavoritesDetails, true);
 
     useEffect(() => {
+        setIsLoading(true);
         sendRequest();
-    }, [sendRequest]);
+    }, [sendRequest, setIsLoading]);
 
     useEffect(() => {
+        setIsLoading(true);
         if (status === 'completed') {
-            setData(favoritesDetails.favs_info);
+            setData(playlistDetails.favs_info);
+            setIsLoading(false);
         }
-    }, [favoritesDetails]);
-        
-    if (status === 'pending') {
-        <LoadingSpinner />
-    }
+    }, [playlistDetails]);
+
+    const optionsButton = "h-full w-1/3 text-sm mx-2 hover:text-ec-purple-text";
 
     if (error) {
         return <NotFound/>
     }
 
-    const optionsButton = "h-full w-1/3 text-sm mx-2 hover:text-ec-purple-text";
 
     if (status === 'completed') {
-        const listId = favoritesDetails.favorite_id;
+        const listId = playlistDetails.favorite_id;
 
         return (
             <Fragment>
@@ -45,7 +47,7 @@ const Favorites = () => {
                                     Favorites
                                 </div>
                                 <div className="h-10 text-xs my-auto float-left py-3 ml-2">
-                                    | {favoritesDetails.username} | # Following
+                                    | {playlistDetails.username} | # Following
                                 </div>
                             </div>
 
@@ -64,12 +66,16 @@ const Favorites = () => {
 
                         </div>
                     </div>
-                    
+
+                    {isLoading && <LoadingSpinner />}
+                                        
                     <div id="info" className="w-full h-5/6 mx-auto flex">
-                        <FavoritesContext getData={{getData}}>
-                            <FavoritesSearch listId={listId} />
-                            <FavoritesList />
-                        </FavoritesContext>
+                        {!isLoading && <> 
+                            <FavoritesProvider getData={{getData}}>
+                                <FavoritesSearch listId={listId} />
+                                <FavoritesList />
+                            </FavoritesProvider>
+                        </>}
                     </div>
 
                 </div>

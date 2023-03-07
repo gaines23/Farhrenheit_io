@@ -9,7 +9,7 @@ import LoadingSpinner from "../UI/LoadingSpinner";
 const FavoritesSearchCard = ({item, listId}) => {
     const { sendRequest } = useHttp(addItemToFavorites, true);
     const [isLoading, setIsLoading] = useState(false);
-    const dispatch = useFavoritesDispatch;
+    const dispatch = useFavoritesDispatch();
 
     const addToList = (e, id, media) => {
         e.preventDefault();

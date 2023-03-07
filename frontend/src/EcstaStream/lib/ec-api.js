@@ -289,6 +289,7 @@ export async function getWatchlistDetails() {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${user_token}`,
     }
   });
 
@@ -396,9 +397,9 @@ export async function getFavoritesData() {
   const data = await response.json();
 
   const playlistData = [
-      ...data,
+      ...data, 
+  ]
   
-]
   return playlistData;
 }
 

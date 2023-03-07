@@ -10,21 +10,21 @@ import WatchListSearch from "../Components/WatchList/WatchlistSearch";
 
 const Watchlist = () => {
     const [getData, setData] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const { sendRequest, status, data: playlistDetails, error } = useHttp(getWatchlistDetails, true);
 
     useEffect(() => {
+        setIsLoading(true);
         sendRequest();
-    }, [sendRequest]);
+    }, [sendRequest, setIsLoading]);
 
     useEffect(() => {
+        setIsLoading(true)
         if (status === 'completed') {
             setData(playlistDetails.watchlist_info);
+            setIsLoading(false);
         }
     }, [playlistDetails]);
-        
-    if (status === 'pending') {
-        <LoadingSpinner />
-    }
 
     if (error) {
         return <NotFound/>
@@ -64,12 +64,16 @@ const Watchlist = () => {
 
                         </div>
                     </div>
+
+                    { isLoading && <LoadingSpinner /> }
                     
                     <div id="info" className="w-full h-5/6 mx-auto flex">
-                        <WatchlistProvider getData={{getData}}>
-                            <WatchListSearch listId={listId} />
-                            <WatchlistList />
-                        </WatchlistProvider>
+                        { !isLoading && <>
+                            <WatchlistProvider getData={{getData}}>
+                                <WatchListSearch listId={listId} />
+                                <WatchlistList />
+                            </WatchlistProvider>
+                        </>}
                     </div>
 
                 </div>

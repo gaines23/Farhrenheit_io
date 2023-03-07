@@ -35,7 +35,7 @@ function favoritesReducer(listData, action) {
                 fav_data_id: newId,
                 fav_mov_show_id: action.fav_mov_show_id,
                 media_type: action.media_type,
-            }, ...listData]; 
+            }, ...listData];
         }
         case 'deleted': {
             return [...listData.filter(item => item.fav_data_id !== action.fav_data_id)];

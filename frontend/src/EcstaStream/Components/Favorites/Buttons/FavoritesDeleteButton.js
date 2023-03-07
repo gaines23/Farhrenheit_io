@@ -2,16 +2,17 @@ import { Fragment } from "react";
 import useHttp from "../../../../hooks/use-http";
 
 import { deleteItemFromFavorites } from "../../../lib/ec-api";
+import { useFavoritesDispatch } from "../../../store/FavoritesContext";
 
 
 const FavoritesDeleteButton = ({setShowDetails, fav_data_id}) => {
     const { sendRequest} = useHttp(deleteItemFromFavorites, true);
-    const dispatch = useWatchlistDispatch();
+    const dispatch = useFavoritesDispatch();
 
     const handleClick = (e) => {
         e.preventDefault();
 
-        sendRequest({wl_data_id});
+        sendRequest({fav_data_id});
 
         dispatch({ 
             type: 'deleted', 

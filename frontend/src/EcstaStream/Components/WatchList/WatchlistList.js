@@ -7,8 +7,6 @@ import PosterCard from "../Playlists/Cards/PosterCard";
 const WatchListList = () => {
     const getList = useWatchlistData();
 
-    console.log(getList)
-
     const [showDetails, setShowDetails] = useState(false);
     const [getData, setData] = useState([]); 
 

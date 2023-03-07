@@ -4,7 +4,7 @@ import { SEARCH_RESULTS_TMDB } from '../../lib/constants';
 import useSearchDebounce from '../../hooks/useSearchDebounce';
 import { HiOutlineSearch } from 'react-icons/hi';
 import LoadingSpinner from '../UI/LoadingSpinner';
-import WatchlistSearchCard from './FavoritesSearchCard';
+import FavoritesSearchCard from './FavoritesSearchCard';
 
 const FavoritesSearch = ({listId}) => {
     const [search, setSearch] = useState('');
@@ -86,7 +86,7 @@ return (
                                 key={item.id} 
                                 onClick={handleClick}
                             >
-                                <WatchlistSearchCard key={item.id} item={item} listId={listId} />
+                                <FavoritesSearchCard key={item.id} item={item} listId={listId} />
                             </li>
                         )}).slice(0,10)}
                     </ul>

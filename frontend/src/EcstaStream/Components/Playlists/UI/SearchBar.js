@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { SEARCH_RESULTS_TMDB } from '../../../lib/constants';
 
 import useSearchDebounce from '../../../hooks/useSearchDebounce';

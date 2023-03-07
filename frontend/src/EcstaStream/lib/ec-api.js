@@ -10,6 +10,8 @@ let playlist_data = process.env.REACT_APP_EC_PLAYLIST_DATA;
 let get_playlist_data = process.env.REACT_APP_EC_GET_PLAYLIST_DATA;
 let watchlist_details_url = process.env.REACT_APP_EC_WATCHLIST_DETAILS;
 let favorites_details_url = process.env.REACT_APP_EC_FAVORITES_DETAILS;
+let watchlist_data_url = process.env.REACT_APP_EC_WATCHLIST_DATA;
+let favorites_data_url = process.env.REACT_APP_EC_FAVORITES_DATA;
 
 let user_token = localStorage.getItem('token');
 
@@ -201,14 +203,12 @@ export async function addPlaylist(newPlayist) {
 
 }
 
-
 // Gets Playlist details
 export async function getPlaylistDetails({id}) {
   const response = await fetch(`${playlist_details_url}/${id}/`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      //'Authorization': `Bearer ${user_token}`,
     },
   });
 
@@ -221,73 +221,12 @@ export async function getPlaylistDetails({id}) {
   return playlistDetails;
 }
 
-export async function getWatchlilstDetails() {
-  const response = await fetch(`${watchlist_details_url}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  });
-
-  const data = await response.json()
-
-  const watchlistDetails = {
-    ...data
-  }
-
-  return watchlistDetails;
-}
-
-
-
-export async function getWatchlistDetails() {
-  const response = await fetch(`${watchlist_details_url}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${user_token}`,
-    }
-  });
-
-  const data = await response.json()
-
-  const watchlistDetials = {
-    ...data
-  }
-
-  return watchlistDetials;
-}
-
-
-
-
-export async function getFavoritesDetails() {
-  const response = await fetch(`${favorites_details_url}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${user_token}`,
-    }
-  });
-
-  const data = await response.json()
-
-  const favoritesDetials = {
-    ...data
-  }
-
-  return favoritesDetials;
-}
-
-
-
 // Gets Playlist data
 export async function getPlaylistData(id) {
   const response = await fetch(`${get_playlist_data}${id}/`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      //'Authorization': `Bearer ${user_token}`,
     },
   });
 
@@ -300,6 +239,7 @@ export async function getPlaylistData(id) {
   return playlistData;
 }
 
+// Adds new items to playist
 export async function addItemToPlaylist(info) {
   const response = await fetch(`${playlist_data}`, {
     method: 'POST',
@@ -319,12 +259,15 @@ export async function addItemToPlaylist(info) {
   return null;
 }
 
+
+// Deletes item from playlist
 export async function deleteItemFromPlaylist(pl_data_id) {
   const response = await fetch(`${playlist_data}`, {
     method: 'DELETE',
     body: JSON.stringify(pl_data_id),
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${user_token}`,
     }
   });
 
@@ -337,3 +280,168 @@ export async function deleteItemFromPlaylist(pl_data_id) {
   return null;
 
 }
+
+
+
+// Gets Watchlist Details
+export async function getWatchlistDetails() {
+  const response = await fetch(`${watchlist_details_url}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+
+  const data = await response.json()
+
+  const watchlistDetails = {
+    ...data
+  }
+
+  return watchlistDetails;
+}
+
+// Gets Watchlist data
+export async function getWatchlistData() {
+  const response = await fetch(`${watchlist_details_url}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+
+  const playlistData = [
+      ...data,
+  
+]
+  return playlistData;
+}
+
+// Adds new items to playist
+export async function addItemToWatchlist(info) {
+  const response = await fetch(`${watchlist_data_url}`, {
+    method: 'POST',
+    body: JSON.stringify(info),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${user_token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+
+  return null;
+}
+
+
+// Deletes item from playlist
+export async function deleteItemFromWatchlist(wl_data_id) {
+  const response = await fetch(`${watchlist_data_url}`, {
+    method: 'DELETE',
+    body: JSON.stringify(wl_data_id),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${user_token}`,
+    }
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+
+  return null;
+
+}
+
+
+
+
+// Favorites Playlist Details
+export async function getFavoritesDetails() {
+  const response = await fetch(`${favorites_details_url}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${user_token}`,
+    }
+  });
+
+  const data = await response.json()
+
+  const favoritesDetails = {
+    ...data
+  }
+
+  return favoritesDetails;
+}
+
+
+// Gets Favorites data
+export async function getFavoritesData() {
+  const response = await fetch(`${favorites_details_url}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+
+  const playlistData = [
+      ...data,
+  
+]
+  return playlistData;
+}
+
+// Adds new items to playist
+export async function addItemToFavorites(info) {
+  const response = await fetch(`${favorites_data_url}`, {
+    method: 'POST',
+    body: JSON.stringify(info),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${user_token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+
+  return null;
+}
+
+
+// Deletes item from playlist
+export async function deleteItemFromFavorites(fav_data_id) {
+  const response = await fetch(`${favorites_data_url}`, {
+    method: 'DELETE',
+    body: JSON.stringify(fav_data_id),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${user_token}`,
+    }
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+
+  return null;
+
+}
+
+

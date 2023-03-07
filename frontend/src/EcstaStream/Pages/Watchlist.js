@@ -1,24 +1,20 @@
 import { Fragment, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import useHttp from "../../hooks/use-http";
 import { getWatchlistDetails } from "../lib/ec-api";
 
 import NotFound from "./NotFound";
 import LoadingSpinner from "../Components/UI/LoadingSpinner";
-import SearchBar from "../Components/Playlists/UI/SearchBar";
-import { PlaylistProvider } from "../store/PlaylistContext";
-import PlaylistList from "../Components/Playlists/PlaylistList";
+import { WatchlistProvider } from "../store/WatchlistContext";
+import WatchlistList from "../Components/WatchList/WatchlistList";
+import WatchListSearch from "../Components/WatchList/WatchlistSearch";
 
 const Watchlist = () => {
-    const params = useParams();
-    const {id} = params;
     const [getData, setData] = useState([]);
-
     const { sendRequest, status, data: playlistDetails, error } = useHttp(getWatchlistDetails, true);
 
     useEffect(() => {
-        sendRequest(params);
-    }, [sendRequest, params]);
+        sendRequest();
+    }, [sendRequest]);
 
     useEffect(() => {
         if (status === 'completed') {
@@ -37,7 +33,7 @@ const Watchlist = () => {
     const optionsButton = "h-full w-1/3 text-sm mx-2 hover:text-ec-purple-text";
 
     if (status === 'completed') {
-        const listId = playlistDetails.ec_playlist_id;
+        const listId = playlistDetails.watchlist_id;
 
         return (
             <Fragment>
@@ -70,10 +66,10 @@ const Watchlist = () => {
                     </div>
                     
                     <div id="info" className="w-full h-5/6 mx-auto flex">
-                        <PlaylistProvider getData={{getData}}>
-                            <SearchBar listId={listId} />
-                            <PlaylistList />
-                        </PlaylistProvider>
+                        <WatchlistProvider getData={{getData}}>
+                            <WatchListSearch listId={listId} />
+                            <WatchlistList />
+                        </WatchlistProvider>
                     </div>
 
                 </div>

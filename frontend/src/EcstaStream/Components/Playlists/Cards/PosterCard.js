@@ -5,12 +5,10 @@ import { getMediaCardDetails } from "../../../lib/tmdb-api";
 import LoadingSpinner from "../../UI/LoadingSpinner";
 import { TMBD_POSTER_w500 } from "../../../lib/constants";
 
-const PosterCard = ({item}) => {
+const PosterCard = ({item, mediaId}) => {
     const { sendRequest, status, data: loadedDetails } = useHttp(getMediaCardDetails, true);
     
-
     const [isActive, setIsActive] = useState(false);
-    const mediaId = item.pl_mov_show_id;
     
     var type;
     if (item.media_type === 0) {

@@ -14,8 +14,9 @@ import { RiComputerLine } from 'react-icons/ri';
 import { Tooltip } from "react-bootstrap";
 import DeleteButton from "../../../Playlists/UI/Buttons/DeleteButton";
 import AddButton from "../../../Playlists/UI/Buttons/AddButton";
+import WatchlistDeleteButton from "../../../WatchList/Buttons/WatchlistDeleteButton";
 
-const PosterCardDropdown = ({setShowDetails, id, media_type, playlist, pl_data_id, playlist_id}) => {
+const PosterCardDropdown = ({setShowDetails, id, media_type, playlist, pl_data_id}) => {
     const { sendRequest, status, data: loadedDetails } = useHttp(getMediaCardDetails, true);
 
     const mediaId = id;
@@ -138,12 +139,21 @@ const PosterCardDropdown = ({setShowDetails, id, media_type, playlist, pl_data_i
                                 </p>
                             </div>
                             <div className="w-full h-10 flex">
-                                { playlist ? 
+                                <AddButton /> 
+
+                                { playlist === 'playlist' ? 
                                     <DeleteButton 
                                         setShowDetails={setShowDetails} 
                                         pl_data_id={pl_data_id}
-                                    /> : 
-                                    <AddButton /> }
+                                    /> : ''
+                                    
+                                }
+                                { playlist === 'watchlist' ? 
+                                    <WatchlistDeleteButton 
+                                        setShowDetails={setShowDetails} 
+                                        wl_data_id={pl_data_id}
+                                    /> : ''
+                                }
 
                                 <button className="w-1/2 text-sm h-10 mx-1 shadow-md shadow-black/20 border-solid border border-input-fill/30 rounded-lg bg-input-fill/30 hover:bg-input-fill/10">
                                     <Link 

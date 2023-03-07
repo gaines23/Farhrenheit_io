@@ -5,7 +5,7 @@ export const WatchlistDispatchContext = createContext(null);
 
 export function WatchlistProvider({children, getData}) {   
     const [listData, dispatch] = useReducer(
-        watchListReducer,
+        watchlistReducer,
         getData.getData
     );
 
@@ -22,25 +22,23 @@ export function useWatchlistData() {
     return useContext(WatchlistContext);
 }
 
-export function usePlaylistDispatch() {
+export function useWatchlistDispatch() {
     return useContext(WatchlistDispatchContext);
 }
 
-function watchListReducer(listData, action) {
-    
+function watchlistReducer(listData, action) {
     switch(action.type) {
         case 'added': {
             const newId = listData.length + 1;
             return [{
-                playlist_id: action.playlist_id,
-                pl_data_id: newId,
-                pl_mov_show_id: action.pl_mov_show_id,
+                watchlist_id: action.watchlist_id,
+                wl_data_id: newId,
+                wl_mov_show_id: action.wl_mov_show_id,
                 media_type: action.media_type,
-            }, ...listData ];
-            
+            }, ...listData]; 
         }
         case 'deleted': {
-            return [...listData.filter(item => item.pl_data_id !== action.pl_data_id)];
+            return [...listData.filter(item => item.wl_data_id !== action.wl_data_id)];
         }
         default: {
             throw Error('Error: ' + action.type);

@@ -1,30 +1,26 @@
 import { Fragment, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import useHttp from "../../hooks/use-http";
 import { getFavoritesDetails } from "../lib/ec-api";
+import { FavoritesContext } from "../store/FavoritesContext";
 
+import FavoritesSearch from "../Components/Favorites/FavoritesSearch";
+import FavoritesList from "../Components/Favorites/FavoritesList";
 import NotFound from "./NotFound";
 import LoadingSpinner from "../Components/UI/LoadingSpinner";
-import SearchBar from "../Components/Playlists/UI/SearchBar";
-import { PlaylistProvider } from "../store/PlaylistContext";
-import PlaylistList from "../Components/Playlists/PlaylistList";
 
 const Favorites = () => {
-    const params = useParams();
-    const {id} = params;
     const [getData, setData] = useState([]);
-
-    const { sendRequest, status, data: playlistDetails, error } = useHttp(getFavoritesDetails, true);
+    const { sendRequest, status, data: favoritesDetails, error } = useHttp(getFavoritesDetails, true);
 
     useEffect(() => {
-        sendRequest(params);
-    }, [sendRequest, params]);
+        sendRequest();
+    }, [sendRequest]);
 
     useEffect(() => {
         if (status === 'completed') {
-            setData(playlistDetails.movies_shows);
+            setData(favoritesDetails.favs_info);
         }
-    }, [playlistDetails]);
+    }, [favoritesDetails]);
         
     if (status === 'pending') {
         <LoadingSpinner />
@@ -37,7 +33,7 @@ const Favorites = () => {
     const optionsButton = "h-full w-1/3 text-sm mx-2 hover:text-ec-purple-text";
 
     if (status === 'completed') {
-        const listId = playlistDetails.ec_playlist_id;
+        const listId = favoritesDetails.favorite_id;
 
         return (
             <Fragment>
@@ -49,7 +45,7 @@ const Favorites = () => {
                                     Favorites
                                 </div>
                                 <div className="h-10 text-xs my-auto float-left py-3 ml-2">
-                                    | {playlistDetails.username} | # Following
+                                    | {favoritesDetails.username} | # Following
                                 </div>
                             </div>
 
@@ -70,10 +66,10 @@ const Favorites = () => {
                     </div>
                     
                     <div id="info" className="w-full h-5/6 mx-auto flex">
-                        <PlaylistProvider getData={{getData}}>
-                            <SearchBar listId={listId} />
-                            <PlaylistList />
-                        </PlaylistProvider>
+                        <FavoritesContext getData={{getData}}>
+                            <FavoritesSearch listId={listId} />
+                            <FavoritesList />
+                        </FavoritesContext>
                     </div>
 
                 </div>

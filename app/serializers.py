@@ -342,7 +342,7 @@ class EcFavoritesSerializer(serializers.ModelSerializer):
     created_on = serializers.DateTimeField(read_only=True)
     username = serializers.ReadOnlyField(source='fav_user_id.user_id.username')
 
-    favs_data = serializers.SerializerMethodField()
+    favs_info = serializers.SerializerMethodField()
 
     class Meta:
         model = EcstaStream_Favorites
@@ -351,7 +351,7 @@ class EcFavoritesSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.private = validated_data.get('private', instance.private)
 
-    def get_favs_data(self, obj):
+    def get_favs_info(self, obj):
         return EcFavoritesDataSerializer(obj.fav_id.all(), many=True).data
 
 

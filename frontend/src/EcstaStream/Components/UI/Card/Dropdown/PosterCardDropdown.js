@@ -17,6 +17,15 @@ import AddButton from "../../../Playlists/UI/Buttons/AddButton";
 import WatchlistDeleteButton from "../../../WatchList/Buttons/WatchlistDeleteButton";
 import FavoritesDeleteButton from "../../../Favorites/Buttons/FavoritesDeleteButton";
 
+/*
+    sm - 640
+    md - 768
+    lg - 1024
+    xl - 1280
+    2xl - 1536
+*/
+
+
 const PosterCardDropdown = ({setShowDetails, id, media_type, playlist, pl_data_id}) => {
     const { sendRequest, status, data: loadedDetails } = useHttp(getMediaCardDetails, true);
 
@@ -53,9 +62,12 @@ const PosterCardDropdown = ({setShowDetails, id, media_type, playlist, pl_data_i
 
     return (
         <Fragment>
-            <div className="flex fixed w-fit h-auto mx-4 rounded-lg bg-bg-fill/70 backdrop-blur-md backdrop-contrast-150 mx-1">
-                <div className="h-auto md:h-92 lg:h-100 w-full grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 bg-gradient-to-br from-ec-purple/50 to-ec-orange/50 rounded-lg bg-bg-fill/70">
-                    <div className="w-full col-span-1 lg:col-span-2 flex text-input-fill px-2 py-1">
+            <div 
+                id="dropdown-content"
+                className="flex fixed mx-5 mx-auto w-fit h-full lg:h-99 xl:h-99 xl:w-2/3 2xl:h-102 mx-5 rounded-lg bg-bg-fill/70 backdrop-blur-md backdrop-contrast-150">
+                <div className="md:h-max lg:h-full xl:h-full w-full mx-auto grid md:grid-cols-7 lg:grid-cols-7 bg-gradient-to-br from-ec-purple/50 to-ec-orange/50 rounded-lg bg-bg-fill/70">
+                    
+                    <div className="w-full h-auto md:col-span-3 lg:col-span-2 flex text-input-fill px-2 py-1">
                         
                         <div className="w-full h-full grid grid-rows-auto">
                             <div className="w-full h-auto">
@@ -70,17 +82,23 @@ const PosterCardDropdown = ({setShowDetails, id, media_type, playlist, pl_data_i
                             </div>
 
                             <div className="text-center">
-                                <p className="w-auto text-3xl font-extrabold my-2">
+                                <p className="w-full text-2xl font-extrabold my-2">
                                     { type === 'movie' ? loadedDetails.title : loadedDetails.name}   
                                 </p>
                             </div>
                             <div className="text-center mb-2">
                                 { type === 'movie' ? 
-                                    <p className="w-full text-xs font-thin text-input-fill my-1">{release_date.slice(0,4)} | {loadedDetails.genres.map(x => x.name + ' | ')}</p>                            
+                                    <p className="w-full text-xs font-thin text-input-fill my-1">{
+                                        release_date.slice(0,4)} | {loadedDetails.genres.map(x => x.name + ' | ')}
+                                    </p>                            
                                 :  
                                 <>
-                                    <p className="w-auto text-xs font-thin my-1">{loadedDetails.first_air_date.slice(0,4)} | {loadedDetails.number_of_seasons} Season {loadedDetails.number_of_seasons > 1 ? 's' : ''}</p>
-                                    <p className="w-full text-xs font-thin text-input-fill my-1">| {loadedDetails.genres.map(x => x.name + ' | ')}</p>   
+                                    <p className="w-auto text-xs font-thin my-1">
+                                        {loadedDetails.first_air_date.slice(0,4)} | {loadedDetails.number_of_seasons} Season{loadedDetails.number_of_seasons > 1 ? 's' : ''}
+                                    </p>
+                                    <p className="w-full text-xs font-thin text-input-fill my-1">
+                                        | {loadedDetails.genres.map(x => x.name + ' | ')}
+                                    </p>   
                                 </>
                                 }
                             </div>
@@ -179,7 +197,7 @@ const PosterCardDropdown = ({setShowDetails, id, media_type, playlist, pl_data_i
                         </div>
                     </div>
 
-                    <div className="w-full h-full col-start-2 col-span-2 md:col-span-5 lg:col-span-6 shadow-2xl shadow-black/60">
+                    <div className="w-full h-full md:col-span-4 lg:col-span-5 shadow-2xl shadow-ec-purple/20 rounded-l-lg">
                         <iframe
                             className="w-full h-full rounded-lg pointer-events-none"
                             src={`https://www.youtube.com/embed/${trailer}`}
